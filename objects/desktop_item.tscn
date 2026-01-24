@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://o57m61rjst2a"]
+
+[ext_resource type="Script" uid="uid://dlxhr551o6baq" path="res://objects/desktop_item.gd" id="1_3pkbw"]
+
+[node name="DesktopItem" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 10.0
+offset_bottom = 10.0
+script = ExtResource("1_3pkbw")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
