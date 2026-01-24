@@ -1,5 +1,7 @@
 extends Node2D
 
+var current_rule: Rules.ID = Rules
+
 var completed: int = 0
 var quota: int = 1
 
@@ -9,6 +11,12 @@ var correct_text: String
 
 func _ready() -> void:
 	Global.document_submitted.connect(on_document_submitted)
+
+func check_events() -> void:
+	for event in events:
+		if (completed == event.on_completed):
+			if event.update_quota:
+				quota = event.new_quota
 
 func on_document_submitted(text: String):
 	if correct_text == text:
