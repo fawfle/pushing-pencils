@@ -17,7 +17,6 @@ offset_right = 21.0
 offset_bottom = 0.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
 texture = ExtResource("2_acv72")
 
 [node name="Area2D" type="Area2D" parent="."]
