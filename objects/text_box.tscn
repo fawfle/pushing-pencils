@@ -1,17 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://dagxb0dhvb3ub"]
+[gd_scene load_steps=5 format=3 uid="uid://dagxb0dhvb3ub"]
 
-[sub_resource type="Theme" id="Theme_kt6pj"]
-default_font_size = 12
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="1_ieipo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kt6pj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_51uiq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ieipo"]
 
 [node name="TextBox" type="LineEdit"]
-self_modulate = Color(1, 1, 1, 0.32941177)
 offset_right = 69.0
 offset_bottom = 30.0
-theme = SubResource("Theme_kt6pj")
+theme = ExtResource("1_ieipo")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_kt6pj")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_51uiq")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ieipo")
 context_menu_enabled = false
 emoji_menu_enabled = false
 virtual_keyboard_enabled = false
 virtual_keyboard_show_on_focus = false
 shortcut_keys_enabled = false
 middle_mouse_paste_enabled = false
+selecting_enabled = false
 drag_and_drop_selection_enabled = false

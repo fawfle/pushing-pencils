@@ -1,4 +1,4 @@
-extends Button
+extends TextureButton
 
 var dragging: bool = false
 var offset: Vector2 = Vector2.ZERO
@@ -6,7 +6,7 @@ var offset: Vector2 = Vector2.ZERO
 @export var PADDING: Vector2 = Vector2(30,30)
 
 var screen_size: Vector2 = Vector2.ZERO
-var screen_bounds: Array[Vector2];
+var screen_bounds: Array[Vector2]
 
 var parent: Node
 
@@ -24,10 +24,12 @@ func _on_button_down() -> void:
 	dragging = true
 	offset = parent.get_global_mouse_position() - parent.global_position
 	parent.get_parent().move_child(parent, -1)
+	Global.held = parent
 
 
 func _on_button_up() -> void:
 	dragging = false
+	Global.held = null
 
 func on_viewport_changed() -> void:
 	# hardcoded garbage

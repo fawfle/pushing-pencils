@@ -1,9 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bucktk2vvr5w4"]
+[gd_scene load_steps=6 format=3 uid="uid://bucktk2vvr5w4"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_nkp2l"]
-[ext_resource type="Texture2D" uid="uid://bvitllx8k16e8" path="res://Sprites/document-0001.png" id="2_dqu1v"]
+[ext_resource type="Script" uid="uid://ddmn6evynvp2y" path="res://objects/document.gd" id="1_qw4ch"]
+[ext_resource type="Texture2D" uid="uid://cw1ixp574yn21" path="res://Sprites/document-0001.png" id="2_dqu1v"]
+[ext_resource type="PackedScene" uid="uid://dagxb0dhvb3ub" path="res://objects/text_box.tscn" id="3_dqu1v"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="4_bjm35"]
 
 [node name="Document" type="Node2D"]
+script = ExtResource("1_qw4ch")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_dqu1v")
+
+[node name="TextBox" parent="." instance=ExtResource("3_dqu1v")]
+modulate = Color(0.40824404, 0.40824407, 0.40824404, 1)
+offset_left = -43.0
+offset_top = -1.0
+offset_right = 43.0
+offset_bottom = 22.0
+text = "fgfg"
+max_length = 14
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_nkp2l")]
 offset_left = -48.0
@@ -11,5 +27,11 @@ offset_top = -64.0
 offset_right = 48.0
 offset_bottom = 64.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_dqu1v")
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.30624497, 0.3062449, 0.30624497, 1)
+offset_left = -24.0
+offset_top = -47.0
+offset_right = 16.0
+offset_bottom = -36.0
+theme = ExtResource("4_bjm35")
+text = "XXX-XXX"
