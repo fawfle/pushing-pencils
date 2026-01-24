@@ -1,11 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=8 format=3 uid="uid://dscp53ky6w75x"]
 
+[ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="PackedScene" uid="uid://c5upyb7ej0uvu" path="res://objects/file.tscn" id="1_w5aja"]
+[ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
+[ext_resource type="Texture2D" uid="uid://dl16j4by38qk0" path="res://Sprites/Fax.png" id="4_bw6k5"]
+
+[sub_resource type="Resource" id="Resource_bw6k5"]
+script = ExtResource("2_ycayy")
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
+[sub_resource type="Gradient" id="Gradient_bw6k5"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_y3j0m"]
+gradient = SubResource("Gradient_bw6k5")
 
 [node name="Game Scene" type="Node2D"]
+script = ExtResource("1_onqr8")
+events = Array[ExtResource("2_ycayy")]([SubResource("Resource_bw6k5")])
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)
+z_index = -10
+position = Vector2(0.49999428, 0.5)
+scale = Vector2(1.1210938, 161)
+texture = SubResource("GradientTexture1D_y3j0m")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
 
 [node name="File" parent="." instance=ExtResource("1_w5aja")]
 position = Vector2(-61, 6)
+
+[node name="Fax" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(80, -2)
+texture = ExtResource("4_bw6k5")
