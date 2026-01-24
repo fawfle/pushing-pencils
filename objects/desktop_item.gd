@@ -23,6 +23,7 @@ func _process(_delta: float) -> void:
 func _on_button_down() -> void:
 	dragging = true
 	offset = parent.get_global_mouse_position() - parent.global_position
+	parent.get_parent().move_child(parent, -1)
 
 
 func _on_button_up() -> void:
