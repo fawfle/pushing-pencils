@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://befet5682l727"]
+
+[ext_resource type="Script" uid="uid://cxjok6v1oskwu" path="res://scenes/button.gd" id="1_l6cm7"]
+
+[node name="Main Menu" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+offset_left = 763.0
+offset_top = 421.0
+offset_right = 931.0
+offset_bottom = 456.0
+text = "Get To Work"
+script = ExtResource("1_l6cm7")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
