@@ -1,4 +1,3 @@
-class_name Rules
 extends Node
 
 enum ID {
