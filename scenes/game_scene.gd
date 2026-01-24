@@ -1,7 +1,5 @@
 extends Node2D
 
-var current_rule: Rules.ID = Rules
-
 var completed: int = 0
 var quota: int = 1
 
