@@ -3,7 +3,7 @@ extends Button
 var dragging: bool = false
 var offset: Vector2 = Vector2.ZERO
 
-const PADDING: Vector2 = Vector2(10,10)
+const PADDING: Vector2 = Vector2(5,5)
 
 var screen_size: Vector2 = Vector2.ZERO
 
