@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://l1vf1rrqu0gy"]
+
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_f8gd0"]
+[ext_resource type="Texture2D" uid="uid://bbwywhma4d7s2" path="res://Sprites/Memo.png" id="2_bn23k"]
+
+[node name="Memo" type="Node2D"]
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_f8gd0")]
+offset_left = -33.0
+offset_top = -49.0
+offset_right = 33.0
+offset_bottom = 48.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bn23k")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.20332181, 0.20332184, 0.20332178, 1)
+offset_left = -32.0
+offset_top = -2.0
+offset_right = 32.0
+offset_bottom = 49.0
+text = "Sample text"
+autowrap_mode = 3

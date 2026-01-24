@@ -1,15 +1,5 @@
 extends Node
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 var word_list: PackedStringArray
 
 func load_wordlist() -> void:
@@ -35,4 +25,6 @@ func generate_sentence(word_count: int) -> String:
 	return sentence
 	
 func generate_doc_id() -> String:
-	return NanoIDGenerator.new().generate(8)
+	var generator = NanoIDGenerator.new("ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789")
+	
+	return generator.generate(3) + "-" + generator.generate(3)

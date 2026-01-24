@@ -1,14 +1,15 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5upyb7ej0uvu"]
 
-[ext_resource type="Texture2D" path="res://Sprites/file-0001.png" id="1_44avg"]
+[ext_resource type="Script" uid="uid://d4kifrnmkpgym" path="res://objects/file.gd" id="1_1al65"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_lsqxa"]
+[ext_resource type="Texture2D" uid="uid://c6v8v0e6368a0" path="res://Sprites/files/file-0001.png" id="2_1al65"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="2_v8euo"]
-[ext_resource type="PackedScene" uid="uid://dagxb0dhvb3ub" path="res://objects/text_box.tscn" id="3_44avg"]
 
 [node name="File" type="Node2D"]
+script = ExtResource("1_1al65")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_44avg")
+texture = ExtResource("2_1al65")
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0.45093584, 0.45093584, 0.45093584, 1)
@@ -17,16 +18,10 @@ offset_top = -60.0
 offset_right = 13.0
 offset_bottom = -49.0
 theme = ExtResource("2_v8euo")
-text = "AXB-144"
+text = "XXX-XXX"
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_lsqxa")]
 offset_left = -48.0
 offset_top = -64.0
 offset_right = 48.0
 offset_bottom = 64.0
-
-[node name="TextBox" parent="." instance=ExtResource("3_44avg")]
-offset_left = -41.0
-offset_top = 1.0
-offset_right = 23.0
-offset_bottom = 26.0

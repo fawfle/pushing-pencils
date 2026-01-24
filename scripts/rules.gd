@@ -1,34 +1,30 @@
-class_name Rules
 extends Node
 
 enum ID {
+	NONE,
 	DOUBLE_SPACE,
 	ONLY_FIRST_13_LETTERS
 }
 
-class Rule:
-	var id: ID
-	var name: String
-	var active: bool
-	
-	func _init(i, n):
-		id = i
-		name = n
+func check_rules(rules: Array[ID], source: String, input: String) -> bool:
+	var new_source: String = source
+	for rule in rules:
+		new_source = apply(rule, new_source)
 		
-	func activate():
-		active=true
+	return new_source == input
+
 		
-	func check(text: String) -> bool:
-		match id:
-			ID.DOUBLE_SPACE:
-				return text.count(" ") * 2 == text.count("  ")
-			ID.ONLY_FIRST_13_LETTERS:
-				for c in ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']:
-					if text.to_upper().contains(c):
-						return false
-		return true
+func apply(id: ID, source: String) -> String:
+	match id:
+		ID.DOUBLE_SPACE:
+			return source.replace(" ", "  ")
+		ID.ONLY_FIRST_13_LETTERS:
+			var regex = RegEx.new()
+			regex.compile("/[n-zN-z]/")
+			return regex.sub(source, "")
+	return source
 	
-var rules = [
-	Rule.new(ID.DOUBLE_SPACE, "double space"),
-	Rule.new(ID.ONLY_FIRST_13_LETTERS, "no letters in the last half of the alphabet")
-]
+var rule_descriptions = {
+	ID.DOUBLE_SPACE: "double space",
+	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet"
+}
