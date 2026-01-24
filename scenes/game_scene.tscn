@@ -22,8 +22,8 @@ events = Array[ExtResource("2_ycayy")]([SubResource("Resource_bw6k5")])
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)
 z_index = -10
-position = Vector2(0.49999428, 0.5)
-scale = Vector2(1.1210938, 161)
+position = Vector2(-1.257658e-05, 1.4901161e-06)
+scale = Vector2(1.1249999, 162)
 texture = SubResource("GradientTexture1D_y3j0m")
 
 [node name="Camera2D" type="Camera2D" parent="."]

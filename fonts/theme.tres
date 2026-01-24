@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dv3dy2j4wgcqr"]
+
+[ext_resource type="FontFile" uid="uid://dym5rfgpvcxgj" path="res://fonts/PixeloidSans-lxa3y.ttf" id="1_513cy"]
+
+[resource]
+default_font = ExtResource("1_513cy")
+default_font_size = 9
