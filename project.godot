@@ -23,6 +23,11 @@ Global="*res://scripts/global.gd"
 
 window/size/resizable=false
 
+[gui]
+
+theme/custom="uid://dv3dy2j4wgcqr"
+theme/custom_font="uid://dym5rfgpvcxgj"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
