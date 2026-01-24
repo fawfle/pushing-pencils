@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dagxb0dhvb3ub"]
+
+[sub_resource type="Theme" id="Theme_kt6pj"]
+default_font_size = 12
+
+[node name="TextBox" type="LineEdit"]
+self_modulate = Color(1, 1, 1, 0.32941177)
+offset_right = 69.0
+offset_bottom = 30.0
+theme = SubResource("Theme_kt6pj")
+context_menu_enabled = false
+emoji_menu_enabled = false
+virtual_keyboard_enabled = false
+virtual_keyboard_show_on_focus = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
