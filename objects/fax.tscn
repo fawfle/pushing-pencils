@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://da7xg2xdpst0g"]
-
-[ext_resource type="Texture2D" uid="uid://dl16j4by38qk0" path="res://Sprites/Fax.png" id="1_jtkfa"]
-
-[node name="Node2D" type="Sprite2D"]
-texture = ExtResource("1_jtkfa")

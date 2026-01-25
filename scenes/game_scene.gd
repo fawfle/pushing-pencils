@@ -58,6 +58,6 @@ func add_file_and_document():
 	while (!meets_criteria):
 		current_text = Utils.generate_sentence(3)
 		var solution: String = Rules.apply_multiple(current_rules, current_text)
-		meets_criteria = solution != "" and current_text.length() < MAX_LENGTH and solution.length() < MAX_LENGTH
+		meets_criteria = solution != "" and solution.length() < MAX_LENGTH
 	
 	current_file.set_text(current_text)
