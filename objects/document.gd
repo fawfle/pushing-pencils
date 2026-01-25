@@ -95,7 +95,7 @@ func play_pencil_sound():
 	var start_time = pencil_sound.stream.get_length() * randf_range(0, 0.8)
 	pencil_sound.play(start_time)
 	
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.1).timeout
 	
 	pencil_sound.stop()
 	
