@@ -30,6 +30,7 @@ func _on_button_down() -> void:
 func _on_button_up() -> void:
 	dragging = false
 	Global.held = null
+	Global.item_dropped.emit(parent)
 
 func on_viewport_changed() -> void:
 	# hardcoded garbage
@@ -37,3 +38,7 @@ func on_viewport_changed() -> void:
 	screen_size /= 4; # scale of camera
 	
 	screen_bounds = [-screen_size / 2 + PADDING, screen_size / 2 - PADDING]
+
+func play_enter_animation():
+	# TODO
+	parent.global_position = screen_bounds[0]
