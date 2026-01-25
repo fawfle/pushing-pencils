@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://nc2r08tpfmn7"]
+
+[ext_resource type="PackedScene" uid="uid://ci0qbrhxj7pm4" path="res://3D/office_door/scene.gltf" id="1_kampy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kampy"]
+cull_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_d62bs"]
+material = SubResource("StandardMaterial3D_kampy")
+size = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ictfo"]
+cull_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qwwn3"]
+material = SubResource("StandardMaterial3D_ictfo")
+size = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ptksc"]
+cull_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2m0sy"]
+material = SubResource("StandardMaterial3D_ptksc")
+size = Vector2(0.5, 0.4)
+
+[node name="Door" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.6619084, 0.1983383, 0.047016293)
+mesh = SubResource("PlaneMesh_d62bs")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_kampy")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.65230465, 0.198, 0.047)
+mesh = SubResource("PlaneMesh_qwwn3")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.498, 0.047)
+mesh = SubResource("PlaneMesh_2m0sy")
+skeleton = NodePath("../MeshInstance3D2")

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Office Door
+* source:	https://sketchfab.com/3d-models/office-door-18c91651e575451bb5548c563554be82
+* author:	Jérémy Faivre (https://sketchfab.com/jeremyfaivre)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
