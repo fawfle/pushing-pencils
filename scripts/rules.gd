@@ -2,8 +2,11 @@ extends Node
 
 enum ID {
 	NONE,
-	DOUBLE_SPACE,
-	ONLY_FIRST_13_LETTERS
+	HYPHEN_SPACE,
+	ONLY_FIRST_13_LETTERS,
+	ALPHANUMERIC,
+	REVERSE_EACH_WORD,
+	NO_VOWELS,
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
@@ -18,15 +21,35 @@ func apply_multiple(rules: Array[ID], source: String) -> String:
 
 func apply(id: ID, source: String) -> String:
 	match id:
-		ID.DOUBLE_SPACE:
-			return source.replace(" ", "  ")
+		ID.HYPHEN_SPACE:
+			return source.replace(" ", "-")
 		ID.ONLY_FIRST_13_LETTERS:
 			var regex = RegEx.new()
-			regex.compile("/[n-zN-z]/")
+			regex.compile("[n-zN-z]")
 			return regex.sub(source, "")
-	return source
+		ID.ALPHANUMERIC:
+			var trans = ""
+			for c in source.to_lower():
+				var code = c.unicode_at(0) -96
+				if code > 25:
+					trans+= c
+				trans += code
+			return trans
+		ID.REVERSE_EACH_WORD:
+			var trans = []
+			for word in source.split( "-" if source.contains("-") else  " "):
+				trans.append(word.reverse())
+			return "".join(trans)
+		ID.NO_VOWELS:
+			var regex = RegEx.new()
+			regex.compile("[aeiou]")
+			return regex.sub(source, "")
+	return "broked"
 	
 var rule_descriptions = {
-	ID.DOUBLE_SPACE: "double space",
-	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet"
+	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
+	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet",
+	ID.ALPHANUMERIC: "transform all letters into their position in the alphabet (a->1)",
+	ID.REVERSE_EACH_WORD: "flip each word",
+	ID.NO_VOWELS: "vowels take up too much space, drop them for efficiency"
 }
