@@ -2,7 +2,6 @@ class_name Document extends Node2D
 
 @onready var label: Label = $Label
 @onready var text_box: LineEdit = $TextBox
-@onready var area: Area2D = $Area2D
 
 var overlapping_pencil: bool = false
 

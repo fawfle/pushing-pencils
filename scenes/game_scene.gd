@@ -7,6 +7,9 @@ var completed: int = 0
 var quota: int = 1
 
 var current_rules: Array[Rules.ID] = [Rules.ID.NONE]
+var current_text: String
+
+const MAX_LENGTH: int = 14
 
 @export var events: Array[Event]
 
@@ -49,3 +52,12 @@ func add_file_and_document():
 	var id: String = Utils.generate_doc_id()
 	current_file.set_id(id)
 	current_document.set_id(id)
+	
+	var meets_criteria: bool = false
+	
+	while (!meets_criteria):
+		current_text = Utils.generate_sentence(3)
+		var solution: String = Rules.apply_multiple(current_rules, current_text)
+		meets_criteria = solution != "" and solution.length() < MAX_LENGTH
+	
+	current_file.set_text(current_text)
