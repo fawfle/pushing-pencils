@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5pfv78uttqqi"]
+
+[ext_resource type="Script" uid="uid://do0bl2q8f2ove" path="res://objects/book.gd" id="1_hxkwa"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_osdgu"]
+[ext_resource type="Texture2D" uid="uid://dk7v65uguxa1c" path="res://Sprites/book-0001.png" id="2_hxkwa"]
+[ext_resource type="Texture2D" uid="uid://14o8llub3pla" path="res://Sprites/pages/page-0001.png" id="4_er0uf"]
+[ext_resource type="Texture2D" uid="uid://7axm1o3838u8" path="res://Sprites/pages/page-0002.png" id="5_3it06"]
+
+[node name="Book" type="Node2D"]
+script = ExtResource("1_hxkwa")
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_osdgu")]
+offset_left = -40.0
+offset_top = -32.0
+offset_right = 40.0
+offset_bottom = 25.0
+
+[node name="Book" type="Sprite2D" parent="."]
+texture = ExtResource("2_hxkwa")
+
+[node name="Pages" type="Node2D" parent="."]
+
+[node name="Page0001" type="Sprite2D" parent="Pages"]
+texture = ExtResource("4_er0uf")
+
+[node name="Page0002" type="Sprite2D" parent="Pages"]
+rotation = 3.1415925
+scale = Vector2(1, -1)
+texture = ExtResource("5_3it06")
+
+[node name="Page0003" type="Sprite2D" parent="Pages"]
+visible = false
+texture = ExtResource("5_3it06")
+
+[node name="Page0004" type="Sprite2D" parent="Pages"]
+visible = false
+scale = Vector2(-1, 1)
+texture = ExtResource("4_er0uf")
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = 25.0
+offset_top = 9.0
+offset_right = 40.0
+offset_bottom = 25.0
+
+[node name="Button2" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -41.0
+offset_top = 9.0
+offset_right = -24.0
+offset_bottom = 25.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
