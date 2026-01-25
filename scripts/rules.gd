@@ -56,7 +56,7 @@ func apply(id: ID, source: String) -> String:
 			return " ".join(trans)
 		ID.NO_VOWELS:
 			var regex = RegEx.new()
-			regex.compile("[aeiouAEIOU]")
+			regex.compile("[aeiouyAEIOUY]")
 			return regex.sub(source, "", true)
 	return source
 	
