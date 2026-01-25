@@ -1,13 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=9 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
 [ext_resource type="Texture2D" uid="uid://dl16j4by38qk0" path="res://Sprites/Fax.png" id="4_bw6k5"]
+[ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
 
 [sub_resource type="Resource" id="Resource_bw6k5"]
 script = ExtResource("2_ycayy")
+on_completed = 5
 rules = Array[int]([0])
+update_quota = true
+new_quota = 10
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Gradient" id="Gradient_bw6k5"]
@@ -36,3 +40,6 @@ position = Vector2(80, 22)
 texture = ExtResource("4_bw6k5")
 
 [node name="Pencil" parent="." instance=ExtResource("5_y3j0m")]
+
+[node name="Pen" parent="." instance=ExtResource("5_rurhu")]
+position = Vector2(-52, 1)

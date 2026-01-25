@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://f0i8lgrdur37"]
+
+[ext_resource type="Texture2D" uid="uid://bp4gtnt2a4hri" path="res://Sprites/Pen.png" id="1_b64m8"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_pb18i"]
+
+[node name="Pen" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_b64m8")
+
+[node name="DesktopItem" parent="." instance=ExtResource("2_pb18i")]
+offset_left = -2.0
+offset_top = -47.0
+offset_right = 2.0
+offset_bottom = 29.0
+PADDING = Vector2(30, 5)

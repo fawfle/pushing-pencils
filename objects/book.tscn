@@ -15,6 +15,7 @@ offset_left = -40.0
 offset_top = -32.0
 offset_right = 40.0
 offset_bottom = 25.0
+PADDING = Vector2(15, 15)
 
 [node name="Book" type="Sprite2D" parent="."]
 texture = ExtResource("2_hxkwa")
