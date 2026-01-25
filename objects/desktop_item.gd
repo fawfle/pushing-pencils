@@ -10,6 +10,11 @@ var screen_bounds: Array[Vector2]
 
 var parent: Node
 
+# TODO add audio
+var click_sounds: Array[AudioStreamPlayer2D]
+var slide_sounds: Array[AudioStreamPlayer2D]
+var drop_sounds: Array[AudioStreamPlayer2D]
+
 func _ready() -> void:
 	parent = get_parent()
 	update_viewport()
