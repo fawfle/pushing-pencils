@@ -3,8 +3,9 @@ extends Node
 var word_list: PackedStringArray
 
 func load_wordlist() -> void:
-	var file_path = "res://wordlist.txt"
+	var file_path = "res://words.txt"
 	if FileAccess.file_exists(file_path):
+		print("accesss")
 		var file = FileAccess.open(file_path, FileAccess.READ)
 		var content = file.get_as_text()
 		# Splits by newline and removes empty entries
@@ -17,8 +18,9 @@ func generate_sentence(word_count: int) -> String:
 		load_wordlist()
 	
 	var sentence = ""
+	
 	for i in range(word_count):
-		if i!= 0:
+		if i != 0:
 			sentence += " "
 		sentence += word_list[randi_range(0, word_list.size() - 1)]
 	

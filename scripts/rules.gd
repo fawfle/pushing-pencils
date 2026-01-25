@@ -7,13 +7,15 @@ enum ID {
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
+	return apply_multiple(rules, source) == input
+
+func apply_multiple(rules: Array[ID], source: String) -> String:
 	var new_source: String = source
 	for rule in rules:
 		new_source = apply(rule, new_source)
 		
-	return new_source == input
+	return new_source
 
-		
 func apply(id: ID, source: String) -> String:
 	match id:
 		ID.DOUBLE_SPACE:

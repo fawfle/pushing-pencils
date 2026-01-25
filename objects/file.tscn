@@ -11,7 +11,7 @@ script = ExtResource("1_1al65")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_1al65")
 
-[node name="Label" type="Label" parent="."]
+[node name="IDLabel" type="Label" parent="."]
 modulate = Color(0.45093584, 0.45093584, 0.45093584, 1)
 offset_left = -27.0
 offset_top = -60.0
@@ -25,3 +25,12 @@ offset_left = -48.0
 offset_top = -64.0
 offset_right = 48.0
 offset_bottom = 64.0
+
+[node name="TextLabel" type="Label" parent="."]
+modulate = Color(0.45093584, 0.45093584, 0.45093584, 1)
+offset_left = -42.0
+offset_top = 1.0
+offset_right = 42.0
+offset_bottom = 26.0
+theme = ExtResource("2_v8euo")
+text = "Sample Text Here"

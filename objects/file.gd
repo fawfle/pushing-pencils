@@ -1,12 +1,13 @@
 class_name File extends Node2D
 
-@onready var label: Label = $Label
-
-func _ready() -> void:
-	label.text = Utils.generate_doc_id()
+@onready var id_label: Label = $IDLabel
+@onready var text_label: Label = $TextLabel
 
 func set_id(id: String) -> void:
-	label.text = id
+	id_label.text = id
 
 func get_id() -> String:
-	return label.text
+	return id_label.text
+
+func set_text(text: String) -> void:
+	text_label.text = text
