@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5upyb7ej0uvu"]
+[gd_scene load_steps=6 format=3 uid="uid://c5upyb7ej0uvu"]
 
 [ext_resource type="Script" uid="uid://d4kifrnmkpgym" path="res://objects/file.gd" id="1_1al65"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_lsqxa"]
 [ext_resource type="Texture2D" uid="uid://c6v8v0e6368a0" path="res://Sprites/files/file-0001.png" id="2_1al65"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="2_v8euo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v8euo"]
+size = Vector2(96, 128)
 
 [node name="File" type="Node2D"]
 script = ExtResource("1_1al65")
@@ -34,3 +37,17 @@ offset_right = 42.0
 offset_bottom = 26.0
 theme = ExtResource("2_v8euo")
 text = "Sample Text Here"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_v8euo")
+
+[node name="Shape1" type="Sprite2D" parent="."]
+position = Vector2(-30, 36)
+
+[node name="Shape2" type="Sprite2D" parent="."]
+position = Vector2(0, 36)
+
+[node name="Shape3" type="Sprite2D" parent="."]
+position = Vector2(30, 36)

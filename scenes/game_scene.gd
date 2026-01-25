@@ -4,31 +4,51 @@ var file_scene: PackedScene = preload("res://objects/file.tscn")
 var document_scene: PackedScene = preload("res://objects/document.tscn")
 var memo_scene: PackedScene = preload("res://objects/memo.tscn")
 
-var completed: int = 0
+@export var completed: int = 0
 var quota: int = 1
 
-var current_rules: Array[Rules.ID] = [Rules.ID.ANY]
+var round_type: ROUND_TYPE = ROUND_TYPE.DOC_FILE
+
+var current_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 var current_text: String
 var output_text: String
+
+# TODO: Company WARNINGS instead of memo
+## queueish of sorts where events will add/set rejection_memo_text on activating. Could be an array later?
+var rejection_memo_text: String
 
 const MAX_LENGTH: int = 14
 
 @export var events: Array[Event]
 
-var current_file: Node
-var current_document: Node
+var current_file: FileItem
+var current_document: Document
 
 enum ROUND_TYPE {
 	DOC_FILE, # classic
 	DOC_ONLY, # only a doc, mainly for tutorial
 }
 
+## Special events are enum flags for special function calls like the shredder storm
+enum SPECIAL_EVENTS {
+	SHREDDER_STORM
+}
+
+var stamp_texture: Texture2D = load("res://Sprites/Stamp.png")
+
+var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
+	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png")
+}
+
 @onready var screen_size = get_viewport_rect().size / 4
 
 func _ready() -> void:
+	Utils.load_wordlist()
+	
 	Global.document_submitted.connect(on_document_submitted)
+	Global.item_submitted.connect(on_item_submitted)
 	check_events()
-	add_file_and_document()
+	begin_round()
 
 func check_events() -> void:
 	for event in events:
@@ -47,30 +67,65 @@ func run_event(event: Event):
 		play_enter_animation(memo, 60)
 		memo.set_text(event.memo_text)
 	
+	rejection_memo_text = event.rejection_memo_text
+	
 	if event.update_rules:
 		current_rules = event.rules
 	
 	if event.new_quota <= quota:
 		quota = event.new_quota
+	
+	if event.change_round_type:
+		round_type = event.round_type
 
 func on_document_submitted(input: String):
+	remove_child(current_document)
 	print("input: " + input)
 	print("expected output: " + output_text)
-	if output_text == input:
+	if check_rules(input):
 		completed += 1;
+		
+		await get_tree().create_timer(0.5).timeout
+		
 		check_events()
 		Global.document_completed.emit()
 		current_document.queue_free()
-		add_file_and_document()
+		begin_round()
 	else:
-		play_stamp_animation()
+		if rejection_memo_text != "":
+			var memo: Memo = memo_scene.instantiate()
+			add_child(memo)
+			memo.set_text(rejection_memo_text)
+			play_enter_animation(memo, 100)
+			rejection_memo_text = ""
+		
+		current_document.handle_reset()
+		play_stamp_animation(current_document)
+
+func check_rules(input: String) -> bool:
+	if current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen:
+		return false
+	if current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil:
+		return false
+	
+	if not Rules.check_rules(current_rules, current_text, input):
+		return false
+	
+	return true
 
 func add_file():
 	current_document = document_scene.instantiate()
 	add_child(current_file)
 	play_enter_animation(current_document)
 
-func add_file_and_document():
+func begin_round():
+	match round_type:
+		ROUND_TYPE.DOC_FILE:
+			begin_file_doc_round()
+		ROUND_TYPE.DOC_ONLY:
+			begin_doc_only_round()
+
+func begin_file_doc_round():
 	current_file = file_scene.instantiate()
 	current_document = document_scene.instantiate()
 	add_child(current_file)
@@ -83,6 +138,8 @@ func add_file_and_document():
 	current_file.set_id(id)
 	current_document.set_id(id)
 	
+	set_file_shapes()
+	
 	var meets_criteria: bool = false
 	
 	while (!meets_criteria):
@@ -92,15 +149,40 @@ func add_file_and_document():
 	
 	current_file.set_text(current_text)
 
-func play_stamp_animation():
-	remove_child(current_document)
-	
-	await get_tree().create_timer(0.4).timeout
-	
+func begin_doc_only_round():
+	current_document = document_scene.instantiate()
 	add_child(current_document)
 	play_enter_animation(current_document)
 	
-	current_document.add_rejected_stamp()
+	current_document.set_id(Utils.generate_doc_id())
+
+## setting file shapes to match round rules. "Rule Changes" just mean two RULE.IDs correspond to the same shape and we discard the old one
+# TODO decide what shapes mean
+func set_file_shapes():
+	for rule in current_rules:
+		if rule_shape_dictionary.has(rule):
+			current_file.add_shape(rule_shape_dictionary[rule])
+
+func play_stamp_animation(item: Node):	
+	if get_children().has(item):
+		print("has child")
+		remove_child(item)
+	await get_tree().create_timer(0.4).timeout
+	
+	add_child(item)
+	play_enter_animation(item)
+	
+	var stamp: Sprite2D = Sprite2D.new()
+	stamp.texture = stamp_texture
+	stamp.self_modulate.a = 0.8
+	
+	stamp.rotate(randf_range(0, 2 * PI))
+	
+	var sprite: Sprite2D = item.get_sprite()
+	# set clip children to true :)
+	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+	sprite.add_child(stamp)
+	
 
 # set top deferred to make special objects appear above non special
 func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
@@ -126,3 +208,13 @@ func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
 		t = 1 - (1 - t) * (1 - t) # ease out
 		node.global_position = lerp(start_position, end_position, t)
 		await get_tree().process_frame
+
+func on_item_submitted(item: Node2D):
+	if item is Memo:
+		play_stamp_animation(item)
+	if item is FileItem:
+		play_stamp_animation(item)
+
+# TODO
+func shredder_storm():
+	pass

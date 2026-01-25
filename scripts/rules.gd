@@ -1,7 +1,10 @@
 extends Node
 
 enum ID {
-	ANY,
+	ANYTHING,
+	ANYTHING_NOT_EMPTY,
+	PENCIL_ONLY,
+	PEN_ONLY,
 	MATCH,
 	HYPHEN_SPACE,
 	ONLY_FIRST_13_LETTERS,
@@ -11,8 +14,11 @@ enum ID {
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
-	if len(rules) == 1 and rules[0] == ID.ANY:
-		return true
+	if len(rules) == 1:
+		if rules[0] == ID.ANYTHING:
+			return true
+		if rules[0] == ID.ANYTHING_NOT_EMPTY:
+			return input != ""
 	
 	return apply_multiple(rules, source) == input
 

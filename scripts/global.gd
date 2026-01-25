@@ -1,5 +1,8 @@
 extends Node
 
+## any item
+signal item_submitted(node: Node)
+## document with input
 signal document_submitted(input: String)
 signal document_completed()
 

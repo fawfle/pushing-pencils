@@ -1,4 +1,4 @@
-extends TextureButton
+class_name DesktopItem extends TextureButton
 
 var dragging: bool = false
 var offset: Vector2 = Vector2.ZERO

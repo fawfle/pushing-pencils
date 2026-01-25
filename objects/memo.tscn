@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dhwvlir4sb8rl"]
+[gd_scene load_steps=5 format=3 uid="uid://dhwvlir4sb8rl"]
 
 [ext_resource type="Script" uid="uid://bnsl856xkxxf0" path="res://objects/memo.gd" id="1_bn23k"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_f8gd0"]
 [ext_resource type="Texture2D" uid="uid://cclj1uq5n6paj" path="res://Sprites/Memo.png" id="2_bn23k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bn23k"]
+size = Vector2(66, 108)
 
 [node name="Memo" type="Node2D"]
 script = ExtResource("1_bn23k")
@@ -24,3 +27,8 @@ offset_right = 31.0
 offset_bottom = 49.0
 text = "Sample text"
 autowrap_mode = 3
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_bn23k")

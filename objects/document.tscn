@@ -46,5 +46,6 @@ offset_bottom = -36.0
 theme = ExtResource("4_bjm35")
 text = "XXX-XXX"
 
+[connection signal="text_changed" from="TextBox" to="." method="_on_text_box_text_changed"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
