@@ -78,7 +78,6 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
-completed = 5
 events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp")])
 
 [node name="Background" type="Sprite2D" parent="."]
