@@ -40,6 +40,8 @@ enum SPECIAL_EVENTS {
 
 var stamp_texture: Texture2D = load("res://Sprites/Stamp.png")
 
+var book_scene: PackedScene = preload("res://objects/book.tscn")
+
 var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png"),
 	Rules.ID.NO_VOWELS: load("res://Sprites/shapes/shape-0001.png"),
@@ -73,6 +75,10 @@ func _ready() -> void:
 	Global.item_submitted.connect(on_item_submitted)
 	check_events()
 	begin_round()
+	if completed > 3:
+		var book = book_scene.instantiate()
+		add_child(book)
+		play_enter_animation(book)
 
 func check_events() -> void:
 	for event in events:
