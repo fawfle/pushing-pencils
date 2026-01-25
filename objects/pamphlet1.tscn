@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxmyie6bp4v16"]
+
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_1nsjw"]
+[ext_resource type="Texture2D" uid="uid://bykvkaqq77070" path="res://Sprites/Pamphlet-0001.png" id="2_hsgw3"]
+
+[node name="Pamphlet1" type="Node2D"]
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_1nsjw")]
+offset_left = -35.0
+offset_top = -64.0
+offset_right = 29.0
+offset_bottom = 64.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_hsgw3")

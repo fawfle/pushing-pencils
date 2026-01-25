@@ -40,3 +40,9 @@ position = Vector2(-61, 6)
 z_index = -5
 position = Vector2(80, 22)
 texture = ExtResource("4_bw6k5")
+
+[node name="File2" parent="." instance=ExtResource("1_w5aja")]
+position = Vector2(-122, 12)
+
+[node name="File3" parent="." instance=ExtResource("1_w5aja")]
+position = Vector2(-183, 18)
