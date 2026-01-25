@@ -4,8 +4,10 @@
 
 [node name="DesktopItem" type="TextureButton"]
 self_modulate = Color(1, 1, 1, 0)
-offset_right = 10.0
-offset_bottom = 10.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
 script = ExtResource("1_3pkbw")
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
