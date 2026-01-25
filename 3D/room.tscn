@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c56fq54yty1te"]
+
+[ext_resource type="PackedScene" uid="uid://c82g47qfxdmtx" path="res://3D/ceiling.tscn" id="1_23ldi"]
+[ext_resource type="PackedScene" uid="uid://c4irk3l7xkxyk" path="res://3D/floor.tscn" id="2_xr1h3"]
+[ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="3_8kajm"]
+
+[node name="Room" type="Node3D"]
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="Ceiling" parent="Walls" instance=ExtResource("1_23ldi")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.76, 0)
+
+[node name="Floor" parent="Walls" instance=ExtResource("2_xr1h3")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+
+[node name="Wall" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.5)
+
+[node name="Wall4" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.38, 0.5)
+
+[node name="Wall3" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.5, 0.38, 0)
+
+[node name="Wall2" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.5, 0.38, 0)

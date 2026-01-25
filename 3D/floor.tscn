@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4irk3l7xkxyk"]
+
+[ext_resource type="Texture2D" uid="uid://dttgo6bf7jd50" path="res://3D/carpet_floor_6-4K/4K-carpet_floor_6_height.jpg" id="1_a3o6r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_02vjj"]
+albedo_texture = ExtResource("1_a3o6r")
+uv1_scale = Vector3(3.02, 3.02, 3.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ohc5e"]
+material = SubResource("StandardMaterial3D_02vjj")
+
+[node name="Floor" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_ohc5e")

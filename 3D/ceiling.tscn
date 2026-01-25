@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c82g47qfxdmtx"]
+
+[ext_resource type="Texture2D" uid="uid://bbhhflr5umweo" path="res://3D/OfficeCeiling005_4K-JPG/OfficeCeiling005_4K_Color.jpg" id="1_4d8cb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i1owv"]
+albedo_texture = ExtResource("1_4d8cb")
+uv1_scale = Vector3(0.43, 0.43, 0.43)
+uv1_offset = Vector3(0.13, 0.64, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tnpa4"]
+material = SubResource("StandardMaterial3D_i1owv")
+
+[node name="Ceiling" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0007824898, -0.0019037127, 0.0018923283)
+mesh = SubResource("QuadMesh_tnpa4")
