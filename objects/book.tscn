@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5pfv78uttqqi"]
+[gd_scene load_steps=7 format=3 uid="uid://c5pfv78uttqqi"]
 
 [ext_resource type="Script" uid="uid://do0bl2q8f2ove" path="res://objects/book.gd" id="1_hxkwa"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_osdgu"]
 [ext_resource type="Texture2D" uid="uid://dk7v65uguxa1c" path="res://Sprites/book-0001.png" id="2_hxkwa"]
 [ext_resource type="Texture2D" uid="uid://14o8llub3pla" path="res://Sprites/pages/page-0001.png" id="4_er0uf"]
 [ext_resource type="Texture2D" uid="uid://7axm1o3838u8" path="res://Sprites/pages/page-0002.png" id="5_3it06"]
+[ext_resource type="AudioStream" uid="uid://bqgye0qq50anf" path="res://sounds/paper-turn-40077.mp3" id="6_3it06"]
 
 [node name="Book" type="Node2D"]
 script = ExtResource("1_hxkwa")
@@ -50,6 +51,9 @@ offset_left = -41.0
 offset_top = 9.0
 offset_right = -24.0
 offset_bottom = 25.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_3it06")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
