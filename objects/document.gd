@@ -70,7 +70,7 @@ func get_sprite() -> Sprite2D:
 
 ## for handling fail behavior based on pen/pencil
 func handle_reset():
-	text_box.text = ""
+	if (used_pen): text_box.text = ""
 	used_pen = false
 	used_pencil = false
 

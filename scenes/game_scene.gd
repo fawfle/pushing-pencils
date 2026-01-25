@@ -12,6 +12,7 @@ var round_type: ROUND_TYPE = ROUND_TYPE.DOC_FILE
 var current_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 var current_text: String
 var output_text: String
+var input: String
 
 # TODO:
 # possibly procedural rules/docs for certain spans as an option (i.e. pick random 5 accounting for mutual exclusivity)
@@ -40,7 +41,9 @@ enum SPECIAL_EVENTS {
 var stamp_texture: Texture2D = load("res://Sprites/Stamp.png")
 
 var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
-	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png")
+	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png"),
+	Rules.ID.NO_VOWELS: load("res://Sprites/shapes/shape-0001.png"),
+	Rules.ID.ONLY_FIRST_13_LETTERS: load("res://Sprites/shapes/shape-0003.png"),
 }
 
 class CustomRejection:
@@ -54,8 +57,11 @@ class CustomRejection:
 	
 ## rejections for specific failure states, meant to teach play
 var custom_rejections: Array[CustomRejection] = [
-	CustomRejection.new(func(): return (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
-	CustomRejection.new(func(): return (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional")
+	CustomRejection.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
+	
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional")
 ]
 
 @onready var screen_size = get_viewport_rect().size / 4
@@ -96,7 +102,8 @@ func run_event(event: Event):
 	if event.change_round_type:
 		round_type = event.round_type
 
-func on_document_submitted(input: String):
+func on_document_submitted(doc_input: String):
+	input = doc_input
 	remove_child(current_document)
 	print("input: " + input)
 	print("expected output: " + output_text)
@@ -117,7 +124,7 @@ func on_document_submitted(input: String):
 			play_enter_animation(memo, 100)
 			rejection_memo_text = ""
 		
-		handle_custom_rejections()
+		handle_custom_rejections(current_document)
 		
 		current_document.handle_reset()
 		play_stamp_animation(current_document)
@@ -234,18 +241,16 @@ func on_item_submitted(item: Node2D):
 	if item is FileItem:
 		play_stamp_animation(item)
 	
-	handle_custom_rejections()
+	handle_custom_rejections(item)
 
-func handle_custom_rejections():
+func handle_custom_rejections(item: Node2D):
 	for custom_rejection in custom_rejections:
-		print(custom_rejection.condition.call())
-		if not custom_rejection.activated and custom_rejection.condition.call():
-			print("yipp")
+		if not custom_rejection.activated and custom_rejection.condition.call(item):
 			var memo: Memo = memo_scene.instantiate()
 			add_child(memo)
 			memo.set_text(custom_rejection.text)
 			play_enter_animation(memo, 100)
-			custom_rejection.activated = false
+			custom_rejection.activated = true
 
 # TODO
 func shredder_storm():

@@ -1,18 +1,24 @@
 extends Node2D
 
+## pages of index 2i and 2i+1 are active
+var page_index: int = 0
+
+@onready var pages:  = ($Pages).get_children()
+
+func _ready() -> void:
+	set_pages(page_index, true)
+
+func _on_right_button_pressed() -> void:
+	set_pages(page_index, false)
+	page_index = max(page_index - 1, 0)
+	set_pages(page_index, true)
 
 
-func _on_button_pressed() -> void:
-	$Pages/Page0003.visible = true
-	$Pages/Page0004.visible = true
-	$Pages/Page0001.visible = false
-	$Pages/Page0002.visible = false
-	$AudioStreamPlayer2D.play()
+func _on_left_button_pressed() -> void:
+	set_pages(page_index, false)
+	page_index = min(page_index + 1, len(pages) / 2.0 - 1)
+	set_pages(page_index, true)
 
-
-func _on_button_2_pressed() -> void:
-	$Pages/Page0001.visible = true
-	$Pages/Page0002.visible = true
-	$Pages/Page0003.visible = false
-	$Pages/Page0004.visible = false
-	$AudioStreamPlayer2D.play()
+func set_pages(index: int, now_visible: bool) -> void:
+	pages[2 * index].visible = now_visible
+	pages[2 * index + 1].visible = now_visible
