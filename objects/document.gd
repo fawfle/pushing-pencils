@@ -4,6 +4,8 @@ class_name Document extends Node2D
 @onready var label: Label = $Label
 @onready var text_box: LineEdit = $TextBox
 
+@onready var pencil_sound: AudioStreamPlayer2D = $PencilWrite
+
 # var img = Image.load_from_file("res://Sprites/Stamp.png")
 # var image: ImageTexture = ImageTexture.create_from_image(img)
 # @export var stamp_image: Texture2D
@@ -78,6 +80,7 @@ func _on_text_box_text_changed(new_text: String) -> void:
 	# flag to reject used docs used with pencil
 	if instrument == Instrument.PENCIL and new_text.length() > previous_text.length():
 		used_pencil = true
+		if (new_text[new_text.length() - 1] != " "): play_pencil_sound()
 	
 	if instrument == Instrument.PEN and new_text.length() > previous_text.length():
 		used_pen = true
@@ -87,3 +90,12 @@ func _on_text_box_text_changed(new_text: String) -> void:
 		text_box.caret_column = text_box.text.length()
 	else:
 		previous_text = new_text
+
+func play_pencil_sound():
+	var start_time = pencil_sound.stream.get_length() * randf_range(0, 0.8)
+	pencil_sound.play(start_time)
+	
+	await get_tree().create_timer(0.2).timeout
+	
+	pencil_sound.stop()
+	

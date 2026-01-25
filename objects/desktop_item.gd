@@ -12,8 +12,9 @@ var parent: Node
 
 # TODO add audio
 @export var click_sounds: Array[AudioStreamPlayer2D]
-@export var slide_sounds: Array[AudioStreamPlayer2D]
 @export var drop_sounds: Array[AudioStreamPlayer2D]
+
+@export var slide_sounds: Array[AudioStreamPlayer2D]
 
 var moving: bool = false
 

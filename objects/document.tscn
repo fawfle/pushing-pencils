@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bucktk2vvr5w4"]
+[gd_scene load_steps=8 format=3 uid="uid://bucktk2vvr5w4"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_nkp2l"]
 [ext_resource type="Script" uid="uid://ddmn6evynvp2y" path="res://objects/document.gd" id="1_qw4ch"]
 [ext_resource type="Texture2D" uid="uid://cw1ixp574yn21" path="res://Sprites/document-0001.png" id="2_dqu1v"]
 [ext_resource type="PackedScene" uid="uid://dagxb0dhvb3ub" path="res://objects/text_box.tscn" id="3_dqu1v"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="4_bjm35"]
+[ext_resource type="AudioStream" uid="uid://nbkf0li6uexj" path="res://sounds/pencil_write.ogg" id="6_mg7v8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bjm35"]
 size = Vector2(90, 15)
@@ -45,6 +46,10 @@ offset_right = 16.0
 offset_bottom = -36.0
 theme = ExtResource("4_bjm35")
 text = "XXX-XXX"
+
+[node name="PencilWrite" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_mg7v8")
+max_polyphony = 5
 
 [connection signal="text_changed" from="TextBox" to="." method="_on_text_box_text_changed"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

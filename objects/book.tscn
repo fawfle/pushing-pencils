@@ -5,9 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://dk7v65uguxa1c" path="res://Sprites/book-0001.png" id="2_hxkwa"]
 [ext_resource type="Texture2D" uid="uid://14o8llub3pla" path="res://Sprites/pages/page-0001.png" id="4_er0uf"]
 [ext_resource type="Texture2D" uid="uid://7axm1o3838u8" path="res://Sprites/pages/page-0002.png" id="5_3it06"]
-[ext_resource type="AudioStream" uid="uid://c5tobcokk1ur3" path="res://sounds/paper_turn1.ogg" id="6_7kata"]
 [ext_resource type="AudioStream" uid="uid://bo6ojs1o4u4la" path="res://sounds/paper_turn2.ogg" id="7_dxtjv"]
 [ext_resource type="AudioStream" uid="uid://byavyg2gyg28v" path="res://sounds/paper_turn3.ogg" id="8_dxtjv"]
+[ext_resource type="AudioStream" uid="uid://cx6nsnhixfklf" path="res://sounds/paper_turn4.ogg" id="8_luwxh"]
 
 [node name="Book" type="Node2D"]
 script = ExtResource("1_hxkwa")
@@ -60,16 +60,16 @@ offset_right = -64.0
 offset_bottom = 62.0
 
 [node name="PageTurn" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_7kata")
-volume_db = 10.0
+stream = ExtResource("7_dxtjv")
+max_polyphony = 3
 
 [node name="PageTurn2" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_dxtjv")
-volume_db = 10.0
+stream = ExtResource("8_dxtjv")
+max_polyphony = 3
 
 [node name="PageTurn3" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_dxtjv")
-volume_db = 10.0
+stream = ExtResource("8_luwxh")
+max_polyphony = 3
 
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
