@@ -13,6 +13,9 @@ var current_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 var current_text: String
 var output_text: String
 
+# TODO:
+# possibly procedural rules/docs for certain spans as an option (i.e. pick random 5 accounting for mutual exclusivity)
+
 # TODO: Company WARNINGS instead of memo
 ## queueish of sorts where events will add/set rejection_memo_text on activating. Could be an array later?
 var rejection_memo_text: String
@@ -40,6 +43,21 @@ var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png")
 }
 
+class CustomRejection:
+	var activated: bool = false
+	var condition
+	var text: String
+	
+	func _init(_condition, _text: String):
+		condition = _condition
+		text = _text
+	
+## rejections for specific failure states, meant to teach play
+var custom_rejections: Array[CustomRejection] = [
+	CustomRejection.new(func(): return (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
+	CustomRejection.new(func(): return (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional")
+]
+
 @onready var screen_size = get_viewport_rect().size / 4
 
 func _ready() -> void:
@@ -59,7 +77,7 @@ func run_event(event: Event):
 	for scene in event.nodes_to_add:
 		var obj: Node = scene.instantiate()
 		add_child(obj)
-		play_enter_animation(obj, 10)
+		play_enter_animation(obj, 80)
 		
 	if event.memo_text != "":
 		var memo: Memo = memo_scene.instantiate()
@@ -98,6 +116,8 @@ func on_document_submitted(input: String):
 			memo.set_text(rejection_memo_text)
 			play_enter_animation(memo, 100)
 			rejection_memo_text = ""
+		
+		handle_custom_rejections()
 		
 		current_document.handle_reset()
 		play_stamp_animation(current_document)
@@ -165,7 +185,6 @@ func set_file_shapes():
 
 func play_stamp_animation(item: Node):	
 	if get_children().has(item):
-		print("has child")
 		remove_child(item)
 	await get_tree().create_timer(0.4).timeout
 	
@@ -214,6 +233,19 @@ func on_item_submitted(item: Node2D):
 		play_stamp_animation(item)
 	if item is FileItem:
 		play_stamp_animation(item)
+	
+	handle_custom_rejections()
+
+func handle_custom_rejections():
+	for custom_rejection in custom_rejections:
+		print(custom_rejection.condition.call())
+		if not custom_rejection.activated and custom_rejection.condition.call():
+			print("yipp")
+			var memo: Memo = memo_scene.instantiate()
+			add_child(memo)
+			memo.set_text(custom_rejection.text)
+			play_enter_animation(memo, 100)
+			custom_rejection.activated = false
 
 # TODO
 func shredder_storm():

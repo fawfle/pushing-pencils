@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=14 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
@@ -21,7 +21,7 @@ script = ExtResource("2_ycayy")
 on_completed = 1
 memo_text = "COPY THE TEXT"
 update_rules = true
-rules = Array[int]([2])
+rules = Array[int]([4])
 change_round_type = true
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
@@ -34,8 +34,25 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 [sub_resource type="Resource" id="Resource_kk2rg"]
 script = ExtResource("2_ycayy")
 on_completed = 3
+memo_text = "PLACEHOLDER: REVERSE EACH WORD"
 update_rules = true
-rules = Array[int]([6])
+rules = Array[int]([8])
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
+[sub_resource type="Resource" id="Resource_b5spy"]
+script = ExtResource("2_ycayy")
+on_completed = 10
+nodes_to_add = Array[PackedScene]([ExtResource("5_rurhu")])
+memo_text = "TO KEEP THINGS PROFESSIONAL, USE PEN"
+update_rules = true
+rules = Array[int]([3])
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
+[sub_resource type="Resource" id="Resource_utbpp"]
+script = ExtResource("2_ycayy")
+on_completed = 11
+update_rules = true
+rules = Array[int]([2])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Gradient" id="Gradient_rurhu"]
@@ -46,7 +63,8 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
-events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_kk2rg")])
+completed = 10
+events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_kk2rg"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)
@@ -63,6 +81,3 @@ position = Vector2(80, 20)
 
 [node name="Pencil" parent="." instance=ExtResource("5_y3j0m")]
 position = Vector2(92, 0)
-
-[node name="Pen" parent="." instance=ExtResource("5_rurhu")]
-position = Vector2(84, 18)
