@@ -135,13 +135,13 @@ func on_document_submitted(doc_input: String):
 		current_document.handle_reset()
 		play_stamp_animation(current_document)
 
-func check_rules(input: String) -> bool:
+func check_rules(source: String) -> bool:
 	if current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen:
 		return false
 	if current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil:
 		return false
 	
-	if not Rules.check_rules(current_rules, current_text, input):
+	if not Rules.check_rules(current_rules, current_text, source):
 		return false
 	
 	return true
