@@ -1,7 +1,8 @@
 extends Node
 
 enum ID {
-	NONE,
+	ANY,
+	MATCH,
 	HYPHEN_SPACE,
 	ONLY_FIRST_13_LETTERS,
 	ALPHANUMERIC,
@@ -10,6 +11,9 @@ enum ID {
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
+	if len(rules) == 1 and rules[0] == ID.ANY:
+		return true
+	
 	return apply_multiple(rules, source) == input
 
 func apply_multiple(rules: Array[ID], source: String) -> String:
@@ -37,14 +41,14 @@ func apply(id: ID, source: String) -> String:
 			return trans
 		ID.REVERSE_EACH_WORD:
 			var trans = []
-			for word in source.split( "-" if source.contains("-") else  " "):
+			for word in source.split(" "):
 				trans.append(word.reverse())
-			return "".join(trans)
+			return " ".join(trans)
 		ID.NO_VOWELS:
 			var regex = RegEx.new()
 			regex.compile("[aeiou]")
 			return regex.sub(source, "")
-	return "broked"
+	return source
 	
 var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",

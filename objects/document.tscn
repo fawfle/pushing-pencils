@@ -13,6 +13,7 @@ size = Vector2(90, 15)
 script = ExtResource("1_qw4ch")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 2
 texture = ExtResource("2_dqu1v")
 
 [node name="TextBox" parent="." instance=ExtResource("3_dqu1v")]
@@ -22,7 +23,7 @@ offset_top = -1.0
 offset_right = 43.0
 offset_bottom = 22.0
 mouse_filter = 1
-max_length = 14
+max_length = 15
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_nkp2l")]
 offset_left = -48.0

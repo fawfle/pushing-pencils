@@ -1,9 +1,9 @@
 extends Node
 
-signal document_submitted(text: String)
+signal document_submitted(input: String)
 signal document_completed()
 
-signal item_dropped(node: Node2D)
+signal item_dropped(item: Node2D)
 
 var held: Node = null 
 

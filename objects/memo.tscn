@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://l1vf1rrqu0gy"]
+[gd_scene load_steps=4 format=3 uid="uid://dhwvlir4sb8rl"]
 
+[ext_resource type="Script" uid="uid://bnsl856xkxxf0" path="res://objects/memo.gd" id="1_bn23k"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_f8gd0"]
-[ext_resource type="Texture2D" uid="uid://bbwywhma4d7s2" path="res://Sprites/Memo.png" id="2_bn23k"]
+[ext_resource type="Texture2D" uid="uid://cclj1uq5n6paj" path="res://Sprites/Memo.png" id="2_bn23k"]
 
 [node name="Memo" type="Node2D"]
+script = ExtResource("1_bn23k")
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_f8gd0")]
 offset_left = -33.0
@@ -14,11 +16,11 @@ offset_bottom = 48.0
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_bn23k")
 
-[node name="Label" type="Label" parent="."]
+[node name="TextLabel" type="Label" parent="."]
 modulate = Color(0.20332181, 0.20332184, 0.20332178, 1)
-offset_left = -32.0
+offset_left = -31.0
 offset_top = -2.0
-offset_right = 32.0
+offset_right = 31.0
 offset_bottom = 49.0
 text = "Sample text"
 autowrap_mode = 3

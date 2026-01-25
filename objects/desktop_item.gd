@@ -12,8 +12,8 @@ var parent: Node
 
 func _ready() -> void:
 	parent = get_parent()
-	on_viewport_changed()
-	get_viewport().size_changed.connect(on_viewport_changed)
+	update_viewport()
+	# get_viewport().size_changed.connect(on_viewport_changed)
 
 func _process(_delta: float) -> void:
 	if dragging:
@@ -32,13 +32,9 @@ func _on_button_up() -> void:
 	Global.held = null
 	Global.item_dropped.emit(parent)
 
-func on_viewport_changed() -> void:
+func update_viewport() -> void:
 	# hardcoded garbage
 	screen_size = get_viewport_rect().size # / get_viewport().get_camera_2d().scale
 	screen_size /= 4; # scale of camera
 	
 	screen_bounds = [-screen_size / 2 + PADDING, screen_size / 2 - PADDING]
-
-func play_enter_animation():
-	# TODO
-	parent.global_position = screen_bounds[0]

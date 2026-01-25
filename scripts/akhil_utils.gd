@@ -5,7 +5,6 @@ var word_list: PackedStringArray
 func load_wordlist() -> void:
 	var file_path = "res://words.txt"
 	if FileAccess.file_exists(file_path):
-		print("accesss")
 		var file = FileAccess.open(file_path, FileAccess.READ)
 		var content = file.get_as_text()
 		# Splits by newline and removes empty entries
