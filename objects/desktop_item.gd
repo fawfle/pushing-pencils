@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 		var target := get_global_mouse_position() - offset
 		if target != parent.global_position:
 			if not moving:
-				slide_sounds.pick_random().play()
+				if len(slide_sounds) > 0: slide_sounds.pick_random().play()
 			moving = true
 		else:
 			moving = false
@@ -40,7 +40,7 @@ func _on_button_down() -> void:
 	parent.get_parent().move_child(parent, -1)
 	Global.held = parent
 	
-	click_sounds.pick_random().play()
+	if len(click_sounds) > 0: click_sounds.pick_random().play()
 
 
 func _on_button_up() -> void:
@@ -48,7 +48,7 @@ func _on_button_up() -> void:
 	Global.held = null
 	Global.item_dropped.emit(parent)
 	
-	drop_sounds.pick_random().play()
+	if len(drop_sounds) > 0: drop_sounds.pick_random().play()
 
 func update_viewport() -> void:
 	# hardcoded garbage
