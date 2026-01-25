@@ -10,12 +10,18 @@ var screen_bounds: Array[Vector2]
 
 var parent: Node
 
+var entering: bool = false
+
 func _ready() -> void:
 	parent = get_parent()
 	on_viewport_changed()
 	get_viewport().size_changed.connect(on_viewport_changed)
 
 func _process(_delta: float) -> void:
+	if entering:
+		
+		return
+	
 	if dragging:
 		parent.global_position = get_global_mouse_position() - offset
 		parent.global_position = parent.global_position.clamp(screen_bounds[0], screen_bounds[1])
@@ -40,5 +46,13 @@ func on_viewport_changed() -> void:
 	screen_bounds = [-screen_size / 2 + PADDING, screen_size / 2 - PADDING]
 
 func play_enter_animation():
-	# TODO
-	parent.global_position = screen_bounds[0]
+	var start_position = Vector2(-screen_bounds[0].x, randf_range(-10, 10))
+	var end_position = Vector2(-screen_bounds[0].x * 0.25, randf_range(-10, 10))
+	
+	var duration: float = 1.0;
+	var timer: SceneTreeTimer = get_tree().create_timer(duration)
+	
+	while (not timer.is_stopped()):
+		parent.global_position = lerp(start_position, end_position, (duration - timer.time_left) / duration)
+		
+		await get_tree().process_frame
