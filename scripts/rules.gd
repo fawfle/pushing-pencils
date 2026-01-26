@@ -11,6 +11,8 @@ enum ID {
 	ALPHANUMERIC,
 	REVERSE_EACH_WORD,
 	NO_VOWELS,
+	FLIP_CASE,
+	ALPHABETICAL_ORDER,
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
@@ -30,13 +32,15 @@ func apply_multiple(rules: Array[ID], source: String) -> String:
 	return new_source
 
 func apply(id: ID, source: String) -> String:
+	var ret: String = source
 	match id:
 		ID.HYPHEN_SPACE:
 			return source.replace(" ", "-")
 		ID.ONLY_FIRST_13_LETTERS:
 			var regex = RegEx.new()
 			regex.compile("[n-zN-Z]")
-			return regex.sub(source, "", true)
+			ret = regex.sub(source, "", true)
+			
 		ID.ALPHANUMERIC:
 			var trans = ""
 			for c in source.to_lower():
@@ -48,18 +52,24 @@ func apply(id: ID, source: String) -> String:
 				if code > 25:
 					trans+= c
 				trans += code
-			return trans
+			ret = trans
 		ID.REVERSE_EACH_WORD:
 			var trans = []
 			for word in source.split(" "):
 				trans.append(word.reverse())
-			return " ".join(trans)
+			ret = " ".join(trans)
 		ID.NO_VOWELS:
 			var regex = RegEx.new()
 			regex.compile("[aeiouyAEIOUY]")
-			return regex.sub(source, "", true)
-	return source
+			ret = regex.sub(source, "", true)
+	return ret
+
+func clean_text(text: String):
+	while text[text.length() - 1] == " ": text = text.substr(0, text.length() - 2)
+	while text.contains("  "): text = text.replace("  ", " ")
 	
+	return text
+
 var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
 	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet",

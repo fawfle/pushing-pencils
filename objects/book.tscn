@@ -1,13 +1,21 @@
-[gd_scene load_steps=9 format=3 uid="uid://dof0jaef5w8bj"]
+[gd_scene load_steps=13 format=3 uid="uid://dof0jaef5w8bj"]
 
 [ext_resource type="Script" uid="uid://do0bl2q8f2ove" path="res://objects/book.gd" id="1_hxkwa"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_osdgu"]
-[ext_resource type="Texture2D" uid="uid://dk7v65uguxa1c" path="res://Sprites/book-0001.png" id="2_hxkwa"]
-[ext_resource type="Texture2D" uid="uid://14o8llub3pla" path="res://Sprites/pages/page-0001.png" id="4_er0uf"]
-[ext_resource type="Texture2D" uid="uid://7axm1o3838u8" path="res://Sprites/pages/page-0002.png" id="5_3it06"]
+[ext_resource type="Texture2D" uid="uid://cq4t3hgbn4hs1" path="res://Sprites/pages/book.png" id="3_dxtjv"]
+[ext_resource type="Texture2D" uid="uid://dv76htha6vkbq" path="res://Sprites/pages/page-full.png" id="4_mn4al"]
+[ext_resource type="Texture2D" uid="uid://ddrgoui3xytco" path="res://Sprites/pages/page.png" id="6_luwxh"]
+[ext_resource type="Texture2D" uid="uid://chk0v1sam3oi1" path="res://Sprites/shapes/shape-0002.png" id="6_mn4al"]
 [ext_resource type="AudioStream" uid="uid://bo6ojs1o4u4la" path="res://sounds/paper_turn2.ogg" id="7_dxtjv"]
+[ext_resource type="Texture2D" uid="uid://b64lncst6p3g6" path="res://Sprites/shapes/shape-0001.png" id="7_mn4al"]
 [ext_resource type="AudioStream" uid="uid://byavyg2gyg28v" path="res://sounds/paper_turn3.ogg" id="8_dxtjv"]
 [ext_resource type="AudioStream" uid="uid://cx6nsnhixfklf" path="res://sounds/paper_turn4.ogg" id="8_luwxh"]
+
+[sub_resource type="Gradient" id="Gradient_luwxh"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mn4al"]
+gradient = SubResource("Gradient_luwxh")
 
 [node name="Book" type="Node2D"]
 script = ExtResource("1_hxkwa")
@@ -15,48 +23,140 @@ script = ExtResource("1_hxkwa")
 [node name="DesktopItem" parent="." instance=ExtResource("1_osdgu")]
 offset_left = -98.0
 offset_top = -63.0
-offset_right = 101.0
+offset_right = 98.0
 offset_bottom = 63.0
 PADDING = Vector2(15, 15)
+metadata/_edit_lock_ = true
 
 [node name="Book" type="Sprite2D" parent="."]
-texture = ExtResource("2_hxkwa")
+texture = ExtResource("3_dxtjv")
+metadata/_edit_lock_ = true
 
 [node name="Pages" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
-[node name="Page0001" type="Sprite2D" parent="Pages"]
+[node name="PageStart" type="Sprite2D" parent="Pages"]
 visible = false
-position = Vector2(6, 0)
 rotation = 3.1415925
 scale = Vector2(1, -1)
-texture = ExtResource("4_er0uf")
+texture = ExtResource("4_mn4al")
+metadata/_edit_lock_ = true
 
-[node name="Page0002" type="Sprite2D" parent="Pages"]
+[node name="PageR2" type="Sprite2D" parent="Pages"]
 visible = false
-texture = ExtResource("5_3it06")
+texture = ExtResource("6_luwxh")
+metadata/_edit_lock_ = true
 
-[node name="Page0003" type="Sprite2D" parent="Pages"]
+[node name="PageL2" type="Sprite2D" parent="Pages"]
+texture = ExtResource("6_luwxh")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="TriangleShape" type="Sprite2D" parent="Pages/PageL2"]
+position = Vector2(-50, -40)
+texture = ExtResource("6_mn4al")
+
+[node name="Line" type="Sprite2D" parent="Pages/PageL2"]
+modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
+position = Vector2(-51, -13)
+scale = Vector2(0.1953125, 1)
+texture = SubResource("GradientTexture1D_mn4al")
+
+[node name="Header" type="Label" parent="Pages/PageL2"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -6.0
+offset_bottom = -15.0
+text = "The Triangle"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Pages/PageL2"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -93.0
+offset_top = -7.0
+offset_right = -5.0
+offset_bottom = 4.0
+text = "Flip Each Word"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/PageL2"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = 10.0
+offset_right = -6.0
+offset_bottom = 49.0
+text = "EXAMPLE
+abc def
+cba fed"
+horizontal_alignment = 1
+
+[node name="PageR3" type="Sprite2D" parent="Pages"]
+texture = ExtResource("6_luwxh")
+metadata/_edit_lock_ = true
+
+[node name="SquareShape" type="Sprite2D" parent="Pages/PageR3"]
+position = Vector2(50, -40)
+texture = ExtResource("7_mn4al")
+
+[node name="Line" type="Sprite2D" parent="Pages/PageR3"]
+modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
+position = Vector2(49, -13)
+scale = Vector2(0.1953125, 1)
+texture = SubResource("GradientTexture1D_mn4al")
+
+[node name="Header" type="Label" parent="Pages/PageR3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 6.0
+offset_top = -26.0
+offset_right = 94.0
+offset_bottom = -15.0
+text = "The Square"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Pages/PageR3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 7.0
+offset_top = -7.0
+offset_right = 95.0
+offset_bottom = 4.0
+text = "No Vowels"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/PageR3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 6.0
+offset_top = 10.0
+offset_right = 94.0
+offset_bottom = 49.0
+text = "EXAMPLE
+abc def aye
+bc df"
+horizontal_alignment = 1
+
+[node name="PageL3" type="Sprite2D" parent="Pages"]
 visible = false
-position = Vector2(6, 0)
-scale = Vector2(-1, 1)
-texture = ExtResource("5_3it06")
+texture = ExtResource("6_luwxh")
+flip_h = true
+metadata/_edit_lock_ = true
 
-[node name="Page0007" type="Sprite2D" parent="Pages"]
+[node name="PageEnd" type="Sprite2D" parent="Pages"]
 visible = false
-texture = ExtResource("4_er0uf")
-
-[node name="LeftButton" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-offset_left = 74.0
-offset_top = 38.0
-offset_right = 99.0
-offset_bottom = 62.0
+texture = ExtResource("4_mn4al")
+metadata/_edit_lock_ = true
 
 [node name="RightButton" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_left = -96.0
-offset_top = 33.0
-offset_right = -64.0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 94.0
+offset_bottom = 62.0
+
+[node name="LeftButton" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -94.0
+offset_top = 46.0
+offset_right = -78.0
 offset_bottom = 62.0
 
 [node name="PageTurn" type="AudioStreamPlayer2D" parent="."]
@@ -71,5 +171,5 @@ max_polyphony = 3
 stream = ExtResource("8_luwxh")
 max_polyphony = 3
 
-[connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]

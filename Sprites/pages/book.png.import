@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4rtmrlvcedxj"
-path="res://.godot/imported/Stamp.png-dec041f39c517fc2463e225b2482bf54.ctex"
+uid="uid://cq4t3hgbn4hs1"
+path="res://.godot/imported/book.png-383b9408c63b01b1a3387380231f5cc3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Stamp.png"
-dest_files=["res://.godot/imported/Stamp.png-dec041f39c517fc2463e225b2482bf54.ctex"]
+source_file="res://Sprites/pages/book.png"
+dest_files=["res://.godot/imported/book.png-383b9408c63b01b1a3387380231f5cc3.ctex"]
 
 [params]
 
