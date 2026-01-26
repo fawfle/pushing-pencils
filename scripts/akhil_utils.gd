@@ -14,7 +14,7 @@ func load_wordlist() -> void:
 
 func generate_sentence(word_count: int) -> String:
 	if word_list.is_empty():
-		load_wordlist()
+		return "no world list :("
 	
 	var sentence = ""
 	
