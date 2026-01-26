@@ -120,7 +120,7 @@ func _ready() -> void:
 	if completed > 11:
 		var pen = pen_scene.instantiate()
 		add_child(pen)
-		play_enter_animation(pen, 100)
+		play_enter_animation(pen, 2.1)
 	
 	check_events()
 	begin_round()
@@ -139,13 +139,13 @@ func run_event(event: Event):
 	for scene in event.nodes_to_add:
 		var obj: Node = scene.instantiate()
 		add_child(obj)
-		play_enter_animation(obj, 80)
+		play_enter_animation(obj, 2)
 		
 	if event.memo_text != "":
 		add_memo(event.memo_text)
 	
 	if event.notice_text != "":
-		add_notice(event.notice_text, 100)
+		add_notice(event.notice_text, 1.5)
 	
 	rejection_memo_text = event.rejection_memo_text
 	
@@ -182,7 +182,7 @@ func on_document_submitted(doc_input: String):
 			var memo: Memo = memo_scene.instantiate()
 			add_child(memo)
 			memo.set_text(rejection_memo_text)
-			play_enter_animation(memo, 100)
+			play_enter_animation(memo, 1.5)
 			rejection_memo_text = ""
 		
 		handle_custom_rejections(current_document)
@@ -286,7 +286,7 @@ func play_stamp_animation(item: Node):
 	
 
 # set top deferred to make special objects appear above non special
-func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
+func play_enter_animation(node: Node2D, wait_time: float=0):
 	paper_slide_sound.play()
 	
 	var duration: float = randf_range(0.8, 1.2)
@@ -296,10 +296,9 @@ func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
 	
 	node.global_position = start_position
 	
-	for i in range(set_top_deferred_frames):
-		await get_tree().process_frame
+	await get_tree().create_timer(wait_time).timeout
 	
-	if set_top_deferred_frames > 0: move_child(node, -1)
+	if wait_time > 0: move_child(node, -1)
 	
 	await get_tree().create_timer(randf_range(0, 0.2)).timeout
 	
@@ -327,6 +326,8 @@ func on_item_submitted(item: Node2D):
 		play_stamp_animation(item)
 	if item is Warning:
 		play_stamp_animation(item)
+	if item is IndexCard:
+		play_stamp_animation(item)
 	
 	handle_custom_rejections(item)
 
@@ -348,28 +349,28 @@ func handle_custom_rejections(item: Node2D):
 			
 			custom_rejection.activated = true
 
-func add_memo(text: String, buffer: int = 60) -> Memo:
+func add_memo(text: String, buffer: float = 1.5) -> Memo:
 	var memo: Memo = memo_scene.instantiate()
 	add_child(memo)
 	play_enter_animation(memo, buffer)
 	memo.set_text(text)
 	return memo
 
-func add_warning(text: String, buffer: int = 100) -> Warning:
+func add_warning(text: String, buffer: float = 1.5) -> Warning:
 	var warning: Warning = warning_scene.instantiate()
 	add_child(warning)
 	warning.set_text(text)
 	play_enter_animation(warning, buffer)
 	return warning
 
-func add_notice(text: String, buffer: int = 100) -> Notice:
+func add_notice(text: String, buffer: float = 1.5) -> Notice:
 	var notice: Notice = notice_scene.instantiate()
 	add_child(notice)
 	notice.set_text(text)
 	play_enter_animation(notice, buffer)
 	return notice
 
-func add_index_card(text: String, buffer: int = 100) -> IndexCard:
+func add_index_card(text: String, buffer: float = 4.0) -> IndexCard:
 	var card: IndexCard = index_card_scene.instantiate()
 	add_child(card)
 	card.set_text(text)
