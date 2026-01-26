@@ -97,6 +97,10 @@ func _ready() -> void:
 		play_enter_animation(book)
 
 func check_events() -> void:
+	if completed == len(events):
+		get_tree().change_scene_to_file("res://3d_section.tscn")
+		return
+	
 	if events[completed]:
 		run_event(events[completed])
 
@@ -111,6 +115,9 @@ func run_event(event: Event):
 		add_child(memo)
 		play_enter_animation(memo, 60)
 		memo.set_text(event.memo_text)
+	
+	if event.notice_text != "":
+		add_notice(event.notice_text, 100)
 	
 	rejection_memo_text = event.rejection_memo_text
 	
@@ -292,17 +299,17 @@ func handle_custom_rejections(item: Node2D):
 			add_warning(custom_rejection.text)
 			custom_rejection.activated = true
 
-func add_warning(text: String):
+func add_warning(text: String, buffer: int = 100):
 	var warning: Warning = warning_scene.instantiate()
 	add_child(warning)
 	warning.set_text(text)
-	play_enter_animation(warning, 100)
+	play_enter_animation(warning, buffer)
 
-func add_notice(text: String):
+func add_notice(text: String, buffer: int = 100):
 	var notice: Notice = notice_scene.instantiate()
 	add_child(notice)
 	notice.set_text(text)
-	play_enter_animation(notice, 100)
+	play_enter_animation(notice, buffer)
 
 var symbol_rules: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_13_LETTERS, Rules.ID.REVERSE_EACH_WORD, Rules.ID.NO_VOWELS, Rules.ID.FLIP_CASE, Rules.ID.ALPHABETICAL_ORDER]
 

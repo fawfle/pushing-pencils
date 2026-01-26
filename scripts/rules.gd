@@ -126,6 +126,9 @@ func get_punctuation(text: String):
 	
 	while (text[text.length() - 1].to_upper() != text[text.length() - 1]):
 		ret += text[text.length() - 1]
+		text = text.substr(0, text.length() - 1)
+	
+	return ret
 
 var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
