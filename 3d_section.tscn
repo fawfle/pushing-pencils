@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bc3yhr551h6it"]
+[gd_scene load_steps=8 format=3 uid="uid://bc3yhr551h6it"]
 
 [ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="1_h0me4"]
 [ext_resource type="Script" uid="uid://3ghk43o4655r" path="res://3d_section.gd" id="1_n1kpw"]
 [ext_resource type="PackedScene" uid="uid://c56fq54yty1te" path="res://3D/room.tscn" id="1_thrrh"]
 [ext_resource type="PackedScene" uid="uid://dw326dacqh0k0" path="res://3D/player.tscn" id="2_h0me4"]
+[ext_resource type="AudioStream" uid="uid://cmfbv8anyl03n" path="res://sounds/end_fade.ogg" id="5_jlmvm"]
 
 [sub_resource type="Environment" id="Environment_thrrh"]
 background_mode = 2
@@ -49,4 +50,13 @@ transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.21348453, 0.831012
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6723814)
 shape = SubResource("BoxShape3D_h0me4")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_jlmvm")
+volume_db = -10.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

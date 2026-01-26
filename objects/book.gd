@@ -1,5 +1,9 @@
 extends Node2D
 
+
+@onready var circle_description: Label = $Pages/PageL3/Description
+@onready var circle_example: Label = $Pages/PageL3/Example
+
 ## pages of index 2i and 2i+1 are active
 var page_index: int = 0
 
@@ -30,3 +34,7 @@ func set_pages(index: int) -> void:
 	
 	pages[2 * index].visible = true
 	pages[2 * index + 1].visible = true
+
+func update_circle_rule() -> void:
+	circle_description.text = "Remove 1nd half\nof alphabet"
+	circle_example.text = "EXAMPLE\nadfgmnoqtz\nnoqtz"

@@ -14,6 +14,7 @@ enum ID {
 	NO_VOWELS,
 	FLIP_CASE,
 	ALPHABETICAL_ORDER,
+	RANDOM_NORMAL,
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
@@ -36,7 +37,7 @@ func apply(id: ID, source: String) -> String:
 	var ret: String = source
 	match id:
 		ID.HYPHEN_SPACE:
-			return source.replace(" ", "-")
+			ret = source.replace(" ", "-")
 		ID.ONLY_FIRST_13_LETTERS:
 			var regex = RegEx.new()
 			regex.compile("[n-zN-Z]")

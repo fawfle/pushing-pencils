@@ -5,7 +5,7 @@ var document_scene: PackedScene = preload("res://objects/document.tscn")
 var memo_scene: PackedScene = preload("res://objects/memo.tscn")
 
 @export var completed: int = 0
-var quota: int = 1
+# var quota: int = 1
 
 var round_type: ROUND_TYPE = ROUND_TYPE.DOC_FILE
 
@@ -85,9 +85,8 @@ func _ready() -> void:
 		play_enter_animation(book)
 
 func check_events() -> void:
-	for event in events:
-		if (completed == event.on_completed):
-			run_event(event)
+	if events[completed]:
+		run_event(events[completed])
 
 func run_event(event: Event):
 	for scene in event.nodes_to_add:
@@ -106,8 +105,8 @@ func run_event(event: Event):
 	if event.update_rules:
 		current_rules = event.rules
 	
-	if event.new_quota <= quota:
-		quota = event.new_quota
+	# if event.new_quota <= quota:
+	# 	quota = event.new_quota
 	
 	if event.change_round_type:
 		round_type = event.round_type
@@ -175,6 +174,8 @@ func begin_file_doc_round():
 	current_file.set_id(id)
 	current_document.set_id(id)
 	
+	if current_rules.has(Rules.ID.PEN_ONLY):
+		current_document.add_fancy_header()
 	set_file_shapes()
 	
 	var meets_criteria: bool = false

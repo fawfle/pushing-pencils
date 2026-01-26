@@ -10,7 +10,6 @@ var screen_bounds: Array[Vector2]
 
 var parent: Node
 
-# TODO add audio
 @export var click_sounds: Array[AudioStreamPlayer2D]
 @export var drop_sounds: Array[AudioStreamPlayer2D]
 

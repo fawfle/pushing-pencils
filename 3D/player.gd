@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var base_speed := 1.0
+@export var base_speed := .5
 
 @onready var camera = $Camera/Camera3D
 
