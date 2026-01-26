@@ -5,6 +5,7 @@ class_name Document extends Node2D
 @onready var text_box: LineEdit = $TextBox
 
 @onready var pencil_sound: AudioStreamPlayer2D = $PencilWrite
+@onready var eraser_sound: AudioStreamPlayer2D = $EraserSound
 
 # var img = Image.load_from_file("res://Sprites/Stamp.png")
 # var image: ImageTexture = ImageTexture.create_from_image(img)
@@ -25,8 +26,13 @@ var used_pencil: bool = false
 
 var previous_text: String
 
+@onready var pencil_sound_timer: Timer = $PencilSoundTimer
+@onready var eraser_sound_timer: Timer = $EraserSoundTimer
+
 func _ready() -> void:
 	Global.item_dropped.connect(on_item_dropped)
+	pencil_sound_timer.timeout.connect(func(): pencil_sound.stop())
+	eraser_sound_timer.timeout.connect(func(): eraser_sound.stop())
 
 func set_id(id: String) -> void:
 	label.text = id
@@ -88,14 +94,28 @@ func _on_text_box_text_changed(new_text: String) -> void:
 	if (used_pen or instrument == Instrument.PEN) and new_text.length() < previous_text.length():
 		text_box.text = previous_text
 		text_box.caret_column = text_box.text.length()
-	else:
-		previous_text = new_text
+		return
+	
+	if instrument == Instrument.PENCIL and new_text.length() < previous_text.length():
+		if previous_text[previous_text.length() - 1] != " ": play_eraser_sound()
+	
+	previous_text = new_text
+	
 
 func play_pencil_sound():
+	if (pencil_sound.playing):
+		pencil_sound_timer.start(0.1)
+		return
+	
+	pencil_sound_timer.start(0.1)
 	var start_time = pencil_sound.stream.get_length() * randf_range(0, 0.8)
 	pencil_sound.play(start_time)
-	
-	await get_tree().create_timer(0.1).timeout
-	
-	pencil_sound.stop()
-	
+
+func play_eraser_sound():
+	if eraser_sound.playing:
+		eraser_sound_timer.start(0.1)
+		return
+		
+	eraser_sound_timer.start(0.1)
+	var start_time = eraser_sound.stream.get_length() * randf_range(0, 0.7)
+	eraser_sound.play(start_time)
