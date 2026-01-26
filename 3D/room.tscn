@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c56fq54yty1te"]
+[gd_scene load_steps=6 format=3 uid="uid://c56fq54yty1te"]
 
 [ext_resource type="PackedScene" uid="uid://c82g47qfxdmtx" path="res://3D/ceiling.tscn" id="1_23ldi"]
 [ext_resource type="PackedScene" uid="uid://c4irk3l7xkxyk" path="res://3D/floor.tscn" id="2_xr1h3"]
 [ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="3_8kajm"]
 [ext_resource type="PackedScene" uid="uid://btvjhoq7byika" path="res://3D/desk.tscn" id="4_s5c1j"]
-[ext_resource type="PackedScene" uid="uid://b05ojeoru2jak" path="res://3D/filing_cabinets.tscn" id="5_it51o"]
 [ext_resource type="PackedScene" uid="uid://nc2r08tpfmn7" path="res://3D/door.tscn" id="6_4uwwf"]
 
 [node name="Room" type="Node3D"]
@@ -14,9 +13,6 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="Desk" parent="Decorations" instance=ExtResource("4_s5c1j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.030033857)
-
-[node name="Filing Cabinets" parent="Decorations" instance=ExtResource("5_it51o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015285298, 0, -0.41452387)
 
 [node name="Walls" type="Node3D" parent="."]
 
