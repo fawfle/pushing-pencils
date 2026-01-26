@@ -13,10 +13,10 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 [node name="Decorations" type="Node3D" parent="."]
 
 [node name="Desk" parent="Decorations" instance=ExtResource("4_s5c1j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.030033857)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.031922936, 0, 0.030033857)
 
 [node name="Cabinet" parent="Decorations" instance=ExtResource("2_4uwwf")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.4352158)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.42894772)
 
 [node name="Walls" type="Node3D" parent="."]
 

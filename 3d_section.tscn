@@ -67,7 +67,7 @@ wait_time = 30.0
 one_shot = true
 
 [node name="Path3D" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.041352473, 0.9991446, 0, -0.9991446, 0.041352473, 0, 0.27381617, 0.55611897)
+transform = Transform3D(1, 0, 0, 0, 0.041352473, 0.9991446, 0, -0.9991446, 0.041352473, 0, 0.26677632, 0.60813946)
 curve = SubResource("Curve3D_jlmvm")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]

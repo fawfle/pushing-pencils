@@ -13,6 +13,7 @@ transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 script = ExtResource("1_4v4u1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("CapsuleMesh_7nt4h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -20,3 +21,4 @@ shape = SubResource("CapsuleShape3D_4v4u1")
 
 [node name="Camera" parent="." instance=ExtResource("2_viqg4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6806851, 0)
+min_limit_x = -1.0
