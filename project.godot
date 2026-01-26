@@ -24,6 +24,7 @@ Rules="*res://scripts/rules.gd"
 [display]
 
 window/size/resizable=false
+window/stretch/mode="viewport"
 
 [global_group]
 

@@ -10,6 +10,7 @@ offset_left = -30.0
 offset_top = -15.0
 offset_right = 29.0
 offset_bottom = 16.0
+PADDING = Vector2(5, 5)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_jxrw8")

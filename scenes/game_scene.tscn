@@ -84,7 +84,7 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 [sub_resource type="Resource" id="Resource_mwyo0"]
 script = ExtResource("2_ycayy")
 nodes_to_add = Array[PackedScene]([ExtResource("6_rvs2r")])
-notice_text = "YOU WERE 2ND EMPLOYEE OF THE DAY. QUOTA INCREASED"
+notice_text = "YOU WERE #2 EMPLOYEE OF  THE DAY. QUOTA INCREASED"
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_b5spy"]
@@ -115,6 +115,7 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
+completed = 12
 events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_liy57"), null, null, SubResource("Resource_mwyo0"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r")])
 
 [node name="Background" type="Sprite2D" parent="."]
