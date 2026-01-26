@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bc3yhr551h6it"]
+[gd_scene load_steps=12 format=3 uid="uid://bc3yhr551h6it"]
 
 [ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="1_h0me4"]
 [ext_resource type="Script" uid="uid://3ghk43o4655r" path="res://3d_section.gd" id="1_n1kpw"]
@@ -6,6 +6,25 @@
 [ext_resource type="PackedScene" uid="uid://dw326dacqh0k0" path="res://3D/player.tscn" id="2_h0me4"]
 [ext_resource type="AudioStream" uid="uid://cmfbv8anyl03n" path="res://sounds/end_fade.ogg" id="5_jlmvm"]
 [ext_resource type="Script" uid="uid://cibf01lxf6a1r" path="res://path_follow_3d.gd" id="6_5jwft"]
+
+[sub_resource type="FontFile" id="FontFile_5jwft"]
+cache/0/8/0/ascent = 0.0
+cache/0/8/0/descent = 0.0
+cache/0/8/0/underline_position = 0.0
+cache/0/8/0/underline_thickness = 0.0
+cache/0/8/0/scale = 1.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+
+[sub_resource type="TextMesh" id="TextMesh_equje"]
+text = "Here's
+Your
+Promotion!"
+font = SubResource("FontFile_5jwft")
+font_size = 8
 
 [sub_resource type="Environment" id="Environment_thrrh"]
 background_mode = 2
@@ -39,6 +58,10 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 5.3620367, 3.6919832, 0.5)
 
 [node name="Wall4" parent="Extra Walls" instance=ExtResource("1_h0me4")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -5.3260984, 3.7490559, 0.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Extra Walls"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 0.10553855, 0, -1, -4.6132365e-09, 0, 0.22809044, 0.0115569625)
+mesh = SubResource("TextMesh_equje")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_thrrh")
