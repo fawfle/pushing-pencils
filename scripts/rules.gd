@@ -83,12 +83,33 @@ func apply(id: ID, source: String) -> String:
 					trans += u
 			ret = trans
 		ID.ALPHABETICAL_ORDER:
-			var trans = []
+			var trans: Array[String] = []
+
 			for word in source.split(" "):
-				var chars = word.split("")
-				chars.sort()
+				var letters: Array[String] = []
+				var positions: Array[int] = []
+
+				# Collect alphabetic characters and their positions
+				for i in word.length():
+					var c := word[i]
+					if c.to_lower() != c.to_upper():
+						letters.append(c)
+						positions.append(i)
+
+				# Sort letters alphabetically (case-insensitive, stable)
+				letters.sort_custom(func(a, b):
+					return a.to_lower() < b.to_lower()
+				)
+
+				# Rebuild the word
+				var chars := word.split("")
+				for j in positions.size():
+					chars[positions[j]] = letters[j]
+
 				trans.append("".join(chars))
+
 			ret = " ".join(trans)
+
 	return clean_text(ret)
 
 func clean_text(text: String):
