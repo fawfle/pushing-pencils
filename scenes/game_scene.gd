@@ -204,16 +204,18 @@ func play_stamp_animation(item: Node):
 	add_child(item)
 	play_enter_animation(item)
 	
-	var stamp: Sprite2D = Sprite2D.new()
-	stamp.texture = stamp_texture
-	stamp.self_modulate.a = 0.8
-	
-	stamp.rotate(randf_range(0, 2 * PI))
-	
-	var sprite: Sprite2D = item.get_sprite()
-	# set clip children to true :)
-	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
-	sprite.add_child(stamp)
+	for i in range(10):
+		var stamp: Sprite2D = Sprite2D.new()
+		stamp.texture = stamp_texture
+		stamp.self_modulate.a = 0.8
+		
+		stamp.rotate(randf_range(0, 2 * PI))
+		stamp.position = Vector2(randf_range(-40, 40), randf_range(-50, 50))
+		
+		var sprite: Sprite2D = item.get_sprite()
+		# set clip children to true :)
+		sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+		sprite.add_child(stamp)
 	
 
 # set top deferred to make special objects appear above non special

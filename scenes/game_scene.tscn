@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dof0jaef5w8bj" path="res://objects/book.tscn" id="3_rurhu"]
 [ext_resource type="PackedScene" uid="uid://cn50lq7gg2eq7" path="res://objects/fax.tscn" id="4_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
-[ext_resource type="PackedScene" path="res://objects/pencil.tscn" id="5_y3j0m"]
+[ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
 
 [sub_resource type="Resource" id="Resource_y3j0m"]
 script = ExtResource("2_ycayy")

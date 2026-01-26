@@ -6,6 +6,7 @@ class_name Document extends Node2D
 
 @onready var pencil_sound: AudioStreamPlayer2D = $PencilWrite
 @onready var eraser_sound: AudioStreamPlayer2D = $EraserSound
+@onready var pen_sound: AudioStreamPlayer2D = $PenWrite
 
 # var img = Image.load_from_file("res://Sprites/Stamp.png")
 # var image: ImageTexture = ImageTexture.create_from_image(img)
@@ -28,11 +29,13 @@ var previous_text: String
 
 @onready var pencil_sound_timer: Timer = $PencilSoundTimer
 @onready var eraser_sound_timer: Timer = $EraserSoundTimer
+@onready var pen_sound_timer: Timer = $PenSoundTimer
 
 func _ready() -> void:
 	Global.item_dropped.connect(on_item_dropped)
 	pencil_sound_timer.timeout.connect(func(): pencil_sound.stop())
 	eraser_sound_timer.timeout.connect(func(): eraser_sound.stop())
+	pen_sound_timer.timeout.connect(func(): pen_sound.stop())
 
 func set_id(id: String) -> void:
 	label.text = id
@@ -90,6 +93,7 @@ func _on_text_box_text_changed(new_text: String) -> void:
 	
 	if instrument == Instrument.PEN and new_text.length() > previous_text.length():
 		used_pen = true
+		if (new_text[new_text.length() - 1] != " "): play_pen_sound()
 		
 	if (used_pen or instrument == Instrument.PEN) and new_text.length() < previous_text.length():
 		text_box.text = previous_text
@@ -110,6 +114,15 @@ func play_pencil_sound():
 	pencil_sound_timer.start(0.1)
 	var start_time = pencil_sound.stream.get_length() * randf_range(0, 0.8)
 	pencil_sound.play(start_time)
+
+func play_pen_sound():
+	if (pen_sound.playing):
+		pen_sound_timer.start(0.1)
+		return
+	
+	pen_sound_timer.start(0.1)
+	var start_time = pen_sound.stream.get_length() * randf_range(0, 0.8)
+	pen_sound.play(start_time)
 
 func play_eraser_sound():
 	if eraser_sound.playing:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bucktk2vvr5w4"]
+[gd_scene load_steps=10 format=3 uid="uid://bucktk2vvr5w4"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_nkp2l"]
 [ext_resource type="Script" uid="uid://ddmn6evynvp2y" path="res://objects/document.gd" id="1_qw4ch"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="4_bjm35"]
 [ext_resource type="AudioStream" uid="uid://nbkf0li6uexj" path="res://sounds/pencil_write.ogg" id="6_mg7v8"]
 [ext_resource type="AudioStream" uid="uid://tocpj6m4ngwi" path="res://sounds/eraser2.ogg" id="7_ua4ij"]
+[ext_resource type="AudioStream" uid="uid://bg70aibhrsrl5" path="res://sounds/pen_write.ogg" id="8_l01fc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bjm35"]
 size = Vector2(90, 15)
@@ -58,9 +59,15 @@ stream = ExtResource("7_ua4ij")
 volume_db = 20.0
 parameters/looping = false
 
+[node name="PenWrite" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_l01fc")
+volume_db = 6.0
+
 [node name="PencilSoundTimer" type="Timer" parent="."]
 
 [node name="EraserSoundTimer" type="Timer" parent="."]
+
+[node name="PenSoundTimer" type="Timer" parent="."]
 
 [connection signal="text_changed" from="TextBox" to="." method="_on_text_box_text_changed"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
