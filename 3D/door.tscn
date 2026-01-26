@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://nc2r08tpfmn7"]
+[gd_scene load_steps=9 format=3 uid="uid://nc2r08tpfmn7"]
 
 [ext_resource type="PackedScene" uid="uid://ci0qbrhxj7pm4" path="res://3D/office_door/scene.gltf" id="1_kampy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kampy"]
 cull_mode = 2
+albedo_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_d62bs"]
 material = SubResource("StandardMaterial3D_kampy")
@@ -11,6 +12,7 @@ size = Vector2(1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ictfo"]
 cull_mode = 2
+albedo_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qwwn3"]
 material = SubResource("StandardMaterial3D_ictfo")
@@ -18,12 +20,16 @@ size = Vector2(1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ptksc"]
 cull_mode = 2
+albedo_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2m0sy"]
 material = SubResource("StandardMaterial3D_ptksc")
 size = Vector2(0.5, 0.4)
 
-[node name="Door" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_kampy"]
+size = Vector3(0.9141846, 0.9984131, 0.0075683594)
+
+[node name="Door" type="StaticBody3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.6619084, 0.1983383, 0.047016293)
@@ -41,3 +47,11 @@ skeleton = NodePath("../MeshInstance3D")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.498, 0.047)
 mesh = SubResource("PlaneMesh_2m0sy")
 skeleton = NodePath("../MeshInstance3D2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6752281, 0.19807142, 0.05085969)
+shape = SubResource("BoxShape3D_kampy")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6803663, 0.19807142, 0.05085969)
+shape = SubResource("BoxShape3D_kampy")

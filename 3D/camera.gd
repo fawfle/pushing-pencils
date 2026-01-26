@@ -9,6 +9,9 @@ extends Node3D
 #func _process(delta: float) -> void:
 	#var joy_dir = Input.get_vector("pan_left","pan_right","pan_up","pan_down")
 	#rotate_from_vector(joy_dir * delta * Vector2(horizontal_acceleration, vertical_acceleration))
+	
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -20,3 +23,7 @@ func rotate_from_vector(v: Vector2):
 	rotation.x -= v.y
 	rotation.y -= v.x
 	rotation.x = clamp(rotation.x, min_limit_x, max_limit_x)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("escape"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

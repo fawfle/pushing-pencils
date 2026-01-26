@@ -6,7 +6,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_7nt4h"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4v4u1"]
-radius = 0.23388672
+radius = 0.22802734
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
