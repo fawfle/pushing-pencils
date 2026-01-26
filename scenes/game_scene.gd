@@ -146,7 +146,7 @@ func on_document_submitted(doc_input: String):
 		check_events()
 		Global.document_completed.emit()
 		current_document.queue_free()
-		begin_round()
+		if (completed < len(events)): begin_round()
 	else:
 		if rejection_memo_text != "":
 			var memo: Memo = memo_scene.instantiate()
