@@ -1,1 +1,1 @@
-class_name Memo extends TextDocument
+class_name Memo extends TextItem

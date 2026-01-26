@@ -1,4 +1,4 @@
-class_name IndexCard extends TextDocument
+class_name IndexCard extends TextItem
 
 @onready var simple_header: Sprite2D = $SimpleHeader
 @onready var fancy_header: Sprite2D = $FancyHeader

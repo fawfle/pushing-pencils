@@ -65,19 +65,31 @@ var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.HYPHEN_SPACE: load("res://Sprites/shapes/shape-0006.png"),
 }
 
-class CustomRejection:
+class CustomResponse:
 	var activated: bool = false
+	var index: int = 0
 	var condition
-	var text: String
+	var text: Array[String]
 	var type: DOC_TYPE = DOC_TYPE.WARNING
 	var apply_effect ## function to run on created document
 	
-	func _init(_condition, _text: String, _doc_type: DOC_TYPE=DOC_TYPE.WARNING, _apply_effect=func(_x): return):
+	func _init(_condition, _text, _doc_type: DOC_TYPE=DOC_TYPE.WARNING, _apply_effect=func(_x): return):		
+		if _text is Array:
+			text.assign(_text)
+		else:
+			text = [_text]
+			
 		condition = _condition
-		text = _text
 		type = _doc_type
 		apply_effect = _apply_effect
-		
+	
+	func get_text():
+		return text[index]
+	
+	func update():
+		index += 1
+		if index == len(text):
+			activated = true
 
 enum DOC_TYPE {
 	MEMO,
@@ -86,20 +98,22 @@ enum DOC_TYPE {
 	INDEX_CARD
 }
 
-## rejections for specific failure states, meant to teach play
-var custom_rejections: Array[CustomRejection] = [
-	CustomRejection.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
-	CustomRejection.new(func(item: Node2D): return (item is Warning), "DO NOT FAX WARNINGS"),
-	CustomRejection.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
+## responses for specific failure states, meant to teach play
+var custom_responses: Array[CustomResponse] = [
+	CustomResponse.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
+	CustomResponse.new(func(item: Node2D): return (item is Warning), ["DO NOT FAX WARNINGS", "FINAL WARNING FOR FAXING WARNINGS", "YOU HAVE BEEN WARNED"]),
+	CustomResponse.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
 	
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower() == "your name"), "YOU ARE NOT FUNNY", DOC_TYPE.WARNING),
 	
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", DOC_TYPE.NOTICE),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\nUse Pencil."),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header())
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
+	
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", DOC_TYPE.NOTICE),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\nUse Pencil."),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header())
 ]
 
 @onready var screen_size = get_viewport_rect().size / 4
@@ -117,7 +131,7 @@ func _ready() -> void:
 		add_child(book)
 		play_enter_animation(book)
 	
-	if completed > 11:
+	if completed > 13:
 		var pen = pen_scene.instantiate()
 		add_child(pen)
 		play_enter_animation(pen, 2.1)
@@ -139,7 +153,7 @@ func run_event(event: Event):
 	for scene in event.nodes_to_add:
 		var obj: Node = scene.instantiate()
 		add_child(obj)
-		play_enter_animation(obj, 2)
+		play_enter_animation(obj, 1.8)
 		
 	if event.memo_text != "":
 		add_memo(event.memo_text)
@@ -185,7 +199,7 @@ func on_document_submitted(doc_input: String):
 			play_enter_animation(memo, 1.5)
 			rejection_memo_text = ""
 		
-		handle_custom_rejections(current_document)
+		handle_custom_responses(current_document)
 		
 		current_document.handle_reset()
 		play_stamp_animation(current_document)
@@ -262,7 +276,7 @@ func set_file_shapes():
 		if rule_shape_dictionary.has(rule):
 			current_file.add_shape(rule_shape_dictionary[rule])
 
-func play_stamp_animation(item: Node):	
+func play_stamp_animation(item: Node):
 	if get_children().has(item):
 		remove_child(item)
 	await get_tree().create_timer(0.4).timeout
@@ -275,7 +289,14 @@ func play_stamp_animation(item: Node):
 	stamp.self_modulate.a = 0.8
 	
 	stamp.rotate(randf_range(0, 2 * PI))
-	stamp.position = Vector2(randf_range(-35, 15), randf_range(-55, 25))
+	var bounds: Vector2 = Vector2.ZERO;
+	# terrible code to get collision shape
+	for child in item.get_children():
+		if child is DesktopItem:
+			bounds = (child as DesktopItem).padding
+	# account for fact that vertical padding is usually less
+	bounds = (bounds + Vector2(0, 15 * floor(bounds.y / 15))).max(Vector2.ZERO)
+	stamp.position = Vector2(randf_range(-bounds.x, bounds.x), randf_range(-bounds.y, bounds.y))
 	
 	var sprite: Sprite2D = item.get_sprite()
 	# set clip children to true :)
@@ -286,9 +307,7 @@ func play_stamp_animation(item: Node):
 	
 
 # set top deferred to make special objects appear above non special
-func play_enter_animation(node: Node2D, wait_time: float=0):
-	paper_slide_sound.play()
-	
+func play_enter_animation(node: Node2D, wait_time: float=0):	
 	var duration: float = randf_range(0.8, 1.2)
 	
 	var start_position: Vector2 = Vector2(-screen_size.x, randf_range(-10, 10))
@@ -302,6 +321,8 @@ func play_enter_animation(node: Node2D, wait_time: float=0):
 	
 	await get_tree().create_timer(randf_range(0, 0.2)).timeout
 	
+	paper_slide_sound.play()
+	
 	var timer: SceneTreeTimer = get_tree().create_timer(duration)
 	
 	while timer.time_left != 0:
@@ -313,6 +334,9 @@ func play_enter_animation(node: Node2D, wait_time: float=0):
 		await get_tree().process_frame
 
 func on_item_submitted(item: Node2D):
+	if item is Pencil or item is Pen:
+		return
+	
 	fax_sound.play()
 	remove_child(item)
 	
@@ -328,26 +352,28 @@ func on_item_submitted(item: Node2D):
 		play_stamp_animation(item)
 	if item is IndexCard:
 		play_stamp_animation(item)
+	if item is Pamphlet:
+		play_stamp_animation(item)
 	
-	handle_custom_rejections(item)
+	handle_custom_responses(item)
 
-func handle_custom_rejections(item: Node2D):
-	for custom_rejection in custom_rejections:
-		if not custom_rejection.activated and custom_rejection.condition.call(item):
+func handle_custom_responses(item: Node2D):
+	for custom_response in custom_responses:
+		if not custom_response.activated and custom_response.condition.call(item):
 			var obj = null
-			match custom_rejection.type:
+			match custom_response.type:
 				DOC_TYPE.WARNING:
-					obj = add_warning(custom_rejection.text)
+					obj = add_warning(custom_response.get_text())
 				DOC_TYPE.MEMO:
-					obj =add_memo(custom_rejection.text)
+					obj =add_memo(custom_response.get_text())
 				DOC_TYPE.NOTICE:
-					obj = add_notice(custom_rejection.text)
+					obj = add_notice(custom_response.get_text())
 				DOC_TYPE.INDEX_CARD:
-					obj = add_index_card(custom_rejection.text)
-			if obj and custom_rejection.apply_effect:
-				custom_rejection.apply_effect.call(obj)
+					obj = add_index_card(custom_response.get_text())
+			if obj and custom_response.apply_effect:
+				custom_response.apply_effect.call(obj)
 			
-			custom_rejection.activated = true
+			custom_response.update()
 
 func add_memo(text: String, buffer: float = 1.5) -> Memo:
 	var memo: Memo = memo_scene.instantiate()

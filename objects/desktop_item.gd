@@ -3,7 +3,7 @@ class_name DesktopItem extends TextureButton
 var dragging: bool = false
 var offset: Vector2 = Vector2.ZERO
 
-@export var PADDING: Vector2 = Vector2(30,30)
+@export var padding: Vector2 = Vector2(30,30)
 
 var screen_size: Vector2 = Vector2.ZERO
 var screen_bounds: Array[Vector2]
@@ -38,6 +38,7 @@ func _on_button_down() -> void:
 	dragging = true
 	offset = parent.get_global_mouse_position() - parent.global_position
 	parent.get_parent().move_child(parent, -1)
+	parent.z_index = 10
 	Global.held = parent
 	
 	if len(click_sounds) > 0: click_sounds.pick_random().play()
@@ -46,7 +47,9 @@ func _on_button_down() -> void:
 func _on_button_up() -> void:
 	dragging = false
 	Global.held = null
+	parent.get_parent().move_child(parent, -1)
 	Global.item_dropped.emit(parent)
+	parent.z_index = 0
 	
 	if len(drop_sounds) > 0: drop_sounds.pick_random().play()
 
@@ -55,4 +58,4 @@ func update_viewport() -> void:
 	screen_size = get_viewport_rect().size # / get_viewport().get_camera_2d().scale
 	screen_size /= 4; # scale of camera
 	
-	screen_bounds = [-screen_size / 2 + PADDING, screen_size / 2 - PADDING]
+	screen_bounds = [-screen_size / 2 + padding, screen_size / 2 - padding]

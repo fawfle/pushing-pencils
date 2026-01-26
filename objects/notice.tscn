@@ -19,7 +19,7 @@ offset_left = -78.0
 offset_top = -24.0
 offset_right = 78.0
 offset_bottom = 24.0
-PADDING = Vector2(60, 15)
+padding = Vector2(60, 15)
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false

@@ -24,4 +24,4 @@ offset_left = -2.0
 offset_top = -47.0
 offset_right = 2.0
 offset_bottom = 47.0
-PADDING = Vector2(5, 5)
+padding = Vector2(2, 15)

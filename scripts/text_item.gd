@@ -1,4 +1,4 @@
-class_name TextDocument extends Node2D
+class_name TextItem extends Node2D
 
 @onready var text_label: Label = $TextLabel
 @onready var sprite: Sprite2D = $Sprite2D

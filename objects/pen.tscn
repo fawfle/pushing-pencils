@@ -18,7 +18,7 @@ offset_left = -2.0
 offset_top = -47.0
 offset_right = 2.0
 offset_bottom = 29.0
-PADDING = Vector2(30, 5)
+padding = Vector2(2, 15)
 
 [node name="Area2D" type="Area2D" parent="."]
 
