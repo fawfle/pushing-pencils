@@ -52,10 +52,10 @@ func apply(id: ID, source: String) -> String:
 					trans += " "
 					continue
 					
-				var code = c.unicode_at(0) - 96
+				var code: int = c.unicode_at(0) - 96
 				if code > 25:
 					trans+= c
-				trans += code
+				trans += str(code)
 			ret = trans
 		ID.REVERSE_EACH_WORD:
 			var trans = []
