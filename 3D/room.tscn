@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://c56fq54yty1te"]
+
+[ext_resource type="PackedScene" uid="uid://c82g47qfxdmtx" path="res://3D/ceiling.tscn" id="1_23ldi"]
+[ext_resource type="PackedScene" uid="uid://c4irk3l7xkxyk" path="res://3D/floor.tscn" id="2_xr1h3"]
+[ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="3_8kajm"]
+[ext_resource type="PackedScene" uid="uid://btvjhoq7byika" path="res://3D/desk.tscn" id="4_s5c1j"]
+[ext_resource type="PackedScene" uid="uid://b05ojeoru2jak" path="res://3D/filing_cabinets.tscn" id="5_it51o"]
+[ext_resource type="PackedScene" uid="uid://nc2r08tpfmn7" path="res://3D/door.tscn" id="6_4uwwf"]
+[ext_resource type="PackedScene" uid="uid://dw326dacqh0k0" path="res://3D/player.tscn" id="7_d4jme"]
+
+[node name="Room" type="Node3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="Ceiling" parent="Walls" instance=ExtResource("1_23ldi")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.0007059723, 0.7604521, 5.9865415e-05)
+
+[node name="Floor" parent="Walls" instance=ExtResource("2_xr1h3")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+
+[node name="Wall" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.5)
+
+[node name="Wall3" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.5, 0.38, 0)
+
+[node name="Wall2" parent="Walls" instance=ExtResource("3_8kajm")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.5, 0.38, 0)
+
+[node name="Decorations" type="Node3D" parent="."]
+
+[node name="Desk" parent="Decorations" instance=ExtResource("4_s5c1j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.030033857)
+
+[node name="Filing Cabinets" parent="Decorations" instance=ExtResource("5_it51o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015285298, 0, -0.41452387)
+
+[node name="Door" parent="." instance=ExtResource("6_4uwwf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.302201, 0.45169842)
+
+[node name="Player" parent="." instance=ExtResource("7_d4jme")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.047328234, 0.20072973, 0.2770422)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.51756984, 0)

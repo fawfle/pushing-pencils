@@ -35,12 +35,16 @@ func apply(id: ID, source: String) -> String:
 			return source.replace(" ", "-")
 		ID.ONLY_FIRST_13_LETTERS:
 			var regex = RegEx.new()
-			regex.compile("[n-zN-z]")
-			return regex.sub(source, "")
+			regex.compile("[n-zN-Z]")
+			return regex.sub(source, "", true)
 		ID.ALPHANUMERIC:
 			var trans = ""
 			for c in source.to_lower():
-				var code = c.unicode_at(0) -96
+				if c == " ":
+					trans += " "
+					continue
+					
+				var code = c.unicode_at(0) - 96
 				if code > 25:
 					trans+= c
 				trans += code
@@ -52,8 +56,8 @@ func apply(id: ID, source: String) -> String:
 			return " ".join(trans)
 		ID.NO_VOWELS:
 			var regex = RegEx.new()
-			regex.compile("[aeiou]")
-			return regex.sub(source, "")
+			regex.compile("[aeiouyAEIOUY]")
+			return regex.sub(source, "", true)
 	return source
 	
 var rule_descriptions = {

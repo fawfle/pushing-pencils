@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cm6hogh45ygc5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5juuw"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_qibad"]
+material = SubResource("StandardMaterial3D_5juuw")
+size = Vector2(1, 0.76)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5juuw"]
+size = Vector3(1, 1, 0.001)
+
+[node name="Wall" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_qibad")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0015500784)
+shape = SubResource("BoxShape3D_5juuw")
