@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dea3pjl5swgjq"]
+
+[ext_resource type="Texture2D" uid="uid://djx2hwjg6oa0p" path="res://Sprites/2employee.png" id="1_dfcu3"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_g0x23"]
+
+[node name="Award" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 24)
+texture = ExtResource("1_dfcu3")
+
+[node name="DesktopItem" parent="." instance=ExtResource("2_g0x23")]
+offset_left = -15.0
+offset_top = -16.0
+offset_right = 18.0
+offset_bottom = 32.0

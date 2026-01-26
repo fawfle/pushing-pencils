@@ -99,6 +99,13 @@ func clean_text(text: String):
 	
 	return text
 
+func get_punctuation(text: String):
+	if text.length() == 0: return text
+	var ret: String = ""
+	
+	while (text[text.length() - 1].to_upper() != text[text.length() - 1]):
+		ret += text[text.length() - 1]
+
 var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
 	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet",

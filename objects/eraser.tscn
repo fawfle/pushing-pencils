@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b32iyuikcp0k"]
+
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_jvsra"]
+[ext_resource type="Texture2D" uid="uid://ctk4oguo2kwfq" path="res://Sprites/eraser.png" id="1_jxrw8"]
+
+[node name="Eraser" type="Node2D"]
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_jvsra")]
+offset_left = -30.0
+offset_top = -15.0
+offset_right = 29.0
+offset_bottom = 16.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_jxrw8")

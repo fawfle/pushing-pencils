@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://6ehu0r7ie7gx"]
+
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_82pcf"]
+[ext_resource type="Script" uid="uid://cxfhwg17nai5h" path="res://objects/plaque.gd" id="1_c0kpq"]
+[ext_resource type="Texture2D" uid="uid://d2trv8tcbgfhb" path="res://Sprites/plaque.png" id="1_ufvud"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_ufvud"]
+
+[node name="Plaque" type="Node2D"]
+script = ExtResource("1_c0kpq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ufvud")
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_82pcf")]
+offset_left = -48.0
+offset_top = -16.0
+offset_right = 48.0
+offset_bottom = 16.0
+
+[node name="TextLabel" type="Label" parent="."]
+offset_left = -12.0
+offset_top = -7.0
+offset_right = 34.0
+offset_bottom = 6.0
+theme = ExtResource("3_ufvud")
+text = "employee name"
+autowrap_mode = 1
+clip_text = true
