@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=22 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
 [ext_resource type="PackedScene" uid="uid://dof0jaef5w8bj" path="res://objects/book.tscn" id="3_rurhu"]
 [ext_resource type="PackedScene" uid="uid://cn50lq7gg2eq7" path="res://objects/fax.tscn" id="4_bw6k5"]
+[ext_resource type="PackedScene" path="res://objects/pamphlet1.tscn" id="4_kk2rg"]
 [ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
 
@@ -19,7 +20,6 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_rurhu"]
 script = ExtResource("2_ycayy")
-on_completed = 1
 memo_text = "COPY THE TEXT"
 update_rules = true
 rules = Array[int]([4])
@@ -28,35 +28,49 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_bw6k5"]
 script = ExtResource("2_ycayy")
-on_completed = 2
 memo_text = "NEWS: ALL EMPLOYEES MUST WASH HANDS"
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
+[sub_resource type="Resource" id="Resource_ldkr4"]
+script = ExtResource("2_ycayy")
+nodes_to_add = Array[PackedScene]([ExtResource("3_rurhu")])
+update_rules = true
+rules = Array[int]([5])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_kk2rg"]
 script = ExtResource("2_ycayy")
-on_completed = 3
-nodes_to_add = Array[PackedScene]([ExtResource("3_rurhu")])
 update_rules = true
 rules = Array[int]([9])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_mw25s"]
 script = ExtResource("2_ycayy")
-on_completed = 4
 update_rules = true
 rules = Array[int]([10])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_tcjrq"]
 script = ExtResource("2_ycayy")
-on_completed = 5
 update_rules = true
 rules = Array[int]([6])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
+[sub_resource type="Resource" id="Resource_tqxxy"]
+script = ExtResource("2_ycayy")
+nodes_to_add = Array[PackedScene]([ExtResource("4_kk2rg")])
+update_rules = true
+rules = Array[int]([11])
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
+[sub_resource type="Resource" id="Resource_5ay1a"]
+script = ExtResource("2_ycayy")
+update_rules = true
+rules = Array[int]([12])
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
 [sub_resource type="Resource" id="Resource_b5spy"]
 script = ExtResource("2_ycayy")
-on_completed = 10
 nodes_to_add = Array[PackedScene]([ExtResource("5_rurhu")])
 memo_text = "TO KEEP THINGS PROFESSIONAL, USE PEN"
 update_rules = true
@@ -65,14 +79,12 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_utbpp"]
 script = ExtResource("2_ycayy")
-on_completed = 11
 update_rules = true
 rules = Array[int]([2])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_rvs2r"]
 script = ExtResource("2_ycayy")
-on_completed = 15
 rejection_memo_text = "DUE TO LETTER SHORTAGES, SQURE IS CHANGED"
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
@@ -84,8 +96,7 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
-completed = 3
-events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r")])
+events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)

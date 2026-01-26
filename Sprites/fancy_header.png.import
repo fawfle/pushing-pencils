@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb40s37elpcfa"
-path="res://.godot/imported/KYS Alex.png-a2a507513cd1349e6d4e81cd7dd366ec.ctex"
+path="res://.godot/imported/fancy_header.png-f764d96ebbf33f6ec5cecb39384a78a4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/KYS Alex.png"
-dest_files=["res://.godot/imported/KYS Alex.png-a2a507513cd1349e6d4e81cd7dd366ec.ctex"]
+source_file="res://Sprites/fancy_header.png"
+dest_files=["res://.godot/imported/fancy_header.png-f764d96ebbf33f6ec5cecb39384a78a4.ctex"]
 
 [params]
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bucktk2vvr5w4"]
+[gd_scene load_steps=11 format=3 uid="uid://bucktk2vvr5w4"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_nkp2l"]
 [ext_resource type="Script" uid="uid://ddmn6evynvp2y" path="res://objects/document.gd" id="1_qw4ch"]
 [ext_resource type="Texture2D" uid="uid://cw1ixp574yn21" path="res://Sprites/document-0001.png" id="2_dqu1v"]
 [ext_resource type="PackedScene" uid="uid://dagxb0dhvb3ub" path="res://objects/text_box.tscn" id="3_dqu1v"]
+[ext_resource type="Texture2D" uid="uid://bb40s37elpcfa" path="res://Sprites/fancy_header.png" id="3_pn03h"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="4_bjm35"]
 [ext_resource type="AudioStream" uid="uid://nbkf0li6uexj" path="res://sounds/pencil_write.ogg" id="6_mg7v8"]
 [ext_resource type="AudioStream" uid="uid://tocpj6m4ngwi" path="res://sounds/eraser2.ogg" id="7_ua4ij"]
@@ -18,6 +19,11 @@ script = ExtResource("1_qw4ch")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 clip_children = 2
 texture = ExtResource("2_dqu1v")
+
+[node name="FancyHeader" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-28, -53)
+texture = ExtResource("3_pn03h")
 
 [node name="TextBox" parent="." instance=ExtResource("3_dqu1v")]
 modulate = Color(0.40824404, 0.40824407, 0.40824404, 1)
@@ -64,10 +70,13 @@ stream = ExtResource("8_l01fc")
 volume_db = 6.0
 
 [node name="PencilSoundTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="EraserSoundTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="PenSoundTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="text_changed" from="TextBox" to="." method="_on_text_box_text_changed"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

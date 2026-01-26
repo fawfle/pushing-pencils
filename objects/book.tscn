@@ -170,7 +170,6 @@ bc df"
 horizontal_alignment = 1
 
 [node name="PageL3" type="Sprite2D" parent="Pages"]
-visible = false
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
