@@ -8,4 +8,4 @@ script = ExtResource("1_2x6ey")
 min_limit_x = -0.25
 max_limit_x = 1.0
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="PlayerCam" type="Camera3D" parent="." groups=["camtest"]]

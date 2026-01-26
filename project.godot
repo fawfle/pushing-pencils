@@ -25,6 +25,10 @@ Rules="*res://scripts/rules.gd"
 
 window/size/resizable=false
 
+[global_group]
+
+camtest=""
+
 [gui]
 
 theme/custom="uid://dv3dy2j4wgcqr"

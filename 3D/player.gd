@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @export var base_speed := .5
 
-@onready var camera = $Camera/Camera3D
+@onready var camera = $Camera/PlayerCam
 
 var movement_input := Vector2.ZERO
 
