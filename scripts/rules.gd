@@ -8,6 +8,7 @@ enum ID {
 	MATCH,
 	HYPHEN_SPACE,
 	ONLY_FIRST_13_LETTERS,
+	ONLY_LAST_13_LETTERS,
 	ALPHANUMERIC,
 	REVERSE_EACH_WORD,
 	NO_VOWELS,
@@ -40,7 +41,10 @@ func apply(id: ID, source: String) -> String:
 			var regex = RegEx.new()
 			regex.compile("[n-zN-Z]")
 			ret = regex.sub(source, "", true)
-			
+		ID.ONLY_FIRST_13_LETTERS:
+			var regex = RegEx.new()
+			regex.compile("[a-mA-M]")
+			ret = regex.sub(source, "", true)
 		ID.ALPHANUMERIC:
 			var trans = ""
 			for c in source.to_lower():
@@ -62,7 +66,29 @@ func apply(id: ID, source: String) -> String:
 			var regex = RegEx.new()
 			regex.compile("[aeiouyAEIOUY]")
 			ret = regex.sub(source, "", true)
-	return ret
+		ID.FLIP_CASE:
+			var trans = ""
+			for c in source:
+				if c == " ":
+					trans += " "
+					continue
+				var u = c.to_upper()
+				var l = c.to_lower()
+				if u == l:
+					trans += c
+				elif c == u:
+					trans += l
+				elif c == l:
+					trans += u
+			ret = trans
+		ID.ALPHABETICAL_ORDER:
+			var trans = []
+			for word in source.split(" "):
+				var chars = word.split("")
+				chars.sort()
+				trans.append("".join(chars))
+			ret = " ".join(trans)
+	return clean_text(ret)
 
 func clean_text(text: String):
 	while text[text.length() - 1] == " ": text = text.substr(0, text.length() - 2)
