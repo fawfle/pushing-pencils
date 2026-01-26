@@ -46,6 +46,10 @@ var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png"),
 	Rules.ID.NO_VOWELS: load("res://Sprites/shapes/shape-0001.png"),
 	Rules.ID.ONLY_FIRST_13_LETTERS: load("res://Sprites/shapes/shape-0003.png"),
+	Rules.ID.ONLY_LAST_13_LETTERS: load("res://Sprites/shapes/shape-0003.png"),
+	Rules.ID.FLIP_CASE: load("res://Sprites/shapes/shape-0004.png"),
+	Rules.ID.ALPHABETICAL_ORDER: load("res://Sprites/shapes/shape-0005.png"),
+	Rules.ID.HYPHEN_SPACE: load("res://Sprites/shapes/shape-0006.png"),
 }
 
 class CustomRejection:
