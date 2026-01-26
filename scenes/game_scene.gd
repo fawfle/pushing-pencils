@@ -6,6 +6,7 @@ var document_scene: PackedScene = preload("res://objects/document.tscn")
 var warning_scene: PackedScene = preload("res://objects/warning.tscn")
 var memo_scene: PackedScene = preload("res://objects/memo.tscn")
 var notice_scene: PackedScene = preload("res://objects/notice.tscn")
+var index_card_scene: PackedScene = preload("res://objects/index_card.tscn")
 
 @onready var stamp_sound := $StampSound
 @onready var fax_sound := $FaxSound
@@ -50,7 +51,9 @@ enum SPECIAL_EVENTS {
 
 var stamp_texture: Texture2D = load("res://Sprites/Stamp.png")
 
+# for debugging, add if needed
 var book_scene: PackedScene = preload("res://objects/book.tscn")
+var pen_scene: PackedScene = preload("res://objects/pen.tscn")
 
 var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png"),
@@ -67,16 +70,20 @@ class CustomRejection:
 	var condition
 	var text: String
 	var type: DOC_TYPE = DOC_TYPE.WARNING
+	var apply_effect ## function to run on created document
 	
-	func _init(_condition, _text: String, _doc_type: DOC_TYPE=DOC_TYPE.WARNING):
+	func _init(_condition, _text: String, _doc_type: DOC_TYPE=DOC_TYPE.WARNING, _apply_effect=func(_x): return):
 		condition = _condition
 		text = _text
 		type = _doc_type
+		apply_effect = _apply_effect
+		
 
 enum DOC_TYPE {
 	MEMO,
 	WARNING,
-	NOTICE
+	NOTICE,
+	INDEX_CARD
 }
 
 ## rejections for specific failure states, meant to teach play
@@ -85,15 +92,19 @@ var custom_rejections: Array[CustomRejection] = [
 	CustomRejection.new(func(item: Node2D): return (item is Warning), "DO NOT FAX WARNINGS"),
 	CustomRejection.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
 	
-	
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
 	
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", DOC_TYPE.NOTICE),
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\n Look at Header")
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\nUse Pencil."),
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header())
 ]
 
 @onready var screen_size = get_viewport_rect().size / 4
+
+var promoted: bool = false
 
 func _ready() -> void:
 	Utils.load_wordlist()
@@ -106,16 +117,23 @@ func _ready() -> void:
 		add_child(book)
 		play_enter_animation(book)
 	
+	if completed > 11:
+		var pen = pen_scene.instantiate()
+		add_child(pen)
+		play_enter_animation(pen, 100)
+	
 	check_events()
 	begin_round()
 
-func check_events() -> void:
-	if completed == len(events):
-		get_tree().change_scene_to_file("res://3d_section.tscn")
-		return
-	
+func check_events() -> void:	
 	if events[completed]:
 		run_event(events[completed])
+		
+	if completed == len(events) - 1:
+		promoted = true
+		await get_tree().create_timer(5).timeout
+		get_tree().change_scene_to_file("res://3d_section.tscn")
+		return
 
 func run_event(event: Event):
 	for scene in event.nodes_to_add:
@@ -189,6 +207,9 @@ func add_file():
 	play_enter_animation(current_document)
 
 func begin_round():
+	if promoted:
+			return
+			
 	process_master_rules()
 	
 	match round_type:
@@ -312,32 +333,48 @@ func on_item_submitted(item: Node2D):
 func handle_custom_rejections(item: Node2D):
 	for custom_rejection in custom_rejections:
 		if not custom_rejection.activated and custom_rejection.condition.call(item):
+			var obj = null
 			match custom_rejection.type:
 				DOC_TYPE.WARNING:
-					add_warning(custom_rejection.text)
+					obj = add_warning(custom_rejection.text)
 				DOC_TYPE.MEMO:
-					add_memo(custom_rejection.text)
+					obj =add_memo(custom_rejection.text)
 				DOC_TYPE.NOTICE:
-					add_notice(custom_rejection.text)
+					obj = add_notice(custom_rejection.text)
+				DOC_TYPE.INDEX_CARD:
+					obj = add_index_card(custom_rejection.text)
+			if obj and custom_rejection.apply_effect:
+				custom_rejection.apply_effect.call(obj)
+			
 			custom_rejection.activated = true
 
-func add_memo(text: String, buffer: int = 60):
+func add_memo(text: String, buffer: int = 60) -> Memo:
 	var memo: Memo = memo_scene.instantiate()
 	add_child(memo)
 	play_enter_animation(memo, buffer)
 	memo.set_text(text)
+	return memo
 
-func add_warning(text: String, buffer: int = 100):
+func add_warning(text: String, buffer: int = 100) -> Warning:
 	var warning: Warning = warning_scene.instantiate()
 	add_child(warning)
 	warning.set_text(text)
 	play_enter_animation(warning, buffer)
+	return warning
 
-func add_notice(text: String, buffer: int = 100):
+func add_notice(text: String, buffer: int = 100) -> Notice:
 	var notice: Notice = notice_scene.instantiate()
 	add_child(notice)
 	notice.set_text(text)
 	play_enter_animation(notice, buffer)
+	return notice
+
+func add_index_card(text: String, buffer: int = 100) -> IndexCard:
+	var card: IndexCard = index_card_scene.instantiate()
+	add_child(card)
+	card.set_text(text)
+	play_enter_animation(card, buffer)
+	return card
 
 var symbol_rules: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_13_LETTERS, Rules.ID.REVERSE_EACH_WORD, Rules.ID.NO_VOWELS, Rules.ID.FLIP_CASE, Rules.ID.ALPHABETICAL_ORDER]
 

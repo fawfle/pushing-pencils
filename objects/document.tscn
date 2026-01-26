@@ -22,8 +22,7 @@ clip_children = 2
 texture = ExtResource("2_dqu1v")
 
 [node name="FancyHeader" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(-28, -53)
+position = Vector2(-29, -56)
 texture = ExtResource("3_pn03h")
 
 [node name="Whiteout" type="Sprite2D" parent="."]

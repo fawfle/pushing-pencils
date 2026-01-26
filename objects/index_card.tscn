@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://be7bi0ex2v61t"]
+
+[ext_resource type="Texture2D" uid="uid://bbylugwqank1g" path="res://Sprites/notecard.png" id="1_h616n"]
+[ext_resource type="Script" uid="uid://w5gp5erngjkx" path="res://objects/index_card.gd" id="1_mg65q"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_mg65q"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_lrrnq"]
+[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/simple-header.png" id="5_3lucn"]
+[ext_resource type="Texture2D" uid="uid://bb40s37elpcfa" path="res://Sprites/fancy_header.png" id="6_xduqs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3lucn"]
+size = Vector2(69, 113)
+
+[node name="IndexCard" type="Node2D"]
+script = ExtResource("1_mg65q")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_h616n")
+
+[node name="DesktopItem" parent="." instance=ExtResource("2_mg65q")]
+offset_left = -30.0
+offset_top = -16.0
+offset_right = 30.0
+offset_bottom = 16.0
+
+[node name="TextLabel" type="Label" parent="."]
+modulate = Color(0.28485027, 0.28485027, 0.2848502, 1)
+offset_left = -28.0
+offset_top = -10.0
+offset_right = 28.0
+offset_bottom = 15.0
+theme = ExtResource("3_lrrnq")
+text = "sample text"
+autowrap_mode = 3
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.5, 0.5)
+shape = SubResource("RectangleShape2D_3lucn")
+
+[node name="SimpleHeader" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(11, 9)
+texture = ExtResource("5_3lucn")
+
+[node name="FancyHeader" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(11, 9)
+texture = ExtResource("6_xduqs")
