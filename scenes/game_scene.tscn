@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=26 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" path="res://objects/pamphlet1.tscn" id="4_kk2rg"]
 [ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
+[ext_resource type="AudioStream" uid="uid://bd4iy0hq151ax" path="res://sounds/stamp.ogg" id="8_b5spy"]
+[ext_resource type="AudioStream" uid="uid://c8nw65v7vdmt0" path="res://sounds/fax.ogg" id="9_utbpp"]
+[ext_resource type="AudioStream" uid="uid://bcsj8jmg3u6e7" path="res://sounds/paper_slide.ogg" id="10_mw25s"]
 
 [sub_resource type="Resource" id="Resource_y3j0m"]
 script = ExtResource("2_ycayy")
@@ -69,6 +72,12 @@ update_rules = true
 rules = Array[int]([12])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
+[sub_resource type="Resource" id="Resource_liy57"]
+script = ExtResource("2_ycayy")
+update_rules = true
+rules = Array[int]([13])
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
 [sub_resource type="Resource" id="Resource_b5spy"]
 script = ExtResource("2_ycayy")
 nodes_to_add = Array[PackedScene]([ExtResource("5_rurhu")])
@@ -96,7 +105,8 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
-events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r")])
+completed = 9
+events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_liy57"), null, null, SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)
@@ -113,3 +123,16 @@ position = Vector2(80, 20)
 
 [node name="Pencil" parent="." instance=ExtResource("5_y3j0m")]
 position = Vector2(92, 0)
+
+[node name="StampSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_b5spy")
+max_polyphony = 10
+
+[node name="FaxSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_utbpp")
+max_polyphony = 10
+
+[node name="PaperSlideSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_mw25s")
+volume_db = 8.0
+max_polyphony = 10

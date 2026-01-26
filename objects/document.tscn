@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bucktk2vvr5w4"]
+[gd_scene load_steps=12 format=3 uid="uid://bucktk2vvr5w4"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_nkp2l"]
 [ext_resource type="Script" uid="uid://ddmn6evynvp2y" path="res://objects/document.gd" id="1_qw4ch"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://nbkf0li6uexj" path="res://sounds/pencil_write.ogg" id="6_mg7v8"]
 [ext_resource type="AudioStream" uid="uid://tocpj6m4ngwi" path="res://sounds/eraser2.ogg" id="7_ua4ij"]
 [ext_resource type="AudioStream" uid="uid://bg70aibhrsrl5" path="res://sounds/pen_write.ogg" id="8_l01fc"]
+[ext_resource type="Texture2D" uid="uid://c5y8rptjd6q0k" path="res://Sprites/whiteout-0001.png" id="10_xva10"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bjm35"]
 size = Vector2(90, 15)
@@ -24,6 +25,12 @@ texture = ExtResource("2_dqu1v")
 visible = false
 position = Vector2(-28, -53)
 texture = ExtResource("3_pn03h")
+
+[node name="Whiteout" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 12.499988)
+scale = Vector2(1, 1.1171874)
+texture = ExtResource("10_xva10")
 
 [node name="TextBox" parent="." instance=ExtResource("3_dqu1v")]
 modulate = Color(0.40824404, 0.40824407, 0.40824404, 1)

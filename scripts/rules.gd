@@ -92,7 +92,9 @@ func apply(id: ID, source: String) -> String:
 	return clean_text(ret)
 
 func clean_text(text: String):
-	while text[text.length() - 1] == " ": text = text.substr(0, text.length() - 2)
+	if text.length() == 0: return text
+	
+	while text[text.length() - 1] == " ": text = text.substr(0, text.length() - 1)
 	while text.contains("  "): text = text.replace("  ", " ")
 	
 	return text

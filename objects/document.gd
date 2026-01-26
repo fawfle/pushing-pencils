@@ -9,6 +9,7 @@ class_name Document extends Node2D
 @onready var pen_sound: AudioStreamPlayer2D = $PenWrite
 
 @onready var fancy_header: Sprite2D = $FancyHeader
+@onready var whiteout: Sprite2D = $Whiteout
 
 # var img = Image.load_from_file("res://Sprites/Stamp.png")
 # var image: ImageTexture = ImageTexture.create_from_image(img)
@@ -83,7 +84,9 @@ func get_sprite() -> Sprite2D:
 
 ## for handling fail behavior based on pen/pencil
 func handle_reset():
-	if (used_pen): text_box.text = ""
+	if (used_pen):
+		text_box.text = ""
+		add_whiteout()
 	used_pen = false
 	used_pencil = false
 
@@ -137,3 +140,6 @@ func play_eraser_sound():
 
 func add_fancy_header():
 	fancy_header.visible = true
+
+func add_whiteout():
+	whiteout.visible = true

@@ -2,13 +2,24 @@ class_name GameManager extends Node2D
 
 var file_scene: PackedScene = preload("res://objects/file.tscn")
 var document_scene: PackedScene = preload("res://objects/document.tscn")
+
+var warning_scene: PackedScene = preload("res://objects/warning.tscn")
 var memo_scene: PackedScene = preload("res://objects/memo.tscn")
+var notice_scene: PackedScene = preload("res://objects/notice.tscn")
+
+@onready var stamp_sound := $StampSound
+@onready var fax_sound := $FaxSound
+@onready var paper_slide_sound := $PaperSlideSound
+
 
 @export var completed: int = 0
 # var quota: int = 1
 
 var round_type: ROUND_TYPE = ROUND_TYPE.DOC_FILE
 
+## store current rules without processing randoms
+var current_rules_master: Array[Rules.ID] = [Rules.ID.MATCH]
+## process randoms
 var current_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 var current_text: String
 var output_text: String
@@ -17,7 +28,6 @@ var input: String
 # TODO:
 # possibly procedural rules/docs for certain spans as an option (i.e. pick random 5 accounting for mutual exclusivity)
 
-# TODO: Company WARNINGS instead of memo
 ## queueish of sorts where events will add/set rejection_memo_text on activating. Could be an array later?
 var rejection_memo_text: String
 
@@ -64,10 +74,12 @@ class CustomRejection:
 ## rejections for specific failure states, meant to teach play
 var custom_rejections: Array[CustomRejection] = [
 	CustomRejection.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
+	CustomRejection.new(func(item: Node2D): return (item is Warning), "DO NOT FAX WARNINGS"),
+	CustomRejection.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
 	
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
-	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional")
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\n Look at Header")
 ]
 
 @onready var screen_size = get_viewport_rect().size / 4
@@ -103,7 +115,7 @@ func run_event(event: Event):
 	rejection_memo_text = event.rejection_memo_text
 	
 	if event.update_rules:
-		current_rules = event.rules
+		current_rules_master = event.rules
 	
 	# if event.new_quota <= quota:
 	# 	quota = event.new_quota
@@ -112,14 +124,17 @@ func run_event(event: Event):
 		round_type = event.round_type
 
 func on_document_submitted(doc_input: String):
+	fax_sound.play()
+	
 	input = doc_input
 	remove_child(current_document)
 	print("input: " + input)
 	print("expected output: " + output_text)
+	
+	await get_tree().create_timer(2.0).timeout
+	
 	if check_rules(input):
 		completed += 1;
-		
-		await get_tree().create_timer(0.5).timeout
 		
 		check_events()
 		Global.document_completed.emit()
@@ -155,6 +170,8 @@ func add_file():
 	play_enter_animation(current_document)
 
 func begin_round():
+	process_master_rules()
+	
 	match round_type:
 		ROUND_TYPE.DOC_FILE:
 			begin_file_doc_round()
@@ -214,16 +231,20 @@ func play_stamp_animation(item: Node):
 	stamp.self_modulate.a = 0.8
 	
 	stamp.rotate(randf_range(0, 2 * PI))
-	stamp.position = Vector2(randf_range(-60, 40), randf_range(-80, 50))
+	stamp.position = Vector2(randf_range(-35, 15), randf_range(-55, 25))
 	
 	var sprite: Sprite2D = item.get_sprite()
 	# set clip children to true :)
 	sprite.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
 	sprite.add_child(stamp)
 	
+	stamp_sound.play()
+	
 
 # set top deferred to make special objects appear above non special
 func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
+	paper_slide_sound.play()
+	
 	var duration: float = randf_range(0.8, 1.2)
 	
 	var start_position: Vector2 = Vector2(-screen_size.x, randf_range(-10, 10))
@@ -236,21 +257,31 @@ func play_enter_animation(node: Node2D, set_top_deferred_frames=0):
 	
 	if set_top_deferred_frames > 0: move_child(node, -1)
 	
-	
 	await get_tree().create_timer(randf_range(0, 0.2)).timeout
 	
 	var timer: SceneTreeTimer = get_tree().create_timer(duration)
 	
-	while timer.time_left != 0 or Global.held == node:
+	while timer.time_left != 0:
+		if Global.held == node:
+			break
 		var t: float = (duration - timer.time_left) / duration
 		t = 1 - (1 - t) * (1 - t) # ease out
 		node.global_position = lerp(start_position, end_position, t)
 		await get_tree().process_frame
 
 func on_item_submitted(item: Node2D):
+	fax_sound.play()
+	remove_child(item)
+	
+	await get_tree().create_timer(2.0).timeout
+	
 	if item is Memo:
 		play_stamp_animation(item)
 	if item is FileItem:
+		play_stamp_animation(item)
+	if item is Notice:
+		play_stamp_animation(item)
+	if item is Warning:
 		play_stamp_animation(item)
 	
 	handle_custom_rejections(item)
@@ -258,11 +289,38 @@ func on_item_submitted(item: Node2D):
 func handle_custom_rejections(item: Node2D):
 	for custom_rejection in custom_rejections:
 		if not custom_rejection.activated and custom_rejection.condition.call(item):
-			var memo: Memo = memo_scene.instantiate()
-			add_child(memo)
-			memo.set_text(custom_rejection.text)
-			play_enter_animation(memo, 100)
+			add_warning(custom_rejection.text)
 			custom_rejection.activated = true
+
+func add_warning(text: String):
+	var warning: Warning = warning_scene.instantiate()
+	add_child(warning)
+	warning.set_text(text)
+	play_enter_animation(warning, 100)
+
+func add_notice(text: String):
+	var notice: Notice = notice_scene.instantiate()
+	add_child(notice)
+	notice.set_text(text)
+	play_enter_animation(notice, 100)
+
+var symbol_rules: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_13_LETTERS, Rules.ID.REVERSE_EACH_WORD, Rules.ID.NO_VOWELS, Rules.ID.FLIP_CASE, Rules.ID.ALPHABETICAL_ORDER]
+
+func process_master_rules():
+	current_rules.clear()
+	
+	for rule in current_rules_master:
+		if rule == Rules.ID.RANDOM_NORMAL:
+			current_rules.append(get_unique_random_rule())
+		else:
+			current_rules.append(rule)
+
+func get_unique_random_rule():
+	var rule: Rules.ID = symbol_rules.pick_random()
+	if rule in current_rules:
+		return get_unique_random_rule()
+	
+	return rule
 
 # TODO
 func shredder_storm():

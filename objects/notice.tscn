@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cs0dtfmw8tfke"]
+
+[ext_resource type="Script" uid="uid://ct23x1sswe11" path="res://objects/notice.gd" id="1_5emt5"]
+[ext_resource type="Texture2D" uid="uid://0w7h7nph8wl3" path="res://Sprites/Notice.png" id="1_40lhl"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_5emt5"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="4_hqn7x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40lhl"]
+size = Vector2(160, 48)
+
+[node name="Notice" type="Node2D"]
+script = ExtResource("1_5emt5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_40lhl")
+
+[node name="DesktopItem" parent="." instance=ExtResource("2_5emt5")]
+offset_left = -48.0
+offset_top = -32.0
+offset_right = 48.0
+offset_bottom = 16.0
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_40lhl")
+
+[node name="TextLabel" type="Label" parent="."]
+modulate = Color(0.15114939, 0.15114942, 0.15114939, 1)
+offset_left = -70.0
+offset_top = -7.0
+offset_right = 58.0
+offset_bottom = 18.0
+theme = ExtResource("4_hqn7x")
+text = "Sample text"
+autowrap_mode = 1

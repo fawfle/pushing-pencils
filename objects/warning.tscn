@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://8wy2p8g2gogc"]
+
+[ext_resource type="Texture2D" uid="uid://7waqwuimqo4r" path="res://Sprites/warning-0001.png" id="1_66ute"]
+[ext_resource type="Script" uid="uid://b8b0k7883kc82" path="res://objects/warning.gd" id="1_lu7po"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_d4cin"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_d4cin"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lu7po"]
+size = Vector2(69, 113)
+
+[node name="Warning" type="Node2D"]
+script = ExtResource("1_lu7po")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_66ute")
+
+[node name="DesktopItem" parent="." instance=ExtResource("2_d4cin")]
+offset_left = -33.0
+offset_top = -56.0
+offset_right = 36.0
+offset_bottom = 57.0
+
+[node name="TextLabel" type="Label" parent="."]
+modulate = Color(0.28485027, 0.28485027, 0.2848502, 1)
+offset_left = -32.0
+offset_top = -25.0
+offset_right = 35.0
+offset_bottom = 18.5
+theme = ExtResource("3_d4cin")
+text = "Sample Text"
+autowrap_mode = 3
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.5, 0.5)
+shape = SubResource("RectangleShape2D_lu7po")

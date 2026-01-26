@@ -4,6 +4,8 @@ class_name Event extends Resource
 @export var nodes_to_add: Array[PackedScene]
 ## send a memo with text. "" means no memo
 @export var memo_text: String
+## send a memo with text. "" means no notice_text
+@export var notice_text: String
 ## send a memo on rejection. "" means no memo
 @export var rejection_memo_text: String
 ## flag to update rules
