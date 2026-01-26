@@ -10,7 +10,7 @@ albedo_color = Color(0.5921569, 0.47843137, 0.3882353, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_fmn5e"]
 material = SubResource("StandardMaterial3D_y20rl")
-size = Vector2(1.08, 0.47)
+size = Vector2(0.96, 0.5)
 
 [node name="Desk" type="StaticBody3D"]
 
@@ -22,5 +22,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.029327393, 0.13613892, -0.0
 shape = SubResource("BoxShape3D_y20rl")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, 0.5, 0, -0.5, -2.1855694e-08, 0, 0.22976169, -0.019867137)
+transform = Transform3D(0.4977156, 0, 0, 0, -2.1041528e-08, 0.5, 0, -0.48137403, -2.1855694e-08, 0.028580531, 0.22976169, -0.02040618)
 mesh = SubResource("QuadMesh_fmn5e")
