@@ -8,6 +8,7 @@ enum ID {
 	MATCH,
 	HYPHEN_SPACE,
 	ONLY_FIRST_13_LETTERS,
+	ONLY_LAST_13_LETTERS,
 	ALPHANUMERIC,
 	REVERSE_EACH_WORD,
 	NO_VOWELS,
@@ -39,6 +40,10 @@ func apply(id: ID, source: String) -> String:
 		ID.ONLY_FIRST_13_LETTERS:
 			var regex = RegEx.new()
 			regex.compile("[n-zN-Z]")
+			ret = regex.sub(source, "", true)
+		ID.ONLY_FIRST_13_LETTERS:
+			var regex = RegEx.new()
+			regex.compile("[a-mA-M]")
 			ret = regex.sub(source, "", true)
 		ID.ALPHANUMERIC:
 			var trans = ""
