@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjowi1m6aa2n7"]
+
+[ext_resource type="PackedScene" uid="uid://bb2hroft11ibv" path="res://3D/Update.glb" id="1_jhkkl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jhkkl"]
+size = Vector3(0.46691895, 0.5912361, 0.38867188)
+
+[node name="Cabinet" type="StaticBody3D"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+
+[node name="Update" parent="." instance=ExtResource("1_jhkkl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.70130754, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0060424805, 0.39658165, -0.022460938)
+shape = SubResource("BoxShape3D_jhkkl")

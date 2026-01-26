@@ -32,10 +32,10 @@ tracks/0/path = NodePath("Node2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(2, 32, 33.99, 34),
+"times": PackedFloat32Array(2, 32, 33.9995, 34),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, -2150), Vector2(0, -2150), Vector2(0, -3150)]
+"values": [Vector2(0, 0), Vector2(0, -2525), Vector2(0, -2525), Vector2(0, 5000)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g4wvt"]
@@ -67,7 +67,7 @@ text = "Pushing Pencils
 
 
 
-A Game By
+A Game Jam Project
 
 
 Akhil
@@ -82,11 +82,15 @@ Michael
 Alex
 
 
-Apply to ATLAS Now!
+Development Sponsored By:
+ATLAS Corp
+
+
+Apply Now!
 
 
 
-(Paste URL Here)"
+atlas.akhilasher.com"
 horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
