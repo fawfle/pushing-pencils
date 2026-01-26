@@ -1,6 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cm6hogh45ygc5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5juuw"]
+albedo_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_qibad"]
 material = SubResource("StandardMaterial3D_5juuw")

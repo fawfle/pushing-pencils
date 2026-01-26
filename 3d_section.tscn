@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://bc3yhr551h6it"]
+
+[ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="1_h0me4"]
+[ext_resource type="PackedScene" uid="uid://c56fq54yty1te" path="res://3D/room.tscn" id="1_thrrh"]
+[ext_resource type="PackedScene" uid="uid://dw326dacqh0k0" path="res://3D/player.tscn" id="2_h0me4"]
+
+[sub_resource type="Environment" id="Environment_thrrh"]
+background_mode = 2
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="3D_Section" type="Node3D"]
+
+[node name="Extra Walls" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5362546)
+
+[node name="Wall" parent="Extra Walls" instance=ExtResource("1_h0me4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.5)
+
+[node name="Wall2" parent="Extra Walls" instance=ExtResource("1_h0me4")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0.00011824444, 8.549146, 0.50317484)
+collision_layer = 0
+collision_mask = 0
+
+[node name="Wall3" parent="Extra Walls" instance=ExtResource("1_h0me4")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 5.3620367, 3.6919832, 0.5)
+
+[node name="Wall4" parent="Extra Walls" instance=ExtResource("1_h0me4")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -5.3260984, 3.7490559, 0.5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_thrrh")
+
+[node name="Room" parent="." instance=ExtResource("1_thrrh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5362546)
+
+[node name="Room2" parent="." instance=ExtResource("1_thrrh")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.00034427643, 0.010635376, 11.036978)
+
+[node name="Player" parent="." instance=ExtResource("2_h0me4")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.1574021, 2.0099244)
