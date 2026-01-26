@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dof0jaef5w8bj"]
+[gd_scene load_steps=14 format=3 uid="uid://dof0jaef5w8bj"]
 
 [ext_resource type="Script" uid="uid://do0bl2q8f2ove" path="res://objects/book.gd" id="1_hxkwa"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_osdgu"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://bo6ojs1o4u4la" path="res://sounds/paper_turn2.ogg" id="7_dxtjv"]
 [ext_resource type="Texture2D" uid="uid://b64lncst6p3g6" path="res://Sprites/shapes/shape-0001.png" id="7_mn4al"]
 [ext_resource type="AudioStream" uid="uid://byavyg2gyg28v" path="res://sounds/paper_turn3.ogg" id="8_dxtjv"]
+[ext_resource type="Texture2D" uid="uid://2c70hwwsmeco" path="res://Sprites/shapes/shape-0003.png" id="8_hp5al"]
 [ext_resource type="AudioStream" uid="uid://cx6nsnhixfklf" path="res://sounds/paper_turn4.ogg" id="8_luwxh"]
 
 [sub_resource type="Gradient" id="Gradient_luwxh"]
@@ -48,6 +49,7 @@ texture = ExtResource("6_luwxh")
 metadata/_edit_lock_ = true
 
 [node name="PageL2" type="Sprite2D" parent="Pages"]
+visible = false
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
@@ -92,6 +94,7 @@ cba fed"
 horizontal_alignment = 1
 
 [node name="PageR3" type="Sprite2D" parent="Pages"]
+visible = false
 texture = ExtResource("6_luwxh")
 metadata/_edit_lock_ = true
 
@@ -139,6 +142,136 @@ visible = false
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
+
+[node name="Shape" type="Sprite2D" parent="Pages/PageL3"]
+position = Vector2(-50, -40)
+texture = ExtResource("8_hp5al")
+
+[node name="Line" type="Sprite2D" parent="Pages/PageL3"]
+modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
+position = Vector2(-51, -13)
+scale = Vector2(0.1953125, 1)
+texture = SubResource("GradientTexture1D_mn4al")
+
+[node name="Header" type="Label" parent="Pages/PageL3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -6.0
+offset_bottom = -15.0
+text = "The Circle"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Pages/PageL3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -95.0
+offset_top = -7.0
+offset_right = -7.0
+offset_bottom = 18.0
+text = "Remove 2nd half
+of alphabet"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/PageL3"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = 20.0
+offset_right = -6.0
+offset_bottom = 59.0
+text = "EXAMPLE
+adfgmnoqtz
+adfgm"
+horizontal_alignment = 1
+
+[node name="PageR4" type="Sprite2D" parent="Pages"]
+visible = false
+texture = ExtResource("6_luwxh")
+metadata/_edit_lock_ = true
+
+[node name="SquareShape" type="Sprite2D" parent="Pages/PageR4"]
+position = Vector2(50, -40)
+texture = ExtResource("7_mn4al")
+
+[node name="Line" type="Sprite2D" parent="Pages/PageR4"]
+modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
+position = Vector2(49, -13)
+scale = Vector2(0.1953125, 1)
+texture = SubResource("GradientTexture1D_mn4al")
+
+[node name="Header" type="Label" parent="Pages/PageR4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 6.0
+offset_top = -26.0
+offset_right = 94.0
+offset_bottom = -15.0
+text = "The Square"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Pages/PageR4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 7.0
+offset_top = -7.0
+offset_right = 95.0
+offset_bottom = 4.0
+text = "No Vowels"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/PageR4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = 6.0
+offset_top = 10.0
+offset_right = 94.0
+offset_bottom = 49.0
+text = "EXAMPLE
+abc def aye
+bc df"
+horizontal_alignment = 1
+
+[node name="PageL4" type="Sprite2D" parent="Pages"]
+visible = false
+texture = ExtResource("6_luwxh")
+flip_h = true
+metadata/_edit_lock_ = true
+
+[node name="Shape" type="Sprite2D" parent="Pages/PageL4"]
+position = Vector2(-50, -40)
+texture = ExtResource("8_hp5al")
+
+[node name="Line" type="Sprite2D" parent="Pages/PageL4"]
+modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
+position = Vector2(-51, -13)
+scale = Vector2(0.1953125, 1)
+texture = SubResource("GradientTexture1D_mn4al")
+
+[node name="Header" type="Label" parent="Pages/PageL4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = -26.0
+offset_right = -6.0
+offset_bottom = -15.0
+text = "The Circle"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Pages/PageL4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -95.0
+offset_top = -7.0
+offset_right = -7.0
+offset_bottom = 18.0
+text = "Remove 2nd half
+of alphabet"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/PageL4"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -94.0
+offset_top = 20.0
+offset_right = -6.0
+offset_bottom = 59.0
+text = "EXAMPLE
+adfgmnoqtz
+adfgm"
+horizontal_alignment = 1
 
 [node name="PageEnd" type="Sprite2D" parent="Pages"]
 visible = false
