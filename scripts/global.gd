@@ -8,6 +8,8 @@ signal document_completed()
 
 signal item_dropped(item: Node2D)
 
+signal circle_changed()
+
 var held: Node = null 
 
 var hit_coffee: bool = false

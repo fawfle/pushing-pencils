@@ -12,6 +12,8 @@ var page_index: int = 0
 
 func _ready() -> void:
 	set_pages(page_index)
+	
+	Global.circle_changed.connect(update_circle_rule)
 
 func _on_right_button_pressed() -> void:
 	if (page_index == len(pages) / 2.0 - 1): return

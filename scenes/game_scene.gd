@@ -18,7 +18,7 @@ var notice_scene: PackedScene = preload("res://objects/notice.tscn")
 var round_type: ROUND_TYPE = ROUND_TYPE.DOC_FILE
 
 ## store current rules without processing randoms
-var current_rules_master: Array[Rules.ID] = [Rules.ID.MATCH]
+var current_master_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 ## process randoms
 var current_rules: Array[Rules.ID] = [Rules.ID.MATCH]
 var current_text: String
@@ -66,16 +66,27 @@ class CustomRejection:
 	var activated: bool = false
 	var condition
 	var text: String
+	var type: DOC_TYPE = DOC_TYPE.WARNING
 	
-	func _init(_condition, _text: String):
+	func _init(_condition, _text: String, _doc_type: DOC_TYPE=DOC_TYPE.WARNING):
 		condition = _condition
 		text = _text
-	
+		type = _doc_type
+
+enum DOC_TYPE {
+	MEMO,
+	WARNING,
+	NOTICE
+}
+
 ## rejections for specific failure states, meant to teach play
 var custom_rejections: Array[CustomRejection] = [
 	CustomRejection.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
 	CustomRejection.new(func(item: Node2D): return (item is Warning), "DO NOT FAX WARNINGS"),
 	CustomRejection.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
+	
+	
+	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
 	
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
 	CustomRejection.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
@@ -86,15 +97,17 @@ var custom_rejections: Array[CustomRejection] = [
 
 func _ready() -> void:
 	Utils.load_wordlist()
-	
+
 	Global.document_submitted.connect(on_document_submitted)
 	Global.item_submitted.connect(on_item_submitted)
-	check_events()
-	begin_round()
+	
 	if completed > 3:
 		var book = book_scene.instantiate()
 		add_child(book)
 		play_enter_animation(book)
+	
+	check_events()
+	begin_round()
 
 func check_events() -> void:
 	if completed == len(events):
@@ -111,10 +124,7 @@ func run_event(event: Event):
 		play_enter_animation(obj, 80)
 		
 	if event.memo_text != "":
-		var memo: Memo = memo_scene.instantiate()
-		add_child(memo)
-		play_enter_animation(memo, 60)
-		memo.set_text(event.memo_text)
+		add_memo(event.memo_text)
 	
 	if event.notice_text != "":
 		add_notice(event.notice_text, 100)
@@ -122,7 +132,9 @@ func run_event(event: Event):
 	rejection_memo_text = event.rejection_memo_text
 	
 	if event.update_rules:
-		current_rules_master = event.rules
+		current_master_rules = event.rules
+		if current_master_rules.has(Rules.ID.ONLY_LAST_13_LETTERS):
+			Global.circle_changed.emit()
 	
 	# if event.new_quota <= quota:
 	# 	quota = event.new_quota
@@ -204,7 +216,11 @@ func begin_file_doc_round():
 	
 	var meets_criteria: bool = false
 	
-	while (!meets_criteria):
+	var max_iterations: int = 500
+	var iterations:int = 0
+	
+	while (!meets_criteria) and iterations < max_iterations:
+		iterations += 1
 		current_text = Utils.generate_sentence(3)
 		output_text = Rules.apply_multiple(current_rules, current_text)
 		meets_criteria = output_text != "" and current_text.length() < MAX_LENGTH and output_text.length() < MAX_LENGTH
@@ -296,8 +312,20 @@ func on_item_submitted(item: Node2D):
 func handle_custom_rejections(item: Node2D):
 	for custom_rejection in custom_rejections:
 		if not custom_rejection.activated and custom_rejection.condition.call(item):
-			add_warning(custom_rejection.text)
+			match custom_rejection.type:
+				DOC_TYPE.WARNING:
+					add_warning(custom_rejection.text)
+				DOC_TYPE.MEMO:
+					add_memo(custom_rejection.text)
+				DOC_TYPE.NOTICE:
+					add_notice(custom_rejection.text)
 			custom_rejection.activated = true
+
+func add_memo(text: String, buffer: int = 60):
+	var memo: Memo = memo_scene.instantiate()
+	add_child(memo)
+	play_enter_animation(memo, buffer)
+	memo.set_text(text)
 
 func add_warning(text: String, buffer: int = 100):
 	var warning: Warning = warning_scene.instantiate()
@@ -316,9 +344,10 @@ var symbol_rules: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_
 func process_master_rules():
 	current_rules.clear()
 	
-	for rule in current_rules_master:
-		if rule == Rules.ID.RANDOM_NORMAL:
-			current_rules.append(get_unique_random_rule())
+	for rule in current_master_rules:
+		if rule == Rules.ID.RANDOM_NORMAL or rule == Rules.ID.RANDOM_NEW_CIRCLE:
+			var new_rule: Rules.ID = get_unique_random_rule()
+			current_rules.append(new_rule)
 		else:
 			current_rules.append(rule)
 

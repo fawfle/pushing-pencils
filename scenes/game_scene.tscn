@@ -103,7 +103,8 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_rvs2r"]
 script = ExtResource("2_ycayy")
-rejection_memo_text = "DUE TO LETTER SHORTAGES, SQURE IS CHANGED"
+update_rules = true
+rules = Array[int]([7])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Gradient" id="Gradient_rurhu"]

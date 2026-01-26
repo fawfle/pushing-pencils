@@ -15,6 +15,7 @@ enum ID {
 	FLIP_CASE,
 	ALPHABETICAL_ORDER,
 	RANDOM_NORMAL,
+	RANDOM_NEW_CIRCLE,
 }
 
 func check_rules(rules: Array[ID], source: String, input: String) -> bool:
@@ -42,7 +43,7 @@ func apply(id: ID, source: String) -> String:
 			var regex = RegEx.new()
 			regex.compile("[n-zN-Z]")
 			ret = regex.sub(source, "", true)
-		ID.ONLY_FIRST_13_LETTERS:
+		ID.ONLY_LAST_13_LETTERS:
 			var regex = RegEx.new()
 			regex.compile("[a-mA-M]")
 			ret = regex.sub(source, "", true)
@@ -119,16 +120,6 @@ func clean_text(text: String):
 	while text.contains("  "): text = text.replace("  ", " ")
 	
 	return text
-
-func get_punctuation(text: String):
-	if text.length() == 0: return text
-	var ret: String = ""
-	
-	while (text[text.length() - 1].to_upper() != text[text.length() - 1]):
-		ret += text[text.length() - 1]
-		text = text.substr(0, text.length() - 1)
-	
-	return ret
 
 var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
