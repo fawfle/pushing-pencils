@@ -12,6 +12,7 @@ var index_card_scene: PackedScene = preload("res://objects/index_card.tscn")
 @onready var fax_sound := $FaxSound
 @onready var paper_slide_sound := $PaperSlideSound
 
+@onready var pencil_timer := $PencilTutorialTimer
 
 @export var completed: int = 0
 # var quota: int = 1
@@ -104,7 +105,7 @@ var custom_responses: Array[CustomResponse] = [
 	CustomResponse.new(func(item: Node2D): return (item is Warning), ["DO NOT FAX WARNINGS", "FINAL WARNING FOR FAXING WARNINGS", "YOU HAVE BEEN WARNED"]),
 	CustomResponse.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
 	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower() == "your name"), "YOU ARE NOT FUNNY", DOC_TYPE.WARNING),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower().replace(" ", "") == "yourname"), "YOU ARE NOT FUNNY", DOC_TYPE.WARNING, func(_x): Global.player_name="Not Funny"),
 	
 	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
 	
@@ -122,9 +123,12 @@ var promoted: bool = false
 
 func _ready() -> void:
 	Utils.load_wordlist()
+	Global.player_name
 
 	Global.document_submitted.connect(on_document_submitted)
 	Global.item_submitted.connect(on_item_submitted)
+	
+	pencil_timer.timeout.connect(func(): if completed <= 1: add_warning("Use the pencil tip. 1 point deducted."))
 	
 	if completed > 3:
 		var book = book_scene.instantiate()
@@ -136,12 +140,18 @@ func _ready() -> void:
 		add_child(pen)
 		play_enter_animation(pen, 2.1)
 	
+	if completed >= 1:
+		Global.player_name = "[PLAYER NAME]"
+	
 	check_events()
 	begin_round()
 
 func check_events() -> void:	
 	if events[completed]:
 		run_event(events[completed])
+	
+	if completed == 1 and Global.player_name == "":
+		Global.player_name = input
 		
 	if completed == len(events) - 1:
 		promoted = true
@@ -184,6 +194,9 @@ func on_document_submitted(doc_input: String):
 	
 	await get_tree().create_timer(2.0).timeout
 	
+	# check twice
+	handle_custom_responses(current_document)
+	
 	if check_rules(input):
 		completed += 1;
 		
@@ -199,10 +212,11 @@ func on_document_submitted(doc_input: String):
 			play_enter_animation(memo, 1.5)
 			rejection_memo_text = ""
 		
-		handle_custom_responses(current_document)
-		
 		current_document.handle_reset()
 		play_stamp_animation(current_document)
+	
+	# check after
+	handle_custom_responses(current_document)
 
 func check_rules(source: String) -> bool:
 	if current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen:
@@ -319,9 +333,8 @@ func play_enter_animation(node: Node2D, wait_time: float=0):
 	
 	if wait_time > 0: move_child(node, -1)
 	
-	await get_tree().create_timer(randf_range(0, 0.2)).timeout
-	
 	paper_slide_sound.play()
+	await get_tree().create_timer(randf_range(0, 0.2)).timeout
 	
 	var timer: SceneTreeTimer = get_tree().create_timer(duration)
 	

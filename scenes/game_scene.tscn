@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=31 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
 [ext_resource type="PackedScene" uid="uid://dea3pjl5swgjq" path="res://objects/award.tscn" id="6_rvs2r"]
+[ext_resource type="PackedScene" uid="uid://6ehu0r7ie7gx" path="res://objects/plaque.tscn" id="6_tqxxy"]
 [ext_resource type="AudioStream" uid="uid://bd4iy0hq151ax" path="res://sounds/stamp.ogg" id="8_b5spy"]
 [ext_resource type="AudioStream" uid="uid://c8nw65v7vdmt0" path="res://sounds/fax.ogg" id="9_utbpp"]
 [ext_resource type="AudioStream" uid="uid://bcsj8jmg3u6e7" path="res://sounds/paper_slide.ogg" id="10_mw25s"]
@@ -77,6 +78,7 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_liy57"]
 script = ExtResource("2_ycayy")
+nodes_to_add = Array[PackedScene]([ExtResource("6_tqxxy")])
 update_rules = true
 rules = Array[int]([13])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
@@ -150,3 +152,8 @@ max_polyphony = 10
 stream = ExtResource("10_mw25s")
 volume_db = 8.0
 max_polyphony = 10
+
+[node name="PencilTutorialTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+autostart = true

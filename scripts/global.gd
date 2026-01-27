@@ -10,6 +10,8 @@ signal item_dropped(item: Node2D)
 
 signal circle_changed()
 
+var player_name: String = ""
+
 var held: Node = null 
 
 var hit_coffee: bool = false
