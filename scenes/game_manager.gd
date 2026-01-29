@@ -71,6 +71,7 @@ var custom_responses: Array[CustomResponse] = [
 	CustomResponse.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
 	CustomResponse.new(func(item: Node2D): return (item is Warning), ["DO NOT FAX WARNINGS", "FINAL WARNING FOR FAXING WARNINGS", "YOU HAVE BEEN WARNED"]),
 	CustomResponse.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
+	CustomResponse.new(func(item: Node2D): return (item is Pamphlet), "DAMAGE OF INSPIRATIONAL COMPANY MATERIALS"),
 	
 	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower().replace(" ", "") == "yourname"), "YOU ARE NOT FUNNY", CustomResponse.DOC_TYPE.WARNING, func(_x): Global.player_name="Not Funny"),
 	
