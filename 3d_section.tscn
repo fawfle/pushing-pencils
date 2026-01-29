@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://bc3yhr551h6it"]
 
 [ext_resource type="PackedScene" uid="uid://cm6hogh45ygc5" path="res://3D/wall.tscn" id="1_h0me4"]
-[ext_resource type="Script" uid="uid://3ghk43o4655r" path="res://3d_section.gd" id="1_n1kpw"]
+[ext_resource type="Script" path="res://3d_section.gd" id="1_n1kpw"]
 [ext_resource type="PackedScene" uid="uid://c56fq54yty1te" path="res://3D/room.tscn" id="1_thrrh"]
-[ext_resource type="PackedScene" uid="uid://dw326dacqh0k0" path="res://3D/player.tscn" id="2_h0me4"]
+[ext_resource type="PackedScene" path="res://3D/player.tscn" id="2_h0me4"]
 [ext_resource type="AudioStream" uid="uid://cmfbv8anyl03n" path="res://sounds/end_fade.ogg" id="5_jlmvm"]
 [ext_resource type="Script" uid="uid://cibf01lxf6a1r" path="res://path_follow_3d.gd" id="6_5jwft"]
 
@@ -63,7 +63,7 @@ stream = ExtResource("5_jlmvm")
 volume_db = -10.0
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 30.0
+wait_time = 28.700000000000003
 one_shot = true
 
 [node name="Path3D" type="Path3D" parent="."]
@@ -71,7 +71,7 @@ transform = Transform3D(1, 0, 0, 0, 0.041352473, 0.9991446, 0, -0.9991446, 0.041
 curve = SubResource("Curve3D_jlmvm")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
-transform = Transform3D(-0.9999999, 0, 1.5099211e-07, 0, 0.9999791, 0, -1.5099579e-07, 0, -0.99997556, 0, 0.1, 0)
+transform = Transform3D(-0.9999999, 0, -8.742064e-08, 0, 0.9999791, 0, 8.742277e-08, 0, -0.99997556, 0, 0.1, 0)
 script = ExtResource("6_5jwft")
 
 [node name="Camera3D" type="Camera3D" parent="Path3D/PathFollow3D"]
