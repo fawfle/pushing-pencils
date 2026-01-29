@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://biiyedg21oqxd"]
+
+[ext_resource type="Texture2D" uid="uid://0ufqtqhdowf4" path="res://Sprites/sticky-note.png" id="1_ep4ix"]
+[ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_e33fk"]
+[ext_resource type="Script" uid="uid://dlxhr551o6baq" path="res://objects/desktop_item.gd" id="3_ep4ix"]
+[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/simple-header.png" id="4_pf0on"]
+[ext_resource type="Texture2D" uid="uid://bb40s37elpcfa" path="res://Sprites/fancy_header.png" id="5_xea0h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qcqcp"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 2
+texture = ExtResource("1_ep4ix")
+
+[node name="TextLabel" type="Label" parent="Sprite2D"]
+modulate = Color(0.28485027, 0.28485027, 0.2848502, 1)
+anchors_preset = -1
+anchor_left = -0.6666667
+anchor_top = -0.104166664
+anchor_right = -1.3333334
+anchor_bottom = -0.20833333
+offset_left = 20.0
+offset_top = -3.0
+offset_right = 76.0
+offset_bottom = 22.0
+theme = ExtResource("3_e33fk")
+text = "sample text"
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DesktopItem2" type="TextureButton" parent="."]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+script = ExtResource("3_ep4ix")
+metadata/_custom_type_script = "uid://dlxhr551o6baq"
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.5, 0.5)
+shape = SubResource("RectangleShape2D_qcqcp")
+
+[node name="SimpleHeader" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.64705884)
+position = Vector2(11, 9)
+texture = ExtResource("4_pf0on")
+
+[node name="FancyHeader" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.64705884)
+position = Vector2(11, 9)
+texture = ExtResource("5_xea0h")

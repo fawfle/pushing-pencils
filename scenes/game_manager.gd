@@ -66,55 +66,25 @@ var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
 	Rules.ID.HYPHEN_SPACE: load("res://Sprites/shapes/shape-0006.png"),
 }
 
-class CustomResponse:
-	var activated: bool = false
-	var index: int = 0
-	var condition
-	var text: Array[String]
-	var type: DOC_TYPE = DOC_TYPE.WARNING
-	var apply_effect ## function to run on created document
-	
-	func _init(_condition, _text, _doc_type: DOC_TYPE=DOC_TYPE.WARNING, _apply_effect=func(_x): return):		
-		if _text is Array:
-			text.assign(_text)
-		else:
-			text = [_text]
-			
-		condition = _condition
-		type = _doc_type
-		apply_effect = _apply_effect
-	
-	func get_text():
-		return text[index]
-	
-	func update():
-		index += 1
-		if index == len(text):
-			activated = true
-
-enum DOC_TYPE {
-	MEMO,
-	WARNING,
-	NOTICE,
-	INDEX_CARD
-}
-
 ## responses for specific failure states, meant to teach play
 var custom_responses: Array[CustomResponse] = [
 	CustomResponse.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
 	CustomResponse.new(func(item: Node2D): return (item is Warning), ["DO NOT FAX WARNINGS", "FINAL WARNING FOR FAXING WARNINGS", "YOU HAVE BEEN WARNED"]),
 	CustomResponse.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
 	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower().replace(" ", "") == "yourname"), "YOU ARE NOT FUNNY", DOC_TYPE.WARNING, func(_x): Global.player_name="Not Funny"),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower().replace(" ", "") == "yourname"), "YOU ARE NOT FUNNY", CustomResponse.DOC_TYPE.WARNING, func(_x): Global.player_name="Not Funny"),
 	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", DOC_TYPE.NOTICE),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", CustomResponse.DOC_TYPE.NOTICE),
 	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", DOC_TYPE.NOTICE),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", CustomResponse.DOC_TYPE.NOTICE),
 	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
 	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
 	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\nUse Pencil."),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header())
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", CustomResponse.DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", CustomResponse.DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header()),
+	
+	## debug mode
+	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and input == "cheaterxyzxyz", "Entering Debug Mode.\nYou Cheater.", CustomResponse.DOC_TYPE.NOTICE, func(_x): Global.debug_mode = true)
 ]
 
 @onready var screen_size = get_viewport_rect().size / 4
@@ -123,12 +93,11 @@ var promoted: bool = false
 
 func _ready() -> void:
 	Utils.load_wordlist()
-	Global.player_name
 
 	Global.document_submitted.connect(on_document_submitted)
 	Global.item_submitted.connect(on_item_submitted)
 	
-	pencil_timer.timeout.connect(func(): if completed <= 1: add_warning("Use the pencil tip. 1 point deducted."))
+	pencil_timer.timeout.connect(func(): if completed <= 1: add_warning("USE THE PENCIL TIP. 1 POINT DEDUCTED."))
 	
 	if completed > 3:
 		var book = book_scene.instantiate()
@@ -146,12 +115,13 @@ func _ready() -> void:
 	check_events()
 	begin_round()
 
-func check_events() -> void:	
-	if events[completed]:
+func check_events() -> void:
+	if completed < len(events) and events[completed]:
 		run_event(events[completed])
 	
 	if completed == 1 and Global.player_name == "":
 		Global.player_name = input
+		pencil_timer.start()
 		
 	if completed == len(events) - 1:
 		promoted = true
@@ -198,12 +168,7 @@ func on_document_submitted(doc_input: String):
 	handle_custom_responses(current_document)
 	
 	if check_rules(input):
-		completed += 1;
-		
-		check_events()
-		Global.document_completed.emit()
-		current_document.queue_free()
-		if (completed < len(events)): begin_round()
+		complete_round();
 	else:
 		if rejection_memo_text != "":
 			var memo: Memo = memo_scene.instantiate()
@@ -217,6 +182,14 @@ func on_document_submitted(doc_input: String):
 	
 	# check after
 	handle_custom_responses(current_document)
+
+func complete_round():
+	completed += 1;
+	
+	check_events()
+	Global.document_completed.emit()
+	if current_document: current_document.queue_free()
+	if (completed < len(events)): begin_round()
 
 func check_rules(source: String) -> bool:
 	if current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen:
@@ -284,7 +257,6 @@ func begin_doc_only_round():
 	current_document.set_id(Utils.generate_doc_id())
 
 ## setting file shapes to match round rules. "Rule Changes" just mean two RULE.IDs correspond to the same shape and we discard the old one
-# TODO decide what shapes mean
 func set_file_shapes():
 	for rule in current_rules:
 		if rule_shape_dictionary.has(rule):
@@ -375,13 +347,13 @@ func handle_custom_responses(item: Node2D):
 		if not custom_response.activated and custom_response.condition.call(item):
 			var obj = null
 			match custom_response.type:
-				DOC_TYPE.WARNING:
+				CustomResponse.DOC_TYPE.WARNING:
 					obj = add_warning(custom_response.get_text())
-				DOC_TYPE.MEMO:
+				CustomResponse.DOC_TYPE.MEMO:
 					obj =add_memo(custom_response.get_text())
-				DOC_TYPE.NOTICE:
+				CustomResponse.DOC_TYPE.NOTICE:
 					obj = add_notice(custom_response.get_text())
-				DOC_TYPE.INDEX_CARD:
+				CustomResponse.DOC_TYPE.INDEX_CARD:
 					obj = add_index_card(custom_response.get_text())
 			if obj and custom_response.apply_effect:
 				custom_response.apply_effect.call(obj)
@@ -438,3 +410,10 @@ func get_unique_random_rule():
 # TODO
 func shredder_storm():
 	pass
+
+func _input(event: InputEvent) -> void:
+	if not Global.debug_mode: return
+	
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_RIGHT:
+			complete_round()

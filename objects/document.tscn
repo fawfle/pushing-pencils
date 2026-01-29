@@ -40,6 +40,8 @@ offset_right = 43.0
 offset_bottom = 22.0
 mouse_filter = 1
 max_length = 15
+virtual_keyboard_enabled = true
+virtual_keyboard_show_on_focus = true
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_nkp2l")]
 offset_left = -48.0

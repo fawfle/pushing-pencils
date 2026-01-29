@@ -1,6 +1,6 @@
-[gd_scene load_steps=31 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=33 format=3 uid="uid://dscp53ky6w75x"]
 
-[ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_scene.gd" id="1_onqr8"]
+[ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_manager.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
 [ext_resource type="PackedScene" uid="uid://dof0jaef5w8bj" path="res://objects/book.tscn" id="3_rurhu"]
 [ext_resource type="PackedScene" uid="uid://cn50lq7gg2eq7" path="res://objects/fax.tscn" id="4_bw6k5"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://bd4iy0hq151ax" path="res://sounds/stamp.ogg" id="8_b5spy"]
 [ext_resource type="AudioStream" uid="uid://c8nw65v7vdmt0" path="res://sounds/fax.ogg" id="9_utbpp"]
 [ext_resource type="AudioStream" uid="uid://bcsj8jmg3u6e7" path="res://sounds/paper_slide.ogg" id="10_mw25s"]
+[ext_resource type="PackedScene" uid="uid://x7eex7ft73jy" path="res://objects/bell.tscn" id="14_5ay1a"]
 
 [sub_resource type="Resource" id="Resource_y3j0m"]
 script = ExtResource("2_ycayy")
@@ -83,6 +84,10 @@ update_rules = true
 rules = Array[int]([13])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
+[sub_resource type="Resource" id="Resource_77hjl"]
+script = ExtResource("2_ycayy")
+metadata/_custom_type_script = "uid://bsnyajlqspl8n"
+
 [sub_resource type="Resource" id="Resource_mwyo0"]
 script = ExtResource("2_ycayy")
 nodes_to_add = Array[PackedScene]([ExtResource("6_rvs2r")])
@@ -99,6 +104,7 @@ metadata/_custom_type_script = "uid://bsnyajlqspl8n"
 
 [sub_resource type="Resource" id="Resource_utbpp"]
 script = ExtResource("2_ycayy")
+nodes_to_add = Array[PackedScene]([ExtResource("14_5ay1a")])
 update_rules = true
 rules = Array[int]([2])
 metadata/_custom_type_script = "uid://bsnyajlqspl8n"
@@ -122,7 +128,7 @@ gradient = SubResource("Gradient_rurhu")
 
 [node name="Game Scene" type="Node2D"]
 script = ExtResource("1_onqr8")
-events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_liy57"), null, null, SubResource("Resource_mwyo0"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r"), SubResource("Resource_s76x2")])
+events = Array[ExtResource("2_ycayy")]([SubResource("Resource_y3j0m"), SubResource("Resource_rurhu"), SubResource("Resource_bw6k5"), SubResource("Resource_ldkr4"), SubResource("Resource_kk2rg"), SubResource("Resource_mw25s"), SubResource("Resource_tcjrq"), SubResource("Resource_tqxxy"), SubResource("Resource_5ay1a"), SubResource("Resource_liy57"), SubResource("Resource_77hjl"), null, SubResource("Resource_mwyo0"), SubResource("Resource_b5spy"), SubResource("Resource_utbpp"), SubResource("Resource_rvs2r"), SubResource("Resource_s76x2")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.59134865, 0.47709793, 0.3898333, 1)

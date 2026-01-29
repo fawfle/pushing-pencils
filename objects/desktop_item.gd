@@ -15,12 +15,17 @@ var parent: Node
 
 @export var slide_sounds: Array[AudioStreamPlayer2D]
 
+## if specified, creates a bitmask of the texture using alpha
+@export var custom_clickmask_texture: Texture2D
+
 var moving: bool = false
 
 func _ready() -> void:
 	parent = get_parent()
 	update_viewport()
 	# get_viewport().size_changed.connect(on_viewport_changed)
+	if custom_clickmask_texture:
+		add_bitmask_from_texture(custom_clickmask_texture)
 
 func _process(_delta: float) -> void:
 	if dragging:
@@ -59,3 +64,11 @@ func update_viewport() -> void:
 	screen_size /= 4; # scale of camera
 	
 	screen_bounds = [-screen_size / 2 + padding, screen_size / 2 - padding]
+
+func add_bitmask_from_texture(texture: Texture2D):
+	var bitmap = BitMap.new();
+	bitmap.create_from_image_alpha(texture.get_image(), 0.9)
+	
+	# reset position, hopefully match sprite
+	position = Vector2.ZERO
+	texture_click_mask = bitmap;

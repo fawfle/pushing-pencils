@@ -1,4 +1,4 @@
-extends Node
+class_name Rules
 
 enum ID {
 	ANYTHING,
@@ -18,7 +18,7 @@ enum ID {
 	RANDOM_NEW_CIRCLE,
 }
 
-func check_rules(rules: Array[ID], source: String, input: String) -> bool:
+static func check_rules(rules: Array[ID], source: String, input: String) -> bool:
 	if len(rules) == 1:
 		if rules[0] == ID.ANYTHING:
 			return true
@@ -27,14 +27,14 @@ func check_rules(rules: Array[ID], source: String, input: String) -> bool:
 	
 	return apply_multiple(rules, source) == input
 
-func apply_multiple(rules: Array[ID], source: String) -> String:
+static func apply_multiple(rules: Array[ID], source: String) -> String:
 	var new_source: String = source
 	for rule in rules:
 		new_source = apply(rule, new_source)
 		
 	return new_source
 
-func apply(id: ID, source: String) -> String:
+static func apply(id: ID, source: String) -> String:
 	var ret: String = source
 	match id:
 		ID.HYPHEN_SPACE:
@@ -113,7 +113,7 @@ func apply(id: ID, source: String) -> String:
 
 	return clean_text(ret)
 
-func clean_text(text: String):
+static func clean_text(text: String):
 	if text.length() == 0: return text
 	
 	while text[text.length() - 1] == " ": text = text.substr(0, text.length() - 1)
@@ -121,7 +121,7 @@ func clean_text(text: String):
 	
 	return text
 
-var rule_descriptions = {
+static var rule_descriptions = {
 	ID.HYPHEN_SPACE: "due to technical restrictions, spaces are now hyphens",
 	ID.ONLY_FIRST_13_LETTERS: "no letters in the last half of the alphabet",
 	ID.ALPHANUMERIC: "transform all letters into their position in the alphabet (a->1)",

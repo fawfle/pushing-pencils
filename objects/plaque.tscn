@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://6ehu0r7ie7gx"]
+[gd_scene load_steps=6 format=3 uid="uid://6ehu0r7ie7gx"]
 
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_82pcf"]
 [ext_resource type="Script" uid="uid://cxfhwg17nai5h" path="res://objects/plaque.gd" id="1_c0kpq"]
 [ext_resource type="Texture2D" uid="uid://d2trv8tcbgfhb" path="res://Sprites/plaque.png" id="1_ufvud"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_ufvud"]
+[ext_resource type="FontFile" uid="uid://dcpa0n73bjcsb" path="res://fonts/JacquardaBastarda9-Regular.ttf" id="5_m5iji"]
 
 [node name="Plaque" type="Node2D"]
 script = ExtResource("1_c0kpq")
@@ -16,15 +17,17 @@ offset_left = -48.0
 offset_top = -16.0
 offset_right = 48.0
 offset_bottom = 16.0
+padding = Vector2(30, 10)
 
 [node name="TextLabel" type="Label" parent="."]
-offset_left = -17.0
+offset_left = -18.0
 offset_top = -12.0
-offset_right = 44.0
-offset_bottom = 12.0
+offset_right = 43.0
+offset_bottom = 10.0
 theme = ExtResource("3_ufvud")
-theme_override_font_sizes/font_size = 18
-text = "sample name"
+theme_override_fonts/font = ExtResource("5_m5iji")
+theme_override_font_sizes/font_size = 13
+text = "your name"
 vertical_alignment = 1
 autowrap_mode = 1
 clip_text = true

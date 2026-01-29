@@ -15,3 +15,5 @@ var player_name: String = ""
 var held: Node = null 
 
 var hit_coffee: bool = false
+
+var debug_mode: bool = false

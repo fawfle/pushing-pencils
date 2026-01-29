@@ -1,16 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://x7eex7ft73jy"]
+[gd_scene load_steps=5 format=3 uid="uid://x7eex7ft73jy"]
 
+[ext_resource type="Script" uid="uid://mlm01oghpy5d" path="res://objects/bell.gd" id="1_gxsor"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_kql0n"]
 [ext_resource type="Texture2D" uid="uid://d20sgfyqrojag" path="res://Sprites/bell.png" id="2_gxsor"]
+[ext_resource type="AudioStream" uid="uid://bsfh2otgwcc8t" path="res://sounds/ding.ogg" id="4_q701g"]
 
 [node name="Bell" type="Node2D"]
+script = ExtResource("1_gxsor")
 
 [node name="DesktopItem" parent="." instance=ExtResource("1_kql0n")]
-offset_left = -25.0
-offset_top = -23.0
-offset_right = 25.0
-offset_bottom = 27.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+padding = Vector2(15, 15)
+custom_clickmask_texture = ExtResource("2_gxsor")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1, 16)
 texture = ExtResource("2_gxsor")
+
+[node name="RingButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -6.0
+offset_right = 4.0
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BellSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_q701g")
+max_polyphony = 10
