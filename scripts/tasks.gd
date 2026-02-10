@@ -69,6 +69,8 @@ static var TASK_DATA: Dictionary[int, Dictionary] = {
 		TYPE: GameManager.ROUND_TYPE.DOC_FILE
 	},
 	10: {
+		NODES: [preload("res://objects/paperweight.tscn")],
+		MEMO: "MANDITORY SAFETY PAPERWEIGHT",
 		RULES: [Rules.ID.RANDOM_NORMAL],
 		TYPE: GameManager.ROUND_TYPE.DOC_FILE
 	},

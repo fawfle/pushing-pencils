@@ -1,3 +1,45 @@
-[gd_scene format=3 uid="uid://5pys05jwpeng"]
+[gd_scene load_steps=5 format=3 uid="uid://5pys05jwpeng"]
+
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_n4s5o"]
+[ext_resource type="Texture2D" uid="uid://c1306eurpb7q8" path="res://Sprites/objects/paperweight.png" id="2_tep5u"]
+[ext_resource type="AudioStream" uid="uid://bsfh2otgwcc8t" path="res://sounds/ding.ogg" id="3_1ax5u"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n4s5o"]
+radius = 17.0
+height = 36.0
 
 [node name="Paperweight" type="Node2D"]
+
+[node name="DesktopItem" parent="." instance=ExtResource("1_n4s5o")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+padding = Vector2(15, 15)
+custom_clickmask_texture = ExtResource("2_tep5u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tep5u")
+
+[node name="RingButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -6.0
+offset_right = 4.0
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BellSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_1ax5u")
+max_polyphony = 30
+
+[node name="Area2D" type="Area2D" parent="." groups=["blocking"]]
+rotation = 1.5707964
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_n4s5o")
