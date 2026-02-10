@@ -1,7 +1,7 @@
 class_name DesktopItem extends TextureButton
 
 ## speed at which item will slide off blocking items
-const SLIDEOFF_SPEED: float = 2
+const SLIDEOFF_SPEED: float = 160
 
 @onready var area_2d: Area2D = $"../Area2D"
 
@@ -47,11 +47,11 @@ func _process(delta: float) -> void:
 		parent.global_position = parent.global_position.clamp(screen_bounds[0], screen_bounds[1])
 		return
 	
-	if animating: return
+	if animating or area_2d == null: return
 	# resolve collisions when placed over "blocking" item
 	for area in area_2d.get_overlapping_areas():
 		if area.is_in_group("blocking") and area.get_parent().get_index() < parent.get_index():
-			parent.global_position += (parent.global_position - area.global_position) * SLIDEOFF_SPEED * delta
+			parent.global_position += (parent.global_position - area.global_position).normalized() * SLIDEOFF_SPEED * delta
 			parent.global_position = parent.global_position.clamp(screen_bounds[0], screen_bounds[1])
 
 func _on_button_down() -> void:	

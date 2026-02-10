@@ -61,10 +61,10 @@ func on_item_dropped(node: Node):
 		instrument = Instrument.PENCIL
 
 func _on_text_area_2d_area_entered(area: Area2D) -> void:
-	var parent := area.get_parent()
-	if parent is Pencil:
+	# var parent := area.get_parent()
+	if area.is_in_group("pencil"):
 		overlapping_pencil = true
-	if parent is Pen:
+	if area.is_in_group("pen"):
 		overlapping_pen = true
 
 
@@ -74,7 +74,6 @@ func _on_text_area_2d_area_exited(area: Area2D) -> void:
 		overlapping_pencil = false
 	if parent is Pen:
 		overlapping_pen = false
-
 
 
 func get_text() -> String:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://f0i8lgrdur37"]
+[gd_scene load_steps=6 format=3 uid="uid://f0i8lgrdur37"]
 
 [ext_resource type="Texture2D" uid="uid://bp4gtnt2a4hri" path="res://Sprites/Pen.png" id="1_b64m8"]
 [ext_resource type="Script" uid="uid://fydfo6ppe0kk" path="res://objects/pen.gd" id="1_pb18i"]
@@ -6,6 +6,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pb18i"]
 size = Vector2(4, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8w605"]
+size = Vector2(4, 71)
 
 [node name="Pen" type="Node2D"]
 script = ExtResource("1_pb18i")
@@ -20,8 +23,14 @@ offset_right = 2.0
 offset_bottom = 29.0
 padding = Vector2(2, 15)
 
+[node name="WritingArea" type="Area2D" parent="." groups=["pen"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WritingArea"]
+position = Vector2(0, 25.5)
+shape = SubResource("RectangleShape2D_pb18i")
+
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 25.5)
-shape = SubResource("RectangleShape2D_pb18i")
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_8w605")

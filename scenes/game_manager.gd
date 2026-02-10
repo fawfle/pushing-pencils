@@ -73,7 +73,7 @@ func _ready() -> void:
 	Global.document_submitted.connect(on_document_submitted)
 	Global.item_submitted.connect(on_item_submitted)
 	
-	pencil_timer.timeout.connect(func(): if completed <= 1: add_warning("USE THE PENCIL TIP. 1 POINT DEDUCTED."))
+	pencil_timer.timeout.connect(func(): if completed <= 1: add_message_i(Message.TYPE.WARNING, "USE THE PENCIL TIP. 1 POINT DEDUCTED."))
 	
 	if completed > 3:
 		var book = book_scene.instantiate()
@@ -99,7 +99,7 @@ func on_document_submitted(doc_input: String):
 	await get_tree().create_timer(2.0).timeout
 	
 	# check twice
-	handle_custom_responses(current_document)
+	handle_response_events(current_document)
 	
 	if check_rules(input):
 		complete_round();
@@ -270,6 +270,8 @@ func play_enter_animation(node: Node2D, wait_time: float=0):
 		node.global_position = lerp(start_position, end_position, t)
 		await get_tree().process_frame
 	
+	if node == null: return
+	
 	node.global_position = end_position
 	for child in node.get_children():
 		if child is DesktopItem:
@@ -290,53 +292,41 @@ func on_item_submitted(item: Node2D):
 		await get_tree().create_timer(2.0).timeout
 		play_stamp_animation(item)
 	
-	handle_custom_responses(item)
+	handle_response_events(item)
 
-func handle_custom_responses(item: Node2D):
-	for custom_response in CustomResponse.custom_responses:
-		if not custom_response.activated and custom_response.condition.call(item):
-			var obj = null
-			match custom_response.type:
-				CustomResponse.DOC_TYPE.WARNING:
-					obj = add_warning(custom_response.get_text(), custom_response.wait_time)
-				CustomResponse.DOC_TYPE.MEMO:
-					obj = add_memo(custom_response.get_text(), custom_response.wait_time)
-				CustomResponse.DOC_TYPE.NOTICE:
-					obj = add_notice(custom_response.get_text(), custom_response.wait_time)
-				CustomResponse.DOC_TYPE.INDEX_CARD:
-					obj = add_index_card(custom_response.get_text(), custom_response.wait_time)
-			if obj and custom_response.apply_effect:
-				custom_response.apply_effect.call(obj)
+func handle_response_events(item: Node2D):
+	for response_event: ResponseEvent in ResponseEvent.response_events:
+		if not response_event.activated and response_event.condition.call(item):
+			var obj = add_message(response_event.get_message())
+			#match response_event.type:
+				#ResponseEvent.DOC_TYPE.WARNING:
+					#obj = add_warning(response_event.get_text(), response_event.wait_time)
+				#ResponseEvent.DOC_TYPE.MEMO:
+					#obj = add_memo(response_event.get_text(), response_event.wait_time)
+				#ResponseEvent.DOC_TYPE.NOTICE:
+					#obj = add_notice(response_event.get_text(), response_event.wait_time)
+				#ResponseEvent.DOC_TYPE.INDEX_CARD:
+					#obj = add_index_card(response_event.get_text(), response_event.wait_time)
+			if obj and response_event.apply_effect:
+				response_event.apply_effect.call(obj)
 			
-			custom_response.update()
+			response_event.update()
 
-func add_memo(text: String, buffer: float = 1.5) -> Memo:
-	var memo: Memo = memo_scene.instantiate()
-	add_child(memo)
-	play_enter_animation(memo, buffer)
-	memo.set_text(text)
-	return memo
+## add message from "Message" data class
+func add_message(message: Message) -> Node2D:
+	var msg: Node2D = message.instantiate_scene();
+	add_child(msg);
+	play_enter_animation(msg, message.wait_time)
+	msg.set_text(message.text)
+	return msg
 
-func add_warning(text: String, buffer: float = 1.5) -> Warning:
-	var warning: Warning = warning_scene.instantiate()
-	add_child(warning)
-	warning.set_text(text)
-	play_enter_animation(warning, buffer)
-	return warning
-
-func add_notice(text: String, buffer: float = 1.5) -> Notice:
-	var notice: Notice = notice_scene.instantiate()
-	add_child(notice)
-	notice.set_text(text)
-	play_enter_animation(notice, buffer)
-	return notice
-
-func add_index_card(text: String, buffer: float = 1.5) -> IndexCard:
-	var card: IndexCard = index_card_scene.instantiate()
-	add_child(card)
-	card.set_text(text)
-	play_enter_animation(card, buffer)
-	return card
+## add message "inline". No overloads so seperate function
+func add_message_i(type: Message.TYPE, text: String, wait_time: float = 1.5):
+	var msg: Node2D = Message.type_scenes[type].instantiate();
+	add_child(msg);
+	play_enter_animation(msg, wait_time)
+	msg.set_text(text)
+	return msg
 
 func process_master_rules():
 	current_rules.clear()
@@ -362,6 +352,21 @@ func get_unique_random_rule():
 # TODO
 func shredder_storm():
 	pass
+
+## helper function to load data from task data structure
+func load_task(task: Task):
+	if task.memo_text: add_message_i(Message.TYPE.MEMO, task.memo_text)
+	if task.notice_text: add_message_i(Message.TYPE.NOTICE, task.notice_text)
+	if task.rejection_memo_text: rejection_memo_text = task.rejection_memo_text
+	if task.rules: current_master_rules = task.rules;
+	if task.round_type != null: round_type = task.round_type;
+	
+	if task.nodes_to_add:
+		for node in task.nodes_to_add:
+			var obj: Node = node.instantiate()
+			add_child(obj)
+			play_enter_animation(obj, 2.0)
+
 
 var DEBUG_input_command: String = ""
 var DEBUG_input_num: String = ""
@@ -391,7 +396,7 @@ func _input(event: InputEvent) -> void:
 func DEBUG_handle_command(command: String):
 	print("Entered Command: " + command);
 	if command.to_lower() == "enterdebug":
-		add_notice("Entering Debug Mode.\nYou Cheater.", 0.0);
+		add_message_i(Message.TYPE.NOTICE, "Entering Debug Mode.\nYou Cheater.", 0.0)
 		Global.debug_mode = true
 		return;
 	
@@ -400,56 +405,30 @@ func DEBUG_handle_command(command: String):
 	match command:
 		pass
 
-## helper function to load data from task data structure
-func load_task(task: Task):
-	if task.memo_text: add_memo(task.memo_text)
-	if task.notice_text: add_notice(task.notice_text)
-	if task.rejection_memo_text: rejection_memo_text = task.rejection_memo_text
-	if task.rules: current_master_rules = task.rules;
-	if task.round_type != null: round_type = task.round_type;
-	
-	if task.nodes_to_add:
-		for node in task.nodes_to_add:
-			var obj: Node = node.instantiate()
-			add_child(obj)
-			play_enter_animation(obj, 2.0)
-
-# TODO: remove legacy code (this)
-#func check_events() -> void:
-	#if completed < len(events) and events[completed]:
-		#run_event(events[completed])
-	#
-	#if completed == 1 and Global.player_name == "":
-		#Global.player_name = input
-		#pencil_timer.start()
-		#
-	#if completed == len(events) - 1:
-		#promoted = true
-		#await get_tree().create_timer(5).timeout
-		#get_tree().change_scene_to_file("res://3d_section.tscn")
-		#return
+#func add_memo(text: String, buffer: float = 1.5) -> Memo:
+	#var memo: Memo = memo_scene.instantiate()
+	#add_child(memo)
+	#play_enter_animation(memo, buffer)
+	#memo.set_text(text)
+	#return memo
 #
-#func run_event(event: Event) -> void:
-	#for scene in event.nodes_to_add:
-		#var obj: Node = scene.instantiate()
-		#add_child(obj)
-		#play_enter_animation(obj, 1.8)
-		#
-	#if event.memo_text != "":
-		#add_memo(event.memo_text)
-	#
-	#if event.notice_text != "":
-		#add_notice(event.notice_text, 1.5)
-	#
-	#rejection_memo_text = event.rejection_memo_text
-	#
-	#if event.update_rules:
-		#current_master_rules = event.rules
-		#if current_master_rules.has(Rules.ID.ONLY_LAST_13_LETTERS):
-			#Global.circle_changed.emit()
-	#
-	## if event.new_quota <= quota:
-	## 	quota = event.new_quota
-	#
-	#if event.change_round_type:
-		#round_type = event.round_type
+#func add_warning(text: String, buffer: float = 1.5) -> Warning:
+	#var warning: Warning = warning_scene.instantiate()
+	#add_child(warning)
+	#warning.set_text(text)
+	#play_enter_animation(warning, buffer)
+	#return warning
+#
+#func add_notice(text: String, buffer: float = 1.5) -> Notice:
+	#var notice: Notice = notice_scene.instantiate()
+	#add_child(notice)
+	#notice.set_text(text)
+	#play_enter_animation(notice, buffer)
+	#return notice
+#
+#func add_index_card(text: String, buffer: float = 1.5) -> IndexCard:
+	#var card: IndexCard = index_card_scene.instantiate()
+	#add_child(card)
+	#card.set_text(text)
+	#play_enter_animation(card, buffer)
+	#return card

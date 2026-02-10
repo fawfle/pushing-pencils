@@ -1,8 +1,10 @@
 Mechanic Ideas
-Add blocking
 Stampings
 2nd ending (stickys)
 Due to corporate upsizing, you now need to specify fax number (number pad and can't see entered)
+sound effect for sliding (maybe based on surface?)
+
+-- Add blocking
 
 Scenario Ideas
 For your outstanding performance, here is a paperweight

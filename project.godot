@@ -28,6 +28,8 @@ window/stretch/mode="viewport"
 
 camtest=""
 blocking=""
+pencil=""
+pen=""
 
 [gui]
 
