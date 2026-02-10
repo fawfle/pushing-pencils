@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bsfh2otgwcc8t" path="res://sounds/ding.ogg" id="4_q701g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q701g"]
-radius = 28.160255
+radius = 27.0
 
 [node name="Bell" type="Node2D"]
 script = ExtResource("1_gxsor")
