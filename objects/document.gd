@@ -87,8 +87,8 @@ func handle_reset():
 	if (used_pen):
 		text_box.text = ""
 		add_whiteout()
+		used_pencil = false
 	used_pen = false
-	used_pencil = false
 
 func _on_text_box_text_changed(new_text: String) -> void:
 	# flag to reject used docs used with pencil

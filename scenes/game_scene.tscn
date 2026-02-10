@@ -165,4 +165,4 @@ one_shot = true
 autostart = true
 
 [node name="Bell" parent="." instance=ExtResource("14_5ay1a")]
-position = Vector2(-95, -38)
+position = Vector2(45, -39)
