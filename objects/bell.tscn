@@ -37,7 +37,7 @@ grow_vertical = 2
 
 [node name="BellSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_q701g")
-max_polyphony = 10
+max_polyphony = 30
 
 [node name="Area2D" type="Area2D" parent="." groups=["blocking"]]
 

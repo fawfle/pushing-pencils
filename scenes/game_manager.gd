@@ -7,11 +7,6 @@ static var inst: GameManager
 var file_scene: PackedScene = preload("res://objects/file.tscn")
 var document_scene: PackedScene = preload("res://objects/document.tscn")
 
-var warning_scene: PackedScene = preload("res://objects/warning.tscn")
-var memo_scene: PackedScene = preload("res://objects/memo.tscn")
-var notice_scene: PackedScene = preload("res://objects/notice.tscn")
-var index_card_scene: PackedScene = preload("res://objects/index_card.tscn")
-
 @onready var stamp_sound := $StampSound
 @onready var fax_sound := $FaxSound
 @onready var paper_slide_sound := $PaperSlideSound
@@ -105,10 +100,7 @@ func on_document_submitted(doc_input: String):
 		complete_round();
 	else:
 		if rejection_memo_text != "":
-			var memo: Memo = memo_scene.instantiate()
-			add_child(memo)
-			memo.set_text(rejection_memo_text)
-			play_enter_animation(memo, 1.5)
+			add_message_i(Message.TYPE.MEMO, rejection_memo_text)
 			rejection_memo_text = ""
 		
 		current_document.handle_reset()
@@ -298,15 +290,6 @@ func handle_response_events(item: Node2D):
 	for response_event: ResponseEvent in ResponseEvent.response_events:
 		if not response_event.activated and response_event.condition.call(item):
 			var obj = add_message(response_event.get_message())
-			#match response_event.type:
-				#ResponseEvent.DOC_TYPE.WARNING:
-					#obj = add_warning(response_event.get_text(), response_event.wait_time)
-				#ResponseEvent.DOC_TYPE.MEMO:
-					#obj = add_memo(response_event.get_text(), response_event.wait_time)
-				#ResponseEvent.DOC_TYPE.NOTICE:
-					#obj = add_notice(response_event.get_text(), response_event.wait_time)
-				#ResponseEvent.DOC_TYPE.INDEX_CARD:
-					#obj = add_index_card(response_event.get_text(), response_event.wait_time)
 			if obj and response_event.apply_effect:
 				response_event.apply_effect.call(obj)
 			
@@ -404,31 +387,3 @@ func DEBUG_handle_command(command: String):
 	
 	match command:
 		pass
-
-#func add_memo(text: String, buffer: float = 1.5) -> Memo:
-	#var memo: Memo = memo_scene.instantiate()
-	#add_child(memo)
-	#play_enter_animation(memo, buffer)
-	#memo.set_text(text)
-	#return memo
-#
-#func add_warning(text: String, buffer: float = 1.5) -> Warning:
-	#var warning: Warning = warning_scene.instantiate()
-	#add_child(warning)
-	#warning.set_text(text)
-	#play_enter_animation(warning, buffer)
-	#return warning
-#
-#func add_notice(text: String, buffer: float = 1.5) -> Notice:
-	#var notice: Notice = notice_scene.instantiate()
-	#add_child(notice)
-	#notice.set_text(text)
-	#play_enter_animation(notice, buffer)
-	#return notice
-#
-#func add_index_card(text: String, buffer: float = 1.5) -> IndexCard:
-	#var card: IndexCard = index_card_scene.instantiate()
-	#add_child(card)
-	#card.set_text(text)
-	#play_enter_animation(card, buffer)
-	#return card

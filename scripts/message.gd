@@ -14,6 +14,7 @@ const type_scenes: Dictionary[TYPE, PackedScene] = {
 	TYPE.WARNING: preload("res://objects/warning.tscn"),
 	TYPE.NOTICE: preload("res://objects/notice.tscn"),
 	TYPE.INDEX_CARD: preload("res://objects/index_card.tscn"),
+	TYPE.AWARD_3: preload("res://objects/award_3.tscn")
 }
 
 var text: String
