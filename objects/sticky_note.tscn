@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://0ufqtqhdowf4" path="res://Sprites/sticky-note.png" id="1_ep4ix"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_e33fk"]
 [ext_resource type="Script" uid="uid://dlxhr551o6baq" path="res://objects/desktop_item.gd" id="3_ep4ix"]
-[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/simple-header.png" id="4_pf0on"]
+[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/header.png" id="4_pf0on"]
 [ext_resource type="Texture2D" uid="uid://bb40s37elpcfa" path="res://Sprites/fancy_header.png" id="5_xea0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qcqcp"]
@@ -17,8 +17,8 @@ texture = ExtResource("1_ep4ix")
 [node name="TextLabel" type="Label" parent="Sprite2D"]
 modulate = Color(0.28485027, 0.28485027, 0.2848502, 1)
 anchors_preset = -1
-anchor_left = -0.6666667
-anchor_top = -0.104166664
+anchor_left = -1.3333334
+anchor_top = -0.20833333
 anchor_right = -1.3333334
 anchor_bottom = -0.20833333
 offset_left = 20.0

@@ -8,7 +8,8 @@ class_name Document extends Node2D
 @onready var eraser_sound: AudioStreamPlayer2D = $EraserSound
 @onready var pen_sound: AudioStreamPlayer2D = $PenWrite
 
-@onready var fancy_header: Sprite2D = $FancyHeader
+@onready var pen_header: Sprite2D = $PenHeader
+@onready var pencil_header: Sprite2D = $PencilHeader
 @onready var whiteout: Sprite2D = $Whiteout
 
 # var img = Image.load_from_file("res://Sprites/Stamp.png")
@@ -138,8 +139,11 @@ func play_eraser_sound():
 	var start_time = eraser_sound.stream.get_length() * randf_range(0, 0.7)
 	eraser_sound.play(start_time)
 
-func add_fancy_header():
-	fancy_header.visible = true
+func add_pen_header():
+	pen_header.visible = true
+
+func add_pencil_header():
+	pencil_header.visible = true
 
 func add_whiteout():
 	whiteout.visible = true

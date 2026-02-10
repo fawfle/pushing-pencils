@@ -1,4 +1,8 @@
+## Class that manages primary game loop like documents and submitting
 class_name GameManager extends Node2D
+
+## Singleton variable for class
+static var inst: GameManager
 
 var file_scene: PackedScene = preload("res://objects/file.tscn")
 var document_scene: PackedScene = preload("res://objects/document.tscn")
@@ -56,45 +60,16 @@ var stamp_texture: Texture2D = load("res://Sprites/Stamp.png")
 var book_scene: PackedScene = preload("res://objects/book.tscn")
 var pen_scene: PackedScene = preload("res://objects/pen.tscn")
 
-var rule_shape_dictionary: Dictionary[Rules.ID, Texture2D] = {
-	Rules.ID.REVERSE_EACH_WORD: load("res://Sprites/shapes/shape-0002.png"),
-	Rules.ID.NO_VOWELS: load("res://Sprites/shapes/shape-0001.png"),
-	Rules.ID.ONLY_FIRST_13_LETTERS: load("res://Sprites/shapes/shape-0003.png"),
-	Rules.ID.ONLY_LAST_13_LETTERS: load("res://Sprites/shapes/shape-0003.png"),
-	Rules.ID.FLIP_CASE: load("res://Sprites/shapes/shape-0004.png"),
-	Rules.ID.ALPHABETICAL_ORDER: load("res://Sprites/shapes/shape-0005.png"),
-	Rules.ID.HYPHEN_SPACE: load("res://Sprites/shapes/shape-0006.png"),
-}
-
-## responses for specific failure states, meant to teach play
-var custom_responses: Array[CustomResponse] = [
-	CustomResponse.new(func(item: Node2D): return (item is Memo), "DO NOT FAX MEMOS"),
-	CustomResponse.new(func(item: Node2D): return (item is Warning), ["DO NOT FAX WARNINGS", "FINAL WARNING FOR FAXING WARNINGS", "YOU HAVE BEEN WARNED"]),
-	CustomResponse.new(func(item: Node2D): return (item is FileItem), "DO NOT FAX ITEMS"),
-	CustomResponse.new(func(item: Node2D): return (item is Pamphlet), "DAMAGE OF INSPIRATIONAL COMPANY MATERIALS"),
-	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and (input.to_lower().replace(" ", "") == "yourname"), "YOU ARE NOT FUNNY", CustomResponse.DOC_TYPE.WARNING, func(_x): Global.player_name="Not Funny"),
-	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.ONLY_LAST_13_LETTERS) and input != Rules.apply(Rules.ID.ONLY_LAST_13_LETTERS, input)), "DUE TO LETTER SHORTAGES, CIRCLE IS CHANGED", CustomResponse.DOC_TYPE.NOTICE),
-	
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input.contains("y")), "CORPORATE HAS DECIDED Y IS ALWAYS A VOWEL", CustomResponse.DOC_TYPE.NOTICE),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.NO_VOWELS) and input != Rules.apply(Rules.ID.NO_VOWELS, input)), "VOWELS ARE INEFFICIENT"),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PEN_ONLY) and current_document.used_pencil), "Not Professional"),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "Too Professional\nUse Pencil."),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PEN", CustomResponse.DOC_TYPE.INDEX_CARD, func(x): x.set_fancy_header()),
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen), "PENCIL", CustomResponse.DOC_TYPE.INDEX_CARD, func(x): x.set_simple_header()),
-	
-	## debug mode
-	CustomResponse.new(func(item: Node2D): return (item is Document) and (completed == 0) and input == "cheaterxyzxyz", "Entering Debug Mode.\nYou Cheater.", CustomResponse.DOC_TYPE.NOTICE, func(_x): Global.debug_mode = true)
-]
-
 @onready var screen_size = get_viewport_rect().size / 4
 
 var promoted: bool = false
 
 func _ready() -> void:
+	if inst == null:
+		inst = self
+	
 	Utils.load_wordlist()
-
+	
 	Global.document_submitted.connect(on_document_submitted)
 	Global.item_submitted.connect(on_item_submitted)
 	
@@ -113,55 +88,13 @@ func _ready() -> void:
 	if completed >= 1:
 		Global.player_name = "[PLAYER NAME]"
 	
-	check_events()
-	begin_round()
-
-func check_events() -> void:
-	if completed < len(events) and events[completed]:
-		run_event(events[completed])
-	
-	if completed == 1 and Global.player_name == "":
-		Global.player_name = input
-		pencil_timer.start()
-		
-	if completed == len(events) - 1:
-		promoted = true
-		await get_tree().create_timer(5).timeout
-		get_tree().change_scene_to_file("res://3d_section.tscn")
-		return
-
-func run_event(event: Event):
-	for scene in event.nodes_to_add:
-		var obj: Node = scene.instantiate()
-		add_child(obj)
-		play_enter_animation(obj, 1.8)
-		
-	if event.memo_text != "":
-		add_memo(event.memo_text)
-	
-	if event.notice_text != "":
-		add_notice(event.notice_text, 1.5)
-	
-	rejection_memo_text = event.rejection_memo_text
-	
-	if event.update_rules:
-		current_master_rules = event.rules
-		if current_master_rules.has(Rules.ID.ONLY_LAST_13_LETTERS):
-			Global.circle_changed.emit()
-	
-	# if event.new_quota <= quota:
-	# 	quota = event.new_quota
-	
-	if event.change_round_type:
-		round_type = event.round_type
+	begin_round(completed)
 
 func on_document_submitted(doc_input: String):
 	fax_sound.play()
 	
 	input = doc_input
 	remove_child(current_document)
-	print("input: " + input)
-	print("expected output: " + output_text)
 	
 	await get_tree().create_timer(2.0).timeout
 	
@@ -182,15 +115,24 @@ func on_document_submitted(doc_input: String):
 		play_stamp_animation(current_document)
 	
 	# check after
-	handle_custom_responses(current_document)
+	# handle_custom_responses(current_document)
 
 func complete_round():
 	completed += 1;
 	
-	check_events()
+	if completed == 1 and Global.player_name == "":
+		Global.player_name = input
+		pencil_timer.start()
+		
+	if completed >= TASK_LIST.TASKS.size() - 1:
+		promoted = true
+		await get_tree().create_timer(5).timeout
+		get_tree().change_scene_to_file("res://3d_section.tscn")
+		return
+	
 	Global.document_completed.emit()
 	if current_document: current_document.queue_free()
-	if (completed < len(events)): begin_round()
+	if (completed < len(TASK_LIST.TASKS)): begin_round(completed)
 
 func check_rules(source: String) -> bool:
 	if current_rules.has(Rules.ID.PENCIL_ONLY) and current_document.used_pen:
@@ -208,10 +150,11 @@ func add_file():
 	add_child(current_file)
 	play_enter_animation(current_document)
 
-func begin_round():
-	if promoted:
-			return
-			
+func begin_round(round_number: int):
+	if promoted: return
+	
+	load_task(TASK_LIST.TASKS[round_number])
+	
 	process_master_rules()
 	
 	match round_type:
@@ -234,7 +177,10 @@ func begin_file_doc_round():
 	current_document.set_id(id)
 	
 	if current_rules.has(Rules.ID.PEN_ONLY):
-		current_document.add_fancy_header()
+		current_document.add_pen_header()
+	elif current_rules.has(Rules.ID.PENCIL_ONLY):
+		current_document.add_pencil_header()
+	
 	set_file_shapes()
 	
 	var meets_criteria: bool = false
@@ -260,10 +206,12 @@ func begin_doc_only_round():
 ## setting file shapes to match round rules. "Rule Changes" just mean two RULE.IDs correspond to the same shape and we discard the old one
 func set_file_shapes():
 	for rule in current_rules:
-		if rule_shape_dictionary.has(rule):
-			current_file.add_shape(rule_shape_dictionary[rule])
+		if Rules.rule_shape_dictionary.has(rule):
+			current_file.add_shape(Rules.rule_shape_dictionary[rule])
 
 func play_stamp_animation(item: Node):
+	if item == null: return;
+	
 	if get_children().has(item):
 		remove_child(item)
 	await get_tree().create_timer(0.4).timeout
@@ -294,20 +242,23 @@ func play_stamp_animation(item: Node):
 	
 
 # set top deferred to make special objects appear above non special
-func play_enter_animation(node: Node2D, wait_time: float=0):	
+func play_enter_animation(node: Node2D, wait_time: float=0):
 	var duration: float = randf_range(0.8, 1.2)
 	
 	var start_position: Vector2 = Vector2(-screen_size.x, randf_range(-10, 10))
 	var end_position: Vector2 = Vector2(randf_range(-100, -25), randf_range(-10, 10))
 	
 	node.global_position = start_position
+	for child in node.get_children():
+		if child is DesktopItem:
+			child.animating = true
 	
 	await get_tree().create_timer(wait_time).timeout
 	
 	if wait_time > 0: move_child(node, -1)
 	
 	paper_slide_sound.play()
-	await get_tree().create_timer(randf_range(0, 0.2)).timeout
+	await get_tree().create_timer(randf_range(0, 0.4)).timeout
 	
 	var timer: SceneTreeTimer = get_tree().create_timer(duration)
 	
@@ -318,44 +269,42 @@ func play_enter_animation(node: Node2D, wait_time: float=0):
 		t = 1 - (1 - t) * (1 - t) # ease out
 		node.global_position = lerp(start_position, end_position, t)
 		await get_tree().process_frame
+	
+	node.global_position = end_position
+	for child in node.get_children():
+		if child is DesktopItem:
+			child.animating = false
 
 func on_item_submitted(item: Node2D):
 	if item is Pencil or item is Pen:
 		return
 	
-	fax_sound.play()
-	remove_child(item)
-	
-	await get_tree().create_timer(2.0).timeout
-	
-	if item is Memo:
-		play_stamp_animation(item)
-	if item is FileItem:
-		play_stamp_animation(item)
-	if item is Notice:
-		play_stamp_animation(item)
-	if item is Warning:
-		play_stamp_animation(item)
-	if item is IndexCard:
-		play_stamp_animation(item)
-	if item is Pamphlet:
+	if item is Award and item.number == 2:
+		item.queue_free()
+		# TODO: add photo
+		
+	# big sad that you can't make an array of types to make this code cleaner.
+	elif item is Memo or item is FileItem or item is Notice or item is Warning or item is IndexCard or item is Pamphlet or item is Award:
+		fax_sound.play()
+		remove_child(item)
+		await get_tree().create_timer(2.0).timeout
 		play_stamp_animation(item)
 	
 	handle_custom_responses(item)
 
 func handle_custom_responses(item: Node2D):
-	for custom_response in custom_responses:
+	for custom_response in CustomResponse.custom_responses:
 		if not custom_response.activated and custom_response.condition.call(item):
 			var obj = null
 			match custom_response.type:
 				CustomResponse.DOC_TYPE.WARNING:
-					obj = add_warning(custom_response.get_text())
+					obj = add_warning(custom_response.get_text(), custom_response.wait_time)
 				CustomResponse.DOC_TYPE.MEMO:
-					obj =add_memo(custom_response.get_text())
+					obj = add_memo(custom_response.get_text(), custom_response.wait_time)
 				CustomResponse.DOC_TYPE.NOTICE:
-					obj = add_notice(custom_response.get_text())
+					obj = add_notice(custom_response.get_text(), custom_response.wait_time)
 				CustomResponse.DOC_TYPE.INDEX_CARD:
-					obj = add_index_card(custom_response.get_text())
+					obj = add_index_card(custom_response.get_text(), custom_response.wait_time)
 			if obj and custom_response.apply_effect:
 				custom_response.apply_effect.call(obj)
 			
@@ -382,14 +331,12 @@ func add_notice(text: String, buffer: float = 1.5) -> Notice:
 	play_enter_animation(notice, buffer)
 	return notice
 
-func add_index_card(text: String, buffer: float = 4.0) -> IndexCard:
+func add_index_card(text: String, buffer: float = 1.5) -> IndexCard:
 	var card: IndexCard = index_card_scene.instantiate()
 	add_child(card)
 	card.set_text(text)
 	play_enter_animation(card, buffer)
 	return card
-
-var symbol_rules: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_13_LETTERS, Rules.ID.REVERSE_EACH_WORD, Rules.ID.NO_VOWELS, Rules.ID.FLIP_CASE, Rules.ID.ALPHABETICAL_ORDER]
 
 func process_master_rules():
 	current_rules.clear()
@@ -401,8 +348,12 @@ func process_master_rules():
 		else:
 			current_rules.append(rule)
 
+
+## Pool of rules to pick from when selecting random rules
+var rule_pool: Array[Rules.ID] = [Rules.ID.HYPHEN_SPACE, Rules.ID.ONLY_FIRST_13_LETTERS, Rules.ID.REVERSE_EACH_WORD, Rules.ID.NO_VOWELS, Rules.ID.FLIP_CASE, Rules.ID.ALPHABETICAL_ORDER]
+
 func get_unique_random_rule():
-	var rule: Rules.ID = symbol_rules.pick_random()
+	var rule: Rules.ID = rule_pool.pick_random()
 	if rule in current_rules:
 		return get_unique_random_rule()
 	
@@ -412,9 +363,93 @@ func get_unique_random_rule():
 func shredder_storm():
 	pass
 
+var DEBUG_input_command: String = ""
+var DEBUG_input_num: String = ""
 func _input(event: InputEvent) -> void:
+	if event is not InputEventKey: return;
+	event = event as InputEventKey;
+	
+	if event.pressed and event.keycode == KEY_ENTER:
+		DEBUG_handle_command(DEBUG_input_command)
+		DEBUG_input_command = ""
+	elif event.pressed:
+		DEBUG_input_command += event.as_text_keycode();
+	
+	if not Global.debug_mode:
+		return
+	
+	if event.pressed and event.keycode == KEY_RIGHT:
+		complete_round()
+	elif event.pressed and event.keycode >= KEY_0 and event.keycode <= KEY_9:
+		DEBUG_input_num += event.as_text_keycode();
+	elif event.pressed and event.keycode == KEY_ENTER:
+		if int(DEBUG_input_num) < TASK_LIST.TASKS.size():
+			completed = (int(DEBUG_input_num)) - 1;
+			complete_round();
+		DEBUG_input_num = "";
+
+func DEBUG_handle_command(command: String):
+	print("Entered Command: " + command);
+	if command.to_lower() == "enterdebug":
+		add_notice("Entering Debug Mode.\nYou Cheater.", 0.0);
+		Global.debug_mode = true
+		return;
+	
 	if not Global.debug_mode: return
 	
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_RIGHT:
-			complete_round()
+	match command:
+		pass
+
+## helper function to load data from task data structure
+func load_task(task: Task):
+	if task.memo_text: add_memo(task.memo_text)
+	if task.notice_text: add_notice(task.notice_text)
+	if task.rejection_memo_text: rejection_memo_text = task.rejection_memo_text
+	if task.rules: current_master_rules = task.rules;
+	if task.round_type != null: round_type = task.round_type;
+	
+	if task.nodes_to_add:
+		for node in task.nodes_to_add:
+			var obj: Node = node.instantiate()
+			add_child(obj)
+			play_enter_animation(obj, 2.0)
+
+# TODO: remove legacy code (this)
+#func check_events() -> void:
+	#if completed < len(events) and events[completed]:
+		#run_event(events[completed])
+	#
+	#if completed == 1 and Global.player_name == "":
+		#Global.player_name = input
+		#pencil_timer.start()
+		#
+	#if completed == len(events) - 1:
+		#promoted = true
+		#await get_tree().create_timer(5).timeout
+		#get_tree().change_scene_to_file("res://3d_section.tscn")
+		#return
+#
+#func run_event(event: Event) -> void:
+	#for scene in event.nodes_to_add:
+		#var obj: Node = scene.instantiate()
+		#add_child(obj)
+		#play_enter_animation(obj, 1.8)
+		#
+	#if event.memo_text != "":
+		#add_memo(event.memo_text)
+	#
+	#if event.notice_text != "":
+		#add_notice(event.notice_text, 1.5)
+	#
+	#rejection_memo_text = event.rejection_memo_text
+	#
+	#if event.update_rules:
+		#current_master_rules = event.rules
+		#if current_master_rules.has(Rules.ID.ONLY_LAST_13_LETTERS):
+			#Global.circle_changed.emit()
+	#
+	## if event.new_quota <= quota:
+	## 	quota = event.new_quota
+	#
+	#if event.change_round_type:
+		#round_type = event.round_type

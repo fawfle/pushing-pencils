@@ -1,5 +1,10 @@
 class_name DesktopItem extends TextureButton
 
+## speed at which item will slide off blocking items
+const SLIDEOFF_SPEED: float = 2
+
+@onready var area_2d: Area2D = $"../Area2D"
+
 var dragging: bool = false
 var offset: Vector2 = Vector2.ZERO
 
@@ -8,7 +13,7 @@ var offset: Vector2 = Vector2.ZERO
 var screen_size: Vector2 = Vector2.ZERO
 var screen_bounds: Array[Vector2]
 
-var parent: Node
+var parent: Node2D
 
 @export var click_sounds: Array[AudioStreamPlayer2D]
 @export var drop_sounds: Array[AudioStreamPlayer2D]
@@ -19,6 +24,8 @@ var parent: Node
 @export var custom_clickmask_texture: Texture2D
 
 var moving: bool = false
+## whether or not item is being animated by external code
+var animating: bool = false
 
 func _ready() -> void:
 	parent = get_parent()
@@ -27,7 +34,7 @@ func _ready() -> void:
 	if custom_clickmask_texture:
 		add_bitmask_from_texture(custom_clickmask_texture)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if dragging:
 		var target := get_global_mouse_position() - offset
 		if target != parent.global_position:
@@ -38,9 +45,22 @@ func _process(_delta: float) -> void:
 			moving = false
 		parent.global_position = target
 		parent.global_position = parent.global_position.clamp(screen_bounds[0], screen_bounds[1])
+		return
+	
+	if animating: return
+	# resolve collisions when placed over "blocking" item
+	for area in area_2d.get_overlapping_areas():
+		if area.is_in_group("blocking") and area.get_parent().get_index() < parent.get_index():
+			parent.global_position += (parent.global_position - area.global_position) * SLIDEOFF_SPEED * delta
+			parent.global_position = parent.global_position.clamp(screen_bounds[0], screen_bounds[1])
 
-func _on_button_down() -> void:
+func _on_button_down() -> void:	
+	for area in area_2d.get_overlapping_areas():
+		if area.is_in_group("blocking") and area.get_parent().get_index() > parent.get_index():
+			return
+	
 	dragging = true
+	animating = false
 	offset = parent.get_global_mouse_position() - parent.global_position
 	parent.get_parent().move_child(parent, -1)
 	parent.z_index = 10
@@ -50,6 +70,8 @@ func _on_button_down() -> void:
 
 
 func _on_button_up() -> void:
+	if not dragging: return
+	
 	dragging = false
 	Global.held = null
 	parent.get_parent().move_child(parent, -1)

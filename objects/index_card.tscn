@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://be7bi0ex2v61t"]
+[gd_scene load_steps=9 format=3 uid="uid://be7bi0ex2v61t"]
 
 [ext_resource type="Texture2D" uid="uid://bbylugwqank1g" path="res://Sprites/notecard.png" id="1_h616n"]
 [ext_resource type="Script" uid="uid://w5gp5erngjkx" path="res://objects/index_card.gd" id="1_mg65q"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="2_mg65q"]
 [ext_resource type="Theme" uid="uid://dv3dy2j4wgcqr" path="res://fonts/theme.tres" id="3_lrrnq"]
-[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/simple-header.png" id="5_3lucn"]
+[ext_resource type="Texture2D" uid="uid://dr0lq7dxbim74" path="res://Sprites/header.png" id="5_3lucn"]
+[ext_resource type="Texture2D" uid="uid://bvc4cm2fd2twa" path="res://Sprites/simple-header.png" id="6_l3636"]
 [ext_resource type="Texture2D" uid="uid://bb40s37elpcfa" path="res://Sprites/fancy_header.png" id="6_xduqs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3lucn"]
@@ -40,11 +41,17 @@ visible = false
 position = Vector2(1.5, 0.5)
 shape = SubResource("RectangleShape2D_3lucn")
 
-[node name="SimpleHeader" type="Sprite2D" parent="."]
+[node name="Header" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.64705884)
 position = Vector2(11, 9)
 texture = ExtResource("5_3lucn")
+
+[node name="SimpleHeader" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.64705884)
+position = Vector2(11, 9)
+texture = ExtResource("6_l3636")
 
 [node name="FancyHeader" type="Sprite2D" parent="."]
 visible = false

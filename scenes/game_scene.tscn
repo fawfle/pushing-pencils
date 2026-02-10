@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b32iyuikcp0k" path="res://objects/eraser.tscn" id="4_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://f0i8lgrdur37" path="res://objects/pen.tscn" id="5_rurhu"]
 [ext_resource type="PackedScene" uid="uid://bbiib6ktp0lfw" path="res://objects/pencil.tscn" id="5_y3j0m"]
-[ext_resource type="PackedScene" uid="uid://dea3pjl5swgjq" path="res://objects/award.tscn" id="6_rvs2r"]
+[ext_resource type="PackedScene" uid="uid://dea3pjl5swgjq" path="res://objects/award_2.tscn" id="6_rvs2r"]
 [ext_resource type="PackedScene" uid="uid://6ehu0r7ie7gx" path="res://objects/plaque.tscn" id="6_tqxxy"]
 [ext_resource type="AudioStream" uid="uid://bd4iy0hq151ax" path="res://sounds/stamp.ogg" id="8_b5spy"]
 [ext_resource type="AudioStream" uid="uid://c8nw65v7vdmt0" path="res://sounds/fax.ogg" id="9_utbpp"]
@@ -163,3 +163,6 @@ max_polyphony = 10
 wait_time = 60.0
 one_shot = true
 autostart = true
+
+[node name="Bell" parent="." instance=ExtResource("14_5ay1a")]
+position = Vector2(-95, -38)

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcyoiv0i6336q"]
+
+[ext_resource type="Script" uid="uid://cuke137pkyo3c" path="res://objects/award.gd" id="1_j0lmx"]
+[ext_resource type="Texture2D" uid="uid://barqewpe3omkn" path="res://Sprites/3employee.png" id="2_kpecw"]
+[ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="3_kpecw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j0lmx"]
+radius = 20.0
+
+[node name="Award" type="Node2D"]
+script = ExtResource("1_j0lmx")
+number = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_kpecw")
+
+[node name="DesktopItem" parent="." instance=ExtResource("3_kpecw")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+padding = Vector2(20, 20)
+custom_clickmask_texture = ExtResource("2_kpecw")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_j0lmx")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-16, 30, -11, 17, 0, 20, 11, 16, 18, 28, 13, 27, 10, 32, 0, 23, -6, 34, -10, 28)
