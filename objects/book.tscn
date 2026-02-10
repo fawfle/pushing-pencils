@@ -46,7 +46,6 @@ metadata/_edit_lock_ = true
 metadata/_edit_lock_ = true
 
 [node name="Pages1" type="Node2D" parent="Pages"]
-visible = false
 
 [node name="Left" type="Sprite2D" parent="Pages/Pages1"]
 texture = ExtResource("4_mn4al")
@@ -181,6 +180,7 @@ bc df"
 horizontal_alignment = 1
 
 [node name="Pages3" type="Node2D" parent="Pages"]
+visible = false
 
 [node name="Left" type="Sprite2D" parent="Pages/Pages3"]
 texture = ExtResource("6_luwxh")
