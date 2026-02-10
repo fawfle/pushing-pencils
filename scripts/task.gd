@@ -16,3 +16,6 @@ var rules: Array[Rules.ID]
 # var change_round_type: bool = false
 ## the type of round. Currently main is single file and single doc
 var round_type: GameManager.ROUND_TYPE = GameManager.ROUND_TYPE.DOC_FILE
+
+## function to execute on start of task
+var on_start: Callable

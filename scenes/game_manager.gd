@@ -343,6 +343,7 @@ func load_task(task: Task):
 	if task.rejection_memo_text: rejection_memo_text = task.rejection_memo_text
 	if task.rules: current_master_rules = task.rules;
 	if task.round_type != null: round_type = task.round_type;
+	if not task.on_start.is_null(): task.on_start.call();
 	
 	if task.nodes_to_add:
 		for node in task.nodes_to_add:
@@ -380,6 +381,7 @@ func DEBUG_handle_command(command: String):
 	print("Entered Command: " + command);
 	if command.to_lower() == "enterdebug":
 		add_message_i(Message.TYPE.NOTICE, "Entering Debug Mode.\nYou Cheater.", 0.0)
+		if Global.player_name == "": Global.player_name = "Cheater"
 		Global.debug_mode = true
 		return;
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dof0jaef5w8bj"]
+[gd_scene load_steps=21 format=3 uid="uid://dof0jaef5w8bj"]
 
 [ext_resource type="Script" uid="uid://do0bl2q8f2ove" path="res://objects/book.gd" id="1_hxkwa"]
 [ext_resource type="PackedScene" uid="uid://o57m61rjst2a" path="res://objects/desktop_item.tscn" id="1_osdgu"]
@@ -14,6 +14,8 @@
 [ext_resource type="AudioStream" uid="uid://cx6nsnhixfklf" path="res://sounds/paper_turn4.ogg" id="8_luwxh"]
 [ext_resource type="Texture2D" uid="uid://dgsbq0lxw7qbs" path="res://Sprites/shapes/shape-0004.png" id="9_mdl40"]
 [ext_resource type="Texture2D" uid="uid://ehxsx0pb24g5" path="res://Sprites/shapes/shape-0005.png" id="10_16eyu"]
+[ext_resource type="Texture2D" uid="uid://c6lsghiruts6s" path="res://Sprites/whiteout-small.png" id="10_hqyj2"]
+[ext_resource type="Texture2D" uid="uid://dnnhyn33vj55r" path="res://Sprites/whiteout-tiny.png" id="10_rgfjo"]
 [ext_resource type="Texture2D" uid="uid://00vj856baio" path="res://Sprites/shapes/shape-0006.png" id="11_2iitc"]
 
 [sub_resource type="Gradient" id="Gradient_luwxh"]
@@ -43,17 +45,20 @@ metadata/_edit_lock_ = true
 [node name="Pages" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
-[node name="PageStart" type="Sprite2D" parent="Pages"]
+[node name="Pages1" type="Node2D" parent="Pages"]
+visible = false
+
+[node name="Left" type="Sprite2D" parent="Pages/Pages1"]
 texture = ExtResource("4_mn4al")
 flip_h = true
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Pages/PageStart"]
+[node name="Sprite2D" type="Sprite2D" parent="Pages/Pages1/Left"]
 modulate = Color(0.35151887, 0.35151893, 0.3515189, 1)
 position = Vector2(-51, -31)
 texture = ExtResource("5_xusrr")
 
-[node name="Header" type="Label" parent="Pages/PageStart"]
+[node name="Header" type="Label" parent="Pages/Pages1/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = -17.0
@@ -64,42 +69,46 @@ EMPLOYEE
 HANDBOOK"
 horizontal_alignment = 1
 
-[node name="PageR2" type="Sprite2D" parent="Pages"]
+[node name="Right" type="Sprite2D" parent="Pages/Pages1"]
 texture = ExtResource("6_luwxh")
 metadata/_edit_lock_ = true
 
-[node name="Header" type="Label" parent="Pages/PageR2"]
+[node name="Header" type="Label" parent="Pages/Pages1/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 5.0
-offset_top = -52.0
+offset_top = -50.0
 offset_right = 93.00001
-offset_bottom = 43.0
+offset_bottom = 45.0
 text = "FILES HAVE
 RULES. SHAPES
 DENOTE WHAT
 TO DO.
 THEY READ
 LEFT TO RIGHT.
-THEY COMBINE."
+THEY CAN COMBINE."
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="PageL2" type="Sprite2D" parent="Pages"]
+[node name="Pages2" type="Node2D" parent="Pages"]
 visible = false
+
+[node name="Left" type="Sprite2D" parent="Pages/Pages2"]
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
 
-[node name="TriangleShape" type="Sprite2D" parent="Pages/PageL2"]
+[node name="TriangleShape" type="Sprite2D" parent="Pages/Pages2/Left"]
 position = Vector2(-50, -40)
 texture = ExtResource("6_mn4al")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageL2"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages2/Left"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(-51, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageL2"]
+[node name="Header" type="Label" parent="Pages/Pages2/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = -26.0
@@ -108,7 +117,7 @@ offset_bottom = -15.0
 text = "The Triangle"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageL2"]
+[node name="Description" type="Label" parent="Pages/Pages2/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -93.0
 offset_top = -7.0
@@ -117,7 +126,7 @@ offset_bottom = 4.0
 text = "Flip Each Word"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageL2"]
+[node name="Example" type="Label" parent="Pages/Pages2/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = 10.0
@@ -128,22 +137,21 @@ abc def
 cba fed"
 horizontal_alignment = 1
 
-[node name="PageR3" type="Sprite2D" parent="Pages"]
-visible = false
+[node name="Right" type="Sprite2D" parent="Pages/Pages2"]
 texture = ExtResource("6_luwxh")
 metadata/_edit_lock_ = true
 
-[node name="SquareShape" type="Sprite2D" parent="Pages/PageR3"]
+[node name="SquareShape" type="Sprite2D" parent="Pages/Pages2/Right"]
 position = Vector2(50, -40)
 texture = ExtResource("7_mn4al")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageR3"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages2/Right"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(49, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageR3"]
+[node name="Header" type="Label" parent="Pages/Pages2/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 6.0
 offset_top = -26.0
@@ -152,7 +160,7 @@ offset_bottom = -15.0
 text = "The Square"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageR3"]
+[node name="Description" type="Label" parent="Pages/Pages2/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 7.0
 offset_top = -7.0
@@ -161,7 +169,7 @@ offset_bottom = 4.0
 text = "No Vowels"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageR3"]
+[node name="Example" type="Label" parent="Pages/Pages2/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 6.0
 offset_top = 10.0
@@ -172,22 +180,24 @@ abc def aye
 bc df"
 horizontal_alignment = 1
 
-[node name="PageL3" type="Sprite2D" parent="Pages"]
+[node name="Pages3" type="Node2D" parent="Pages"]
+
+[node name="Left" type="Sprite2D" parent="Pages/Pages3"]
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
 
-[node name="Shape" type="Sprite2D" parent="Pages/PageL3"]
+[node name="Shape" type="Sprite2D" parent="Pages/Pages3/Left"]
 position = Vector2(-50, -40)
 texture = ExtResource("8_hp5al")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageL3"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages3/Left"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(-51, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageL3"]
+[node name="Header" type="Label" parent="Pages/Pages3/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = -26.0
@@ -196,7 +206,7 @@ offset_bottom = -15.0
 text = "The Circle"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageL3"]
+[node name="Description" type="Label" parent="Pages/Pages3/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -95.0
 offset_top = -9.0
@@ -206,7 +216,21 @@ text = "Remove 2nd half
 of alphabet"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageL3"]
+[node name="Whiteout" type="Sprite2D" parent="Pages/Pages3/Left"]
+visible = false
+position = Vector2(-48, -3)
+texture = ExtResource("10_rgfjo")
+
+[node name="Number" type="Label" parent="Pages/Pages3/Left/Whiteout"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -43.0
+offset_top = -6.0
+offset_right = 45.0
+offset_bottom = 19.0
+text = "1"
+horizontal_alignment = 1
+
+[node name="Example" type="Label" parent="Pages/Pages3/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = 20.0
@@ -217,22 +241,35 @@ adfgmnoqtz
 adfgm"
 horizontal_alignment = 1
 
-[node name="PageR4" type="Sprite2D" parent="Pages"]
+[node name="WhiteoutExample" type="Sprite2D" parent="Pages/Pages3"]
 visible = false
+position = Vector2(-51, 50)
+texture = ExtResource("10_hqyj2")
+
+[node name="Text" type="Label" parent="Pages/Pages3/WhiteoutExample"]
+modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
+offset_left = -43.0
+offset_top = -6.0
+offset_right = 45.0
+offset_bottom = 19.0
+text = "noqtz"
+horizontal_alignment = 1
+
+[node name="Right" type="Sprite2D" parent="Pages/Pages3"]
 texture = ExtResource("6_luwxh")
 metadata/_edit_lock_ = true
 
-[node name="SquareShape" type="Sprite2D" parent="Pages/PageR4"]
+[node name="SquareShape" type="Sprite2D" parent="Pages/Pages3/Right"]
 position = Vector2(50, -40)
 texture = ExtResource("9_mdl40")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageR4"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages3/Right"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(49, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageR4"]
+[node name="Header" type="Label" parent="Pages/Pages3/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 6.0
 offset_top = -26.0
@@ -241,7 +278,7 @@ offset_bottom = -15.0
 text = "The Star"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageR4"]
+[node name="Description" type="Label" parent="Pages/Pages3/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 7.0
 offset_top = -7.0
@@ -250,7 +287,7 @@ offset_bottom = 4.0
 text = "Flip Case"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageR4"]
+[node name="Example" type="Label" parent="Pages/Pages3/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 6.0
 offset_top = 10.0
@@ -261,23 +298,25 @@ abc DEF
 ABC def"
 horizontal_alignment = 1
 
-[node name="PageL4" type="Sprite2D" parent="Pages"]
+[node name="Pages4" type="Node2D" parent="Pages"]
 visible = false
+
+[node name="Left" type="Sprite2D" parent="Pages/Pages4"]
 texture = ExtResource("6_luwxh")
 flip_h = true
 metadata/_edit_lock_ = true
 
-[node name="Shape" type="Sprite2D" parent="Pages/PageL4"]
+[node name="Shape" type="Sprite2D" parent="Pages/Pages4/Left"]
 position = Vector2(-50, -40)
 texture = ExtResource("10_16eyu")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageL4"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages4/Left"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(-51, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageL4"]
+[node name="Header" type="Label" parent="Pages/Pages4/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = -26.0
@@ -286,7 +325,7 @@ offset_bottom = -15.0
 text = "The Arrow"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageL4"]
+[node name="Description" type="Label" parent="Pages/Pages4/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = -10.0
@@ -296,7 +335,7 @@ text = "Alphabetical
 Order"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageL4"]
+[node name="Example" type="Label" parent="Pages/Pages4/Left"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = -94.0
 offset_top = 20.0
@@ -307,22 +346,21 @@ word and
 dorw adn"
 horizontal_alignment = 1
 
-[node name="PageEnd" type="Sprite2D" parent="Pages"]
-visible = false
+[node name="Right" type="Sprite2D" parent="Pages/Pages4"]
 texture = ExtResource("4_mn4al")
 metadata/_edit_lock_ = true
 
-[node name="Shape" type="Sprite2D" parent="Pages/PageEnd"]
+[node name="Shape" type="Sprite2D" parent="Pages/Pages4/Right"]
 position = Vector2(50, -40)
 texture = ExtResource("11_2iitc")
 
-[node name="Line" type="Sprite2D" parent="Pages/PageEnd"]
+[node name="Line" type="Sprite2D" parent="Pages/Pages4/Right"]
 modulate = Color(0.36831698, 0.368317, 0.36831698, 1)
 position = Vector2(49, -13)
 scale = Vector2(0.1953125, 1)
 texture = SubResource("GradientTexture1D_mn4al")
 
-[node name="Header" type="Label" parent="Pages/PageEnd"]
+[node name="Header" type="Label" parent="Pages/Pages4/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 6.0
 offset_top = -26.0
@@ -331,7 +369,7 @@ offset_bottom = -15.0
 text = "The Cross"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Pages/PageEnd"]
+[node name="Description" type="Label" parent="Pages/Pages4/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 7.0
 offset_top = -10.0
@@ -341,7 +379,7 @@ text = "Spaces become
 hyphens"
 horizontal_alignment = 1
 
-[node name="Example" type="Label" parent="Pages/PageEnd"]
+[node name="Example" type="Label" parent="Pages/Pages4/Right"]
 modulate = Color(0.2927068, 0.29270676, 0.29270676, 1)
 offset_left = 4.0
 offset_top = 20.0
@@ -379,10 +417,12 @@ stream = ExtResource("8_luwxh")
 max_polyphony = 3
 
 [node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_xusrr")
+metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]

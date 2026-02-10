@@ -6,7 +6,8 @@ enum {
 	REJECTION_MEMO,
 	NODES,
 	RULES,
-	TYPE
+	TYPE,
+	ON_START,
 }
 
 ## Rounds master variable. Is a dictionary so indexes are more visible when editing, but secretly used as an array (don't tell anyone). 
@@ -94,7 +95,8 @@ static var TASK_DATA: Dictionary[int, Dictionary] = {
 	},
 	15: {
 		RULES: [Rules.ID.ONLY_LAST_13_LETTERS],
-		TYPE: GameManager.ROUND_TYPE.DOC_FILE
+		TYPE: GameManager.ROUND_TYPE.DOC_FILE,
+		ON_START: func(): Global.circle_changed.emit()
 	},
 	16: {
 		MEMO: "YOU'VE BEEN PROMOTED!"
@@ -126,6 +128,7 @@ static func LOAD_TASKS() -> Array[Task]:
 				task.rules.assign([value.get(RULES)])
 		
 		if value.get(TYPE) != null: task.round_type = value.get(TYPE)
+		if value.get(ON_START) != null: task.on_start = value.get(ON_START)
 		
 		res.append(task)
 	
