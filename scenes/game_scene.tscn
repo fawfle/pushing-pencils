@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dscp53ky6w75x"]
+[gd_scene load_steps=33 format=3 uid="uid://dscp53ky6w75x"]
 
 [ext_resource type="Script" uid="uid://beodvkwuxduti" path="res://scenes/game_manager.gd" id="1_onqr8"]
 [ext_resource type="Script" uid="uid://bsnyajlqspl8n" path="res://scripts/event.gd" id="2_ycayy"]
@@ -14,7 +14,6 @@
 [ext_resource type="AudioStream" uid="uid://c8nw65v7vdmt0" path="res://sounds/fax.ogg" id="9_utbpp"]
 [ext_resource type="AudioStream" uid="uid://bcsj8jmg3u6e7" path="res://sounds/paper_slide.ogg" id="10_mw25s"]
 [ext_resource type="PackedScene" uid="uid://x7eex7ft73jy" path="res://objects/bell.tscn" id="14_5ay1a"]
-[ext_resource type="PackedScene" uid="uid://5pys05jwpeng" path="res://objects/paperweight.tscn" id="15_ldkr4"]
 
 [sub_resource type="Resource" id="Resource_y3j0m"]
 script = ExtResource("2_ycayy")
@@ -164,6 +163,3 @@ max_polyphony = 10
 wait_time = 60.0
 one_shot = true
 autostart = true
-
-[node name="Paperweight" parent="." instance=ExtResource("15_ldkr4")]
-position = Vector2(55, -31)
